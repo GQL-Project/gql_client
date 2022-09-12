@@ -1,5 +1,9 @@
 # GQL CLient
 
+<b>Table of Contents</b>
+- [Setting Up Qt](https://github.com/GQL-Project/gql_client/blob/main/README.md#setting-up-qt)
+- [Using QT Designer](https://github.com/GQL-Project/gql_client/blob/main/README.md#using-qt-designer)
+
 ## Setting Up QT
  - This is assuming you have VS 2019 installed. If you don't, that's fine. Just make sure during the installation steps, you choose the correct compiler (VS 2019 is MSVC2019).
  
@@ -65,3 +69,14 @@
  
  - YAY! You should be done now. Try cloning the GQL Client application and running it. If it does not build, let Kade now immediately before you try to fix it yourself.
  
+
+## Using QT Designer
+ - To use the drag and drop features of the UI, you need to double-click the `.ui` file corresponding to the page you want to modify.
+ 
+ <kbd>![image](https://user-images.githubusercontent.com/54650222/189695832-a86a87f1-225b-4b3d-9df4-df34e0ec532e.png)</kbd>
+ 
+ - That will open the file in Visual Studio. You need to press the `detach` button to open it in QT Designer.
+ 
+ <kbd>![image](https://user-images.githubusercontent.com/54650222/189696133-dc6b7502-58a0-4554-bd94-e80a8b0f9a94.png)</kbd>
+ 
+ - After that, press alt-tab to switch to the new window. It doesn't appear in the taskbar until you press alt-tab for some reason.
