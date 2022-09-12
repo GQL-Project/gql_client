@@ -51,8 +51,8 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="resources\MainWindow.qrc">
-      <Filter>Resource Files</Filter>
+    <QtRcc Include="form\MainWindow.qrc">
+      <Filter>Form Files</Filter>
     </QtRcc>
   </ItemGroup>
 </Project>
