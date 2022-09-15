@@ -62,12 +62,4 @@
  
  <kbd>![image](https://user-images.githubusercontent.com/54650222/189688069-90089c2b-43ea-44bb-bdb0-6496040e91dd.png)</kbd>
  
- - That should wrap up the QT setup. Now we need to add the extension to Visual Studio. You can go online and install it, but you could get the wrong version (VS 2019 actually uses the same compiler as VS 2017, which causes wonkiness). I prefer just to go to the extensions tab of Visual Studio to install it. You should install `Qt Visual Studio Tools`.
- 
- <kbd>![QtVsTools](https://user-images.githubusercontent.com/54650222/189686413-68060517-2fe4-4c26-aadd-00cd76e81a1a.gif)</kbd>
- 
- - Now we need to configure the tools. We need to add the QT version into it. We want the version name to be `5.15.2_x64` and that needs to point to the same directory as your `QTDIR` environment variable.
- 
- <kbd>![QtVsToolsConfig](https://user-images.githubusercontent.com/54650222/189687910-f8e8dfc0-57b1-4650-a709-9f8caa0d9771.gif)</kbd>
- 
  - YAY! You should be done now. Try cloning the GQL Client application and running it. If it does not build, let Kade now immediately before you try to fix it yourself.
