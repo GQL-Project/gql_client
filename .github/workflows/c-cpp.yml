@@ -64,6 +64,6 @@ jobs:
     - name: (9) ls
       working-directory: ${{ runner.temp }}
       run:  |
-            ls ${{ runner.temp }}\
             ls ${{ runner.temp }}\build\
+            ls ${{ runner.temp }}\build\tests
       
