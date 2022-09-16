@@ -1,7 +1,23 @@
 # GQL CLient
 
 <b>Table of Contents</b>
+- [GQL Client Structure](https://github.com/GQL-Project/gql_client/blob/main/README.md#gql-client-structure)
 - [Setting Up Qt](https://github.com/GQL-Project/gql_client/blob/main/README.md#setting-up-qt)
+
+## GQL Client Structure
+
+  The client is composed of 3 primary directories.
+  * `app` - This contains all the UI interfaces and their classes.
+  * `src` - This contains all the code that can be separated from the UI classes. Essentially the 'business logic' of the client side.
+  * `tests` - As the name implies, this only contains the automated unit test files for the GQL client. **NOTE:** the tests are only for the `src` folder. The GUI cannot be unit tested.
+  
+  Running the unit tests can be done two ways. The first, just right-click the tests folder and click `run`.
+  
+  <kbd>![image](https://user-images.githubusercontent.com/54650222/190542187-6ca11a51-cdb8-49db-aad5-4a8a60449159.png)</kbd>
+  
+  The second way is to press the `Test Results` tab at the bottom and then hit the play button.
+  
+  <kbd>![image](https://user-images.githubusercontent.com/54650222/190542330-2d1d3b36-45a9-40b8-a017-dcf705c1cb61.png)</kbd>
 
 ## Setting Up QT
  - This is assuming you have VS 2019 installed. If you don't, that's fine. Just make sure during the installation steps, you choose the correct compiler (VS 2019 is MSVC2019).
