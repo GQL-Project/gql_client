@@ -21,7 +21,7 @@ jobs:
       with:
         arch: x64
     - name: vcvarsall.bat
-      run: vcvars64.bat
+      run: vcvarsall.bat
       
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
