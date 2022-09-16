@@ -37,3 +37,8 @@
 
 # Visual Studio Artifacts
 x64/*
+
+# Qt Creator Build Artifacts
+build-gql_client-*/
+build-gql_test_suite-*/
+*.pro.user
