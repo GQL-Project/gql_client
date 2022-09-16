@@ -70,5 +70,5 @@ jobs:
     - name: (10) Run Tests
       working-directory: ${{ runner.temp }}\build\tests\release
       run:  |
-            ${{ runner.temp }}\build\tests\release\tests.exe
+            echo && ${{ runner.temp }}\build\tests\release\tests.exe
       
