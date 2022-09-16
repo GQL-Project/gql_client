@@ -21,7 +21,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: (1) actions/checkout@v3
+    - name: (1) Checkout repo
+      uses: actions/checkout@v3
     
     - name: (2) Install Qt
       uses: jurplel/install-qt-action@v3
