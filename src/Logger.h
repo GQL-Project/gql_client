@@ -15,6 +15,7 @@ public:
         CRITICAL = 2,
         FATAL    = 3
     };
+
     static bool Log(QString msg, LogType logType = LogType::INFO);
 };
 
