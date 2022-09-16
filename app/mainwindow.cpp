@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -15,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->testLineEdit, &QLineEdit::textChanged, this, &MainWindow::TestLineEditTextChanged);
 }
 
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -27,7 +29,7 @@ MainWindow::~MainWindow()
 ///
 void MainWindow::TestButtonClicked()
 {
-    qInfo() << "Test Button Clicked. Text in Line Edit: " << ui->testLineEdit->text();
+    Logger::Log(QString("Test Button Clicked. Text in Line Edit: '%1'").arg(ui->testLineEdit->text()));
 }
 
 
@@ -38,5 +40,5 @@ void MainWindow::TestButtonClicked()
 ///
 void MainWindow::TestLineEditTextChanged(QString newText)
 {
-    qInfo() << newText;
+    Logger::Log(newText);
 }

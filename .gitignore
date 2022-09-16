@@ -41,5 +41,4 @@ x64/*
 # Qt Creator Build Artifacts
 build-gql_client-*/
 build-gql_test_suite-*/
-gql_client/gql_client.pro.user
-gql_test_suite/gql_test_suite.pro.user
+*.pro.user
