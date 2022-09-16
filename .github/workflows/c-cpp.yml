@@ -25,10 +25,11 @@ jobs:
         arch: 'win64_msvc2019_64'
         dir: '${{ github.workspace }}/qt/'
         install-deps: 'true'
-        modules: 'qtcore qttest qtgui qtcharts qtwebengine'
-        archives: 'qtbase qtsvg'
         tools: 'tools_ifw tools_qtcreator,qt.tools.qtcreator'
         set-env: 'true'
+        
+    - name: List Qt Modules
+      run: aqt list-qt windows desktop --modules 5.15.2 win64_msvc2019_64
         
     - name: QMake Spec
       run: qmake -query QMAKE_MKSPECS
