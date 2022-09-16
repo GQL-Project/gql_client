@@ -7,7 +7,6 @@ defaults:
 env:
   SOURCE_DIR:   ${{ github.workspace }}
   QT_VERSION:   5.15.2
-  ARTIFACT:     qt-planets-build.zip
   
 on:
   push:
@@ -56,6 +55,12 @@ jobs:
       with:
         arch: x64
         
-    - name: (8) QMake Spec
+    - name: (8) Build
+      working-directory: ${{ runner.temp }}\build
+      run:  |
+            qmake -r ${{ env.SOURCE_DIR }}\gql_client.pro
+            ${{ runner.temp }}\jom\jom -j2
+        
+    - name: (9) QMake Spec
       run: qmake -query QMAKE_MKSPECS
       
