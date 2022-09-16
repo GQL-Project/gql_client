@@ -83,5 +83,9 @@
  - Open Qt Creator, which is installed by default with Qt. Then open the QGL Client.
  
  <kbd>![RunQtProject](https://user-images.githubusercontent.com/54650222/190543514-ae8cd160-5c99-4d1f-8dae-08fdccb0e92c.gif)</kbd>
+  
+ - Change your build path for the project now. By default, it is super wonky. I recommend putting it inside your GQL Client directory. I put mine here `C:\GQL\gql_client\builds`
+  
+  <kbd>![RunQtProject2](https://user-images.githubusercontent.com/54650222/190544112-eb07548f-dd2f-40ba-83dc-bd463fb3c3c1.gif)</kbd>
  
  - YAY! You should be done now. If it does not build, let Kade now immediately before you try to fix it yourself.
