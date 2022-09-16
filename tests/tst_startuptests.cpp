@@ -42,6 +42,7 @@ void StartupTests::cleanupTestCase()
 void StartupTests::test_case1()
 {
     QVERIFY(Logger::Log("Testing") == true);
+    QVERIFY(false);
 }
 
 QTEST_MAIN(StartupTests)
