@@ -78,4 +78,10 @@
  
  <kbd>![image](https://user-images.githubusercontent.com/54650222/189688069-90089c2b-43ea-44bb-bdb0-6496040e91dd.png)</kbd>
  
- - YAY! You should be done now. Try cloning the GQL Client application and running it. If it does not build, let Kade now immediately before you try to fix it yourself.
+ - Now clone the GQL Client repository.
+ 
+ - Open Qt Creator, which is installed by default with Qt. Then open the QGL Client.
+ 
+ <kbd>![RunQtProject](https://user-images.githubusercontent.com/54650222/190543514-ae8cd160-5c99-4d1f-8dae-08fdccb0e92c.gif)</kbd>
+ 
+ - YAY! You should be done now. If it does not build, let Kade now immediately before you try to fix it yourself.
