@@ -20,6 +20,9 @@ jobs:
       uses: egor-tensin/vs-shell@v2
       with:
         arch: x64
+    - name: vcvarsall.bat
+      run: vcvars64.bat
+      
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
