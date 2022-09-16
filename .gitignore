@@ -42,3 +42,4 @@ x64/*
 build-gql_client-*/
 build-gql_test_suite-*/
 *.pro.user
+builds/*
