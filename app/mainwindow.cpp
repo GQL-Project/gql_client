@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include "sendquerypage.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -14,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Connect a signal from the testLineEdit's QLineEdit::textChanged() method to this class' MainWindow::TestLineEditTextChanged method.
     connect(ui->testLineEdit, &QLineEdit::textChanged, this, &MainWindow::TestLineEditTextChanged);
+
+    connect(ui->changePageButton, &QPushButton::clicked, this, &MainWindow::on_changePageButton_clicked);
 }
 
 
@@ -42,3 +45,18 @@ void MainWindow::TestLineEditTextChanged(QString newText)
 {
     Logger::Log(newText);
 }
+
+void MainWindow::on_testPushButton_clicked()
+{
+    Logger::Log(QString("Test clicked").arg(ui->testLineEdit->text()));
+}
+
+
+void MainWindow::on_changePageButton_clicked()
+{
+   Logger::Log(QString("Changing pages now...").arg(ui->testLineEdit->text()));
+   auto newWindow = new sendquerypage();
+   newWindow->show();
+   close();
+}
+

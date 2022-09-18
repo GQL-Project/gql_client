@@ -21,6 +21,10 @@ private slots:
     void TestButtonClicked();
     void TestLineEditTextChanged(QString newText);
 
+    void on_testPushButton_clicked();
+
+    void on_changePageButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

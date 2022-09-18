@@ -12,13 +12,16 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    sendquerypage.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    sendquerypage.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    sendquerypage.ui
 
 CONFIG(debug, debug|release) {
     LIBS += -L../src/debug -lsrc
