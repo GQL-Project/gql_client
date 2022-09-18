@@ -20,9 +20,11 @@ public:
 private slots:
     void on_pushButton_clicked();
 
-    void on_lineEdit_textChanged(const QString &arg1);
+   // void on_lineEdit_textChanged(const QString &arg1);
 
    // void on_textEdit_textChanged();
+
+    void on_plainTextEdit_textChanged();
 
 private:
     Ui::sendquerypage *ui;

@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Send Queries</string>
   </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>230</y>
+     <x>570</x>
+     <y>370</y>
      <width>80</width>
      <height>24</height>
     </rect>
@@ -26,13 +26,13 @@
     <string>Send Query</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QPlainTextEdit" name="plainTextEdit">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>230</y>
-     <width>113</width>
-     <height>24</height>
+     <x>20</x>
+     <y>20</y>
+     <width>631</width>
+     <height>341</height>
     </rect>
    </property>
   </widget>

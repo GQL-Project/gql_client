@@ -10,8 +10,8 @@ sendquerypage::sendquerypage(QWidget *parent) :
     // Connect a signal from the testPushButton's QPushButton::clicked() method to this class' MainWindow::TestButtonClicked method.
     connect(ui->pushButton, &QPushButton::clicked, this, &sendquerypage::on_pushButton_clicked);
 
-    // Connect a signal from the testLineEdit's QLineEdit::textChanged() method to this class' MainWindow::TestLineEditTextChanged method.
-    connect(ui->lineEdit, &QLineEdit::textChanged, this, &sendquerypage::on_lineEdit_textChanged);
+    // Connect a signal form the sendQuery button to the on_pushButton_clicked() edit
+    connect(ui->plainTextEdit, &QPlainTextEdit::textChanged, this, &sendquerypage::on_plainTextEdit_textChanged);
 }
 
 sendquerypage::~sendquerypage()
@@ -21,19 +21,11 @@ sendquerypage::~sendquerypage()
 
 void sendquerypage::on_pushButton_clicked()
 {
-    Logger::Log(QString("Query sent: '%1'").arg(ui->lineEdit->text()));
-    QString query = ui->lineEdit->text();
+    Logger::Log(QString("Query sent: '%1'").arg(ui->plainTextEdit->toPlainText()));
 }
 
-
-//void sendquerypage::on_lineEdit_textChanged(const QString &arg1)
-//{
-
-//}
-
-
-void sendquerypage::on_lineEdit_textChanged(const QString &arg1)
+void sendquerypage::on_plainTextEdit_textChanged()
 {
-    Logger::Log(QString("Test Button Clicked. Text in Line Edit:"));
+
 }
 
