@@ -11,13 +11,16 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    connectwindow.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    connectwindow.h \
     mainwindow.h
 
 FORMS += \
+    connectwindow.ui \
     mainwindow.ui
 
 CONFIG(debug, debug|release) {
@@ -30,3 +33,6 @@ CONFIG(debug, debug|release) {
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    assets.qrc
