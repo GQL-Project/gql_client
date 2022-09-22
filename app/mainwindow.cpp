@@ -55,9 +55,10 @@ void MainWindow::on_testPushButton_clicked()
 void MainWindow::on_changePageButton_clicked()
 {
    Logger::Log(QString("Changing pages now...").arg(ui->testLineEdit->text()));
-
-   QWidget *wdg = new sendquerypage;
-   wdg->show();
-   close();
+   //QWidget *wdg = new sendquerypage;
+   //wdg->show();
+   //close();
+   querypage = new sendquerypage(this);
+   querypage->show();
 }
 

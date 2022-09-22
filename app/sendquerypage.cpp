@@ -22,7 +22,7 @@ sendquerypage::~sendquerypage()
 void sendquerypage::on_pushButton_clicked()
 {
     QString query = ui->plainTextEdit->toPlainText();
-    Logger::Log(QString("Query to sent: '%1;").arg(ui->plainTextEdit->toPlainText()));
+    Logger::Log(QString("Query to send: '%1;").arg(ui->plainTextEdit->toPlainText()));
 }
 
 void sendquerypage::on_plainTextEdit_textChanged()
