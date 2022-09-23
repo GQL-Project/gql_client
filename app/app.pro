@@ -23,6 +23,8 @@ FORMS += \
     connectwindow.ui \
     mainwindow.ui
 
+INCLUDEPATH += C:\Users\shayn\protobuf\install\include\
+
 CONFIG(debug, debug|release) {
     LIBS += -L../src/debug -lsrc
 } else {
