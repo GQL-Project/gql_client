@@ -23,22 +23,22 @@ cmake --help
 
 4. Create a new folder called `install` in the `protobuf` folder. Your `protobuf` folder should now contain `protobuf-3.21.6` and `install`
 
-5. Open `protobuf-3.21.6` and create a new folder called `build`
+5. Open `protobuf-3.21.6\cmake` and create a new folder called `build`
 
-6. Within `build`, create three more folders: `debug`, `release` and `solution`.
+6. Inside `build`, create three more folders: `debug`, `release` and `solution`.
 
-7. From inside the `release` folder run the following command (may take upto 10 minutes):
+7. From inside the `release` folder, run the following command (may take upto 10 minutes):
 ```
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=..\..\..\..\install ..\..
 
 ```
 
-8. Similarly, from inside the `debug` folder run the following command:
+8. Similarly, from inside the `debug` folder, run the following command:
 ```
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=..\..\..\..\install ..\..
 ```
 
-9. Finally, from inside the `solution` folder run the following command (command could change depending on the verison of Visual Studio you have installed):
+9. Finally, from inside the `solution` folder, run the following command (command could change depending on the verison of Visual Studio you have installed):
 ```
 cmake -G "Visual Studio 17 2022" -DCMAKE_INSTALL_PREFIX=..\..\..\..\install ..\..
 ```     
@@ -57,6 +57,6 @@ nmake install
 
 13. Add `protoc` to your environment variables by adding `C:\Users\<name>\protobuf\install\bin` to the Path variable
 
-14. Verify this is working by running `protoc --version` from your terminal/shell
+14. Verify `protoc` is working by running `protoc --version` from your terminal/shell
 
 15. Copy the file `C:\Users\<name>\protobuf\install\lib\libprotobuf.lib` to the build\src and build\app folders of the Qt project
