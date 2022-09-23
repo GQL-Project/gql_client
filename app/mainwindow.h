@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "Logger.h"
+#include "sendquerypage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,7 +22,12 @@ private slots:
     void TestButtonClicked();
     void TestLineEditTextChanged(QString newText);
 
+    void on_testPushButton_clicked();
+
+    void on_changePageButton_clicked();
+
 private:
     Ui::MainWindow *ui;
+    sendquerypage *querypage;
 };
 #endif // MAINWINDOW_H

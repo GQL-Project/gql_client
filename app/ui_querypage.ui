@@ -14,40 +14,27 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="testPushButton">
+   <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>190</y>
+      <x>170</x>
+      <y>250</y>
+      <width>261</width>
+      <height>41</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>260</y>
       <width>80</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
-     <string>Print Chars</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="testLineEdit">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>190</y>
-      <width>141</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="changePageButton">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>230</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Change Page</string>
+     <string>Send Query</string>
     </property>
    </widget>
   </widget>
@@ -60,12 +47,12 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuGQL_Client">
+   <widget class="QMenu" name="menuGQL">
     <property name="title">
-     <string>GQL Client</string>
+     <string>GQL</string>
     </property>
    </widget>
-   <addaction name="menuGQL_Client"/>
+   <addaction name="menuGQL"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

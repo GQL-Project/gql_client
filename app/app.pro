@@ -13,15 +13,18 @@ CONFIG += c++11
 SOURCES += \
     connectwindow.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    sendquerypage.cpp
 
 HEADERS += \
     connectwindow.h \
-    mainwindow.h
+    mainwindow.h \
+    sendquerypage.h
 
 FORMS += \
     connectwindow.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    sendquerypage.ui
 
 INCLUDEPATH += C:\Users\shayn\protobuf\install\include\
 
