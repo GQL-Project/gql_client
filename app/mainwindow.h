@@ -5,6 +5,7 @@
 
 #include "Logger.h"
 #include "sendquerypage.h"
+#include "createbranchpage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,5 +30,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     sendquerypage *querypage;
+    CreateBranchPage *newbranchpage;
 };
 #endif // MAINWINDOW_H
