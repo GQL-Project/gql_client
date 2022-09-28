@@ -11,15 +11,18 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    createbranchpage.cpp \
     main.cpp \
     mainwindow.cpp \
     sendquerypage.cpp
 
 HEADERS += \
+    createbranchpage.h \
     mainwindow.h \
     sendquerypage.h
 
 FORMS += \
+    createbranchpage.ui \
     mainwindow.ui \
     sendquerypage.ui
 
