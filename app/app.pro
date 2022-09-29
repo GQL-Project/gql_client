@@ -12,26 +12,36 @@ CONFIG += c++11
 
 SOURCES += \
     connectwindow.cpp \
+    createbranchpage.cpp \
     main.cpp \
     mainwindow.cpp \
     sendquerypage.cpp
 
 HEADERS += \
     connectwindow.h \
+    createbranchpage.h \
     mainwindow.h \
     sendquerypage.h
 
 FORMS += \
     connectwindow.ui \
     mainwindow.ui \
-    sendquerypage.ui
+    sendquerypage.ui \
+    createbranchpage.ui \
+    mainwindow.ui
 
 INCLUDEPATH += ../../builds/include
 
-CONFIG(debug, debug|release) {
-    LIBS += -L../src/debug -lsrc
-} else {
-    LIBS += -L../src/release -lsrc
+win32 {
+    CONFIG(debug, debug|release) {
+        LIBS += -L../src/debug -lsrc
+    } else {
+        LIBS += -L../src/release -lsrc
+    }
+}
+
+macx {
+    LIBS += -L../src -lsrc
 }
 
 # Default rules for deployment.

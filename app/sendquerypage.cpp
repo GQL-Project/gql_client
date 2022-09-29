@@ -1,5 +1,6 @@
 #include "sendquerypage.h"
 #include "ui_sendquerypage.h"
+#include "createbranchpage.h"
 #include <QWidget>
 
 sendquerypage::sendquerypage(QWidget *parent) :
@@ -23,10 +24,18 @@ void sendquerypage::on_pushButton_clicked()
 {
     QString query = ui->plainTextEdit->toPlainText();
     Logger::Log(QString("Query to send: '%1;").arg(ui->plainTextEdit->toPlainText()));
+    //TODO Connect with the backend and execute a query
 }
 
 void sendquerypage::on_plainTextEdit_textChanged()
 {
+}
 
+
+void sendquerypage::on_newBranch_clicked()
+{
+    CreateBranchPage newbranchpage;
+    newbranchpage.setModal(true);
+    newbranchpage.exec();
 }
 

@@ -26,6 +26,8 @@ private slots:
 
     void on_plainTextEdit_textChanged();
 
+    void on_newBranch_clicked();
+
 private:
     Ui::sendquerypage *ui;
 };

@@ -10,8 +10,14 @@ TEMPLATE = app
 
 SOURCES += tst_startuptests.cpp
 
-CONFIG(debug, debug|release) {
-    LIBS += -L../src/debug -lsrc
-} else {
-    LIBS += -L../src/release -lsrc
+win32 {
+    CONFIG(debug, debug|release) {
+        LIBS += -L../src/debug -lsrc
+    } else {
+        LIBS += -L../src/release -lsrc
+    }
+}
+
+macx {
+    LIBS += -L../src -lsrc
 }
