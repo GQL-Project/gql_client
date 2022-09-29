@@ -11,20 +11,26 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    connectwindow.cpp \
     createbranchpage.cpp \
     main.cpp \
     mainwindow.cpp \
     sendquerypage.cpp
 
 HEADERS += \
+    connectwindow.h \
     createbranchpage.h \
     mainwindow.h \
     sendquerypage.h
 
 FORMS += \
-    createbranchpage.ui \
+    connectwindow.ui \
     mainwindow.ui \
-    sendquerypage.ui
+    sendquerypage.ui \
+    createbranchpage.ui \
+    mainwindow.ui
+
+INCLUDEPATH += ../../builds/include
 
 win32 {
     CONFIG(debug, debug|release) {
@@ -42,3 +48,6 @@ macx {
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    assets.qrc
