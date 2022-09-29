@@ -26,10 +26,16 @@ FORMS += \
     mainwindow.ui \
     sendquerypage.ui
 
-CONFIG(debug, debug|release) {
-    LIBS += -L../src/debug -lsrc
-} else {
-    LIBS += -L../src/release -lsrc
+win32 {
+    CONFIG(debug, debug|release) {
+        LIBS += -L../src/debug -lsrc
+    } else {
+        LIBS += -L../src/release -lsrc
+    }
+}
+
+macx {
+    LIBS += -L../src -lsrc
 }
 
 # Default rules for deployment.
