@@ -18,7 +18,7 @@ HEADERS += \
     Logger.h \
     connection.pb.h
 
-INCLUDEPATH += C:\Users\shayn\protobuf\install\include\
+INCLUDEPATH += ../../builds/include
 
 # Default rules for deployment.
 unix {

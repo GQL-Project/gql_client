@@ -26,7 +26,7 @@ FORMS += \
     mainwindow.ui \
     sendquerypage.ui
 
-INCLUDEPATH += C:\Users\shayn\protobuf\install\include\
+INCLUDEPATH += ../../builds/include
 
 CONFIG(debug, debug|release) {
     LIBS += -L../src/debug -lsrc

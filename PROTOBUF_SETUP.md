@@ -60,3 +60,5 @@ nmake install
 14. Verify `protoc` is working by running `protoc --version` from your terminal/shell
 
 15. Copy the file `C:\Users\<name>\protobuf\install\lib\libprotobuf.lib` to the build\src and build\app folders of the Qt project
+
+16. Copy the folder `C:\Users\<name>\protobuf\install\include` to the build folder
