@@ -12,17 +12,21 @@ CONFIG += c++11
 
 SOURCES += \
     Logger.cpp \
-    connection.pb.cc
+    connection.pb.cc \
+    db_communication.cpp
 
 HEADERS += \
     connection.pb.h \
-    src_global.h \
-    Logger.h
+    Logger.h \
+    db_communication.h
 
 INCLUDEPATH += ../../builds/include
 
+# Add include path for protobuf sources
+# This is found at https://github.com/protocolbuffers/protobuf/releases  -->  protobuf-cpp-3.21.5.zip
 INCLUDEPATH += C:/GQL/protobuf-3.21.5/src
 
+# These are the libraries that were generated from compiling the above source
 LIBS += -LC:/GQL/protobuf-3.21.5/out/build/x64-Debug -llibprotocd
 LIBS += -LC:/GQL/protobuf-3.21.5/out/build/x64-Debug -llibprotobufd
 
