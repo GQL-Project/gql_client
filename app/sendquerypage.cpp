@@ -2,6 +2,7 @@
 #include "ui_sendquerypage.h"
 #include "createbranchpage.h"
 #include <QWidget>
+//#include "connection.pb.h"
 
 sendquerypage::sendquerypage(QWidget *parent) :
     QWidget(parent),
@@ -13,6 +14,8 @@ sendquerypage::sendquerypage(QWidget *parent) :
 
     // Connect a signal form the sendQuery button to the on_pushButton_clicked() edit
     connect(ui->plainTextEdit, &QPlainTextEdit::textChanged, this, &sendquerypage::on_plainTextEdit_textChanged);
+
+    //db_connection::QueryRequest *qr = new db_connection::QueryRequest();
 }
 
 sendquerypage::~sendquerypage()

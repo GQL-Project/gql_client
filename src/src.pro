@@ -3,6 +3,7 @@ QT -= gui
 TEMPLATE = lib
 DEFINES += SRC_LIBRARY
 
+CONFIG += staticlib
 CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -14,11 +15,16 @@ SOURCES += \
     connection.pb.cc
 
 HEADERS += \
+    connection.pb.h \
     src_global.h \
-    Logger.h \
-    connection.pb.h
+    Logger.h
 
 INCLUDEPATH += ../../builds/include
+
+INCLUDEPATH += C:/GQL/protobuf-3.21.5/src
+
+LIBS += -LC:/GQL/protobuf-3.21.5/out/build/x64-Debug -llibprotocd
+LIBS += -LC:/GQL/protobuf-3.21.5/out/build/x64-Debug -llibprotobufd
 
 # Default rules for deployment.
 unix {

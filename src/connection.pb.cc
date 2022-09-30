@@ -75,6 +75,19 @@ struct UpdateResultDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateResultDefaultTypeInternal _UpdateResult_default_instance_;
+PROTOBUF_CONSTEXPR VersionControlResult::VersionControlResult(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.message_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct VersionControlResultDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR VersionControlResultDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~VersionControlResultDefaultTypeInternal() {}
+  union {
+    VersionControlResult _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VersionControlResultDefaultTypeInternal _VersionControlResult_default_instance_;
 PROTOBUF_CONSTEXPR RowValue::RowValue(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.cell_values_)*/{}
@@ -103,7 +116,7 @@ struct CellValueDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CellValueDefaultTypeInternal _CellValue_default_instance_;
 }  // namespace db_connection
-static ::_pb::Metadata file_level_metadata_connection_2eproto[6];
+static ::_pb::Metadata file_level_metadata_connection_2eproto[7];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_connection_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_connection_2eproto = nullptr;
 
@@ -139,6 +152,13 @@ const uint32_t TableStruct_connection_2eproto::offsets[] PROTOBUF_SECTION_VARIAB
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::db_connection::UpdateResult, _impl_.message_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::db_connection::VersionControlResult, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::db_connection::VersionControlResult, _impl_.message_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::db_connection::RowValue, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -165,8 +185,9 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 8, -1, -1, sizeof(::db_connection::ConnectResult)},
   { 15, -1, -1, sizeof(::db_connection::QueryResult)},
   { 23, -1, -1, sizeof(::db_connection::UpdateResult)},
-  { 30, -1, -1, sizeof(::db_connection::RowValue)},
-  { 37, -1, -1, sizeof(::db_connection::CellValue)},
+  { 30, -1, -1, sizeof(::db_connection::VersionControlResult)},
+  { 37, -1, -1, sizeof(::db_connection::RowValue)},
+  { 44, -1, -1, sizeof(::db_connection::CellValue)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -174,6 +195,7 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::db_connection::_ConnectResult_default_instance_._instance,
   &::db_connection::_QueryResult_default_instance_._instance,
   &::db_connection::_UpdateResult_default_instance_._instance,
+  &::db_connection::_VersionControlResult_default_instance_._instance,
   &::db_connection::_RowValue_default_instance_._instance,
   &::db_connection::_CellValue_default_instance_._instance,
 };
@@ -186,21 +208,24 @@ const char descriptor_table_protodef_connection_2eproto[] PROTOBUF_SECTION_VARIA
   "d\030\014 \001(\t\"P\n\013QueryResult\022\024\n\014column_names\030\003"
   " \003(\t\022+\n\nrow_values\030\004 \003(\0132\027.db_connection"
   ".RowValue\"\037\n\014UpdateResult\022\017\n\007message\030\002 \001"
-  "(\t\"9\n\010RowValue\022-\n\013cell_values\030\005 \003(\0132\030.db"
-  "_connection.CellValue\"\303\001\n\tCellValue\022\024\n\nc"
-  "ol_string\030\006 \001(\tH\000\022\021\n\007col_i32\030\007 \001(\005H\000\022.\n\010"
-  "col_time\030\010 \001(\0132\032.google.protobuf.Timesta"
-  "mpH\000\022\023\n\tcol_float\030\t \001(\002H\000\022\024\n\ncol_double\030"
-  "\020 \001(\001H\000\022\021\n\007col_i64\030\021 \001(\003H\000\022\022\n\010col_bool\030\022"
-  " \001(\010H\000B\013\n\tcell_type2\251\002\n\022DatabaseConnecti"
-  "on\022A\n\tConnectDB\022\026.google.protobuf.Empty\032"
-  "\034.db_connection.ConnectResult\022D\n\014Disconn"
-  "ectDB\022\034.db_connection.ConnectResult\032\026.go"
-  "ogle.protobuf.Empty\022C\n\010RunQuery\022\033.db_con"
-  "nection.QueryRequest\032\032.db_connection.Que"
-  "ryResult\022E\n\tRunUpdate\022\033.db_connection.Qu"
-  "eryRequest\032\033.db_connection.UpdateResultb"
-  "\006proto3"
+  "(\t\"\'\n\024VersionControlResult\022\017\n\007message\030\002 "
+  "\001(\t\"9\n\010RowValue\022-\n\013cell_values\030\005 \003(\0132\030.d"
+  "b_connection.CellValue\"\303\001\n\tCellValue\022\024\n\n"
+  "col_string\030\006 \001(\tH\000\022\021\n\007col_i32\030\007 \001(\005H\000\022.\n"
+  "\010col_time\030\010 \001(\0132\032.google.protobuf.Timest"
+  "ampH\000\022\023\n\tcol_float\030\t \001(\002H\000\022\024\n\ncol_double"
+  "\030\020 \001(\001H\000\022\021\n\007col_i64\030\021 \001(\003H\000\022\022\n\010col_bool\030"
+  "\022 \001(\010H\000B\013\n\tcell_type2\207\003\n\022DatabaseConnect"
+  "ion\022A\n\tConnectDB\022\026.google.protobuf.Empty"
+  "\032\034.db_connection.ConnectResult\022D\n\014Discon"
+  "nectDB\022\034.db_connection.ConnectResult\032\026.g"
+  "oogle.protobuf.Empty\022C\n\010RunQuery\022\033.db_co"
+  "nnection.QueryRequest\032\032.db_connection.Qu"
+  "eryResult\022E\n\tRunUpdate\022\033.db_connection.Q"
+  "ueryRequest\032\033.db_connection.UpdateResult"
+  "\022\\\n\030RunVersionControlCommand\022\033.db_connec"
+  "tion.QueryRequest\032#.db_connection.Versio"
+  "nControlResultb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_connection_2eproto_deps[2] = {
   &::descriptor_table_google_2fprotobuf_2fempty_2eproto,
@@ -208,9 +233,9 @@ static const ::_pbi::DescriptorTable* const descriptor_table_connection_2eproto_
 };
 static ::_pbi::once_flag descriptor_table_connection_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_connection_2eproto = {
-    false, false, 847, descriptor_table_protodef_connection_2eproto,
+    false, false, 982, descriptor_table_protodef_connection_2eproto,
     "connection.proto",
-    &descriptor_table_connection_2eproto_once, descriptor_table_connection_2eproto_deps, 2, 6,
+    &descriptor_table_connection_2eproto_once, descriptor_table_connection_2eproto_deps, 2, 7,
     schemas, file_default_instances, TableStruct_connection_2eproto::offsets,
     file_level_metadata_connection_2eproto, file_level_enum_descriptors_connection_2eproto,
     file_level_service_descriptors_connection_2eproto,
@@ -1108,6 +1133,209 @@ void UpdateResult::InternalSwap(UpdateResult* other) {
 
 // ===================================================================
 
+class VersionControlResult::_Internal {
+ public:
+};
+
+VersionControlResult::VersionControlResult(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:db_connection.VersionControlResult)
+}
+VersionControlResult::VersionControlResult(const VersionControlResult& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  VersionControlResult* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.message_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.message_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.message_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_message().empty()) {
+    _this->_impl_.message_.Set(from._internal_message(), 
+      _this->GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:db_connection.VersionControlResult)
+}
+
+inline void VersionControlResult::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.message_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.message_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.message_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+VersionControlResult::~VersionControlResult() {
+  // @@protoc_insertion_point(destructor:db_connection.VersionControlResult)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void VersionControlResult::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.message_.Destroy();
+}
+
+void VersionControlResult::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void VersionControlResult::Clear() {
+// @@protoc_insertion_point(message_clear_start:db_connection.VersionControlResult)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.message_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* VersionControlResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string message = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_message();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "db_connection.VersionControlResult.message"));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* VersionControlResult::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:db_connection.VersionControlResult)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string message = 2;
+  if (!this->_internal_message().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_message().data(), static_cast<int>(this->_internal_message().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "db_connection.VersionControlResult.message");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_message(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:db_connection.VersionControlResult)
+  return target;
+}
+
+size_t VersionControlResult::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:db_connection.VersionControlResult)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string message = 2;
+  if (!this->_internal_message().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_message());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData VersionControlResult::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    VersionControlResult::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*VersionControlResult::GetClassData() const { return &_class_data_; }
+
+
+void VersionControlResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<VersionControlResult*>(&to_msg);
+  auto& from = static_cast<const VersionControlResult&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:db_connection.VersionControlResult)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_message().empty()) {
+    _this->_internal_set_message(from._internal_message());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void VersionControlResult::CopyFrom(const VersionControlResult& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:db_connection.VersionControlResult)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool VersionControlResult::IsInitialized() const {
+  return true;
+}
+
+void VersionControlResult::InternalSwap(VersionControlResult* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.message_, lhs_arena,
+      &other->_impl_.message_, rhs_arena
+  );
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata VersionControlResult::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_connection_2eproto_getter, &descriptor_table_connection_2eproto_once,
+      file_level_metadata_connection_2eproto[4]);
+}
+
+// ===================================================================
+
 class RowValue::_Internal {
  public:
 };
@@ -1288,7 +1516,7 @@ void RowValue::InternalSwap(RowValue* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata RowValue::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_connection_2eproto_getter, &descriptor_table_connection_2eproto_once,
-      file_level_metadata_connection_2eproto[4]);
+      file_level_metadata_connection_2eproto[5]);
 }
 
 // ===================================================================
@@ -1740,7 +1968,7 @@ void CellValue::InternalSwap(CellValue* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CellValue::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_connection_2eproto_getter, &descriptor_table_connection_2eproto_once,
-      file_level_metadata_connection_2eproto[5]);
+      file_level_metadata_connection_2eproto[6]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -1761,6 +1989,10 @@ Arena::CreateMaybeMessage< ::db_connection::QueryResult >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::db_connection::UpdateResult*
 Arena::CreateMaybeMessage< ::db_connection::UpdateResult >(Arena* arena) {
   return Arena::CreateMessageInternal< ::db_connection::UpdateResult >(arena);
+}
+template<> PROTOBUF_NOINLINE ::db_connection::VersionControlResult*
+Arena::CreateMaybeMessage< ::db_connection::VersionControlResult >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::db_connection::VersionControlResult >(arena);
 }
 template<> PROTOBUF_NOINLINE ::db_connection::RowValue*
 Arena::CreateMaybeMessage< ::db_connection::RowValue >(Arena* arena) {

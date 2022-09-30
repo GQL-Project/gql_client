@@ -9,3 +9,5 @@ SUBDIRS += \
 
 app.depends = src
 tests.depends = src
+
+PRE_TARGETDEPS += $$OUT_PWD/src/debug/src.lib
