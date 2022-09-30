@@ -37,12 +37,26 @@ INCLUDEPATH += ../../builds/include
 
 # Add include path for protobuf sources
 # This is found at https://github.com/protocolbuffers/protobuf/releases  -->  protobuf-cpp-3.21.5.zip
-INCLUDEPATH += C:/GQL/protobuf-3.21.5/src
+INCLUDEPATH += ../protoc_inc
 
-# These are the libraries that were generated from compiling the above source
-LIBS += -LC:/GQL/protobuf-3.21.5/out/build/x64-Debug-2 -llibprotocd
-LIBS += -LC:/GQL/protobuf-3.21.5/out/build/x64-Debug-2 -llibprotobufd
-LIBS += -LC:/GQL/protobuf-3.21.5/out/build/x64-Debug-2 -llibprotobuf-lited
+win32 {
+    # These are the protoc libraries that were generated
+    CONFIG(debug, debug|release) {
+        # The debug versions have the 'd' appended
+        LIBS += -L../../protoc_lib -llibprotocd
+        LIBS += -L../../protoc_lib -llibprotobufd
+        LIBS += -L../../protoc_lib -llibprotobuf-lited
+    } else {
+        # The release versions don't have the 'd' appended
+        LIBS += -L../../protoc_lib -llibprotoc
+        LIBS += -L../../protoc_lib -llibprotobuf
+        LIBS += -L../../protoc_lib -llibprotobuf-lite
+    }
+}
+
+macx {
+    # June you will have to do something here similar to above but for Mac
+}
 
 win32 {
     CONFIG(debug, debug|release) {
