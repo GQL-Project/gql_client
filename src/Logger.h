@@ -1,11 +1,10 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include "src_global.h"
 #include <QString>
 #include <QDebug>
 
-class SRC_EXPORT Logger
+class Logger
 {
 public:
     enum LogType

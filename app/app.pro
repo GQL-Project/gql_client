@@ -4,6 +4,9 @@ QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+# This allows us to dynamically link protobuf into the app
+DEFINES += PROTOBUF_USE_DLLS
+
 CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -31,6 +34,29 @@ FORMS += \
     mainwindow.ui
 
 INCLUDEPATH += ../../builds/include
+
+# Add include path for protobuf sources
+# This is found at https://github.com/protocolbuffers/protobuf/releases  -->  protobuf-cpp-3.21.5.zip
+INCLUDEPATH += ../protoc_inc
+
+win32 {
+    # These are the protoc libraries that were generated
+    CONFIG(debug, debug|release) {
+        # The debug versions have the 'd' appended
+        LIBS += -L../../protoc_lib -llibprotocd
+        LIBS += -L../../protoc_lib -llibprotobufd
+        LIBS += -L../../protoc_lib -llibprotobuf-lited
+    } else {
+        # The release versions don't have the 'd' appended
+        LIBS += -L../../protoc_lib -llibprotoc
+        LIBS += -L../../protoc_lib -llibprotobuf
+        LIBS += -L../../protoc_lib -llibprotobuf-lite
+    }
+}
+
+macx {
+    # June you will have to do something here similar to above but for Mac
+}
 
 win32 {
     CONFIG(debug, debug|release) {
