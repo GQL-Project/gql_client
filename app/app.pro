@@ -4,6 +4,9 @@ QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+# This allows us to dynamically link protobuf into the app
+DEFINES += PROTOBUF_USE_DLLS
+
 CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
