@@ -549,7 +549,7 @@ export interface DatabaseConnectionServer extends UntypedServiceImplementation {
 
 export interface DatabaseConnectionClient extends Client {
   /** We can optionally have a VC query function here, or just parse that within Update */
-  connectDB(request: Empty, callback: (error: ServiceError | null, response: ConnectResult) => void): ClientUnaryCall;
+  ConnectDB(request: Empty, callback: (error: ServiceError | null, response: ConnectResult) => void): ClientUnaryCall;
   connectDB(
     request: Empty,
     metadata: Metadata,
@@ -561,7 +561,7 @@ export interface DatabaseConnectionClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: ConnectResult) => void,
   ): ClientUnaryCall;
-  disconnectDB(
+  DisconnectDB(
     request: ConnectResult,
     callback: (error: ServiceError | null, response: Empty) => void,
   ): ClientUnaryCall;
@@ -576,7 +576,7 @@ export interface DatabaseConnectionClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Empty) => void,
   ): ClientUnaryCall;
-  runQuery(
+  RunQuery(
     request: QueryRequest,
     callback: (error: ServiceError | null, response: QueryResult) => void,
   ): ClientUnaryCall;
@@ -591,7 +591,7 @@ export interface DatabaseConnectionClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: QueryResult) => void,
   ): ClientUnaryCall;
-  runUpdate(
+  RunUpdate(
     request: QueryRequest,
     callback: (error: ServiceError | null, response: UpdateResult) => void,
   ): ClientUnaryCall;
@@ -606,7 +606,7 @@ export interface DatabaseConnectionClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: UpdateResult) => void,
   ): ClientUnaryCall;
-  runVersionControlCommand(
+  RunVersionControlCommand(
     request: QueryRequest,
     callback: (error: ServiceError | null, response: VersionControlResult) => void,
   ): ClientUnaryCall;
