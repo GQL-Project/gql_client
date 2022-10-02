@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Empty } from '../../google/protobuf/empty'
-import { connection, delCookie } from './connect'
+import { connection, delCookie, getCookie } from './connect'
 
 
 export default function handler(
@@ -9,11 +9,11 @@ export default function handler(
   res: NextApiResponse
 ) {
   console.log("Disconnect Request Received.");
-  if (req.cookies['dbConnectionId']) {
+  if (getCookie(req)) {
     connection().DisconnectDB({
-      id: req.cookies['dbConnectionId']
+      id: getCookie(req)!
     }, function (err: Error | null, response: Empty) {
-      delCookie(res, 'dbConnectionId');
+      delCookie(res);
       if (err) {
         console.log(err);
         res.status(500).end('DisconnectDB: Unable to connect to database');

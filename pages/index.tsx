@@ -7,6 +7,7 @@ import { ConnectResult } from './proto/connection';
 function Home(): JSX.Element {
   const [userid, setID] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
+  const [text, setText] = useState<string | null>("");
 
   /* 
    * These ones were pretty straight forward to develop.
@@ -36,6 +37,24 @@ function Home(): JSX.Element {
     } else {
       setStatus("Client has disconnected");
     }
+  };
+
+  // Take a string and call api/query with it.
+  const handleQuery = async () => {
+    const response = await fetch('/api/query', {
+      method: 'POST',
+      body: JSON.stringify({ query: text }),
+    });
+    if (!response.ok) {
+      setStatus("Error: " + response.statusText);
+    } else {
+      const data: ConnectResult = await response.json();
+      setStatus(JSON.stringify(data));
+    }
+  };
+
+  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(event.target.value);
   };
 
   var title = "Welcome to GQL Database";
@@ -68,7 +87,13 @@ function Home(): JSX.Element {
             <h2>DisconnectDB &rarr;</h2>
             <p>Disconnect from Database</p>
           </a>
-
+        </div>
+        <div className={styles.grid}>
+          <textarea onChange={handleTextChange} />
+          <a className={styles.card} onClick={handleQuery}>
+            <h2>QueryDB &rarr;</h2>
+            <p>Query the Database</p>
+          </a>
         </div>
       </main >
     </div >

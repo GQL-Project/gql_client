@@ -26,17 +26,21 @@ export function connection(): DatabaseConnectionClient {
 
 export const setCookie = (
   res: NextApiResponse,
-  name: string,
   value: string,
 ) => {
-  res.setHeader('Set-Cookie', serialize(name, value))
+  res.setHeader('Set-Cookie', serialize('dbConnectionId', value))
 }
 
 export const delCookie = (
   res: NextApiResponse,
-  name: string,
 ) => {
-  res.setHeader('Set-Cookie', serialize(name, ''))
+  res.setHeader('Set-Cookie', serialize('dbConnectionId', ''))
+}
+
+export const getCookie = (
+  req: NextApiRequest,
+) => {
+  return req.cookies['dbConnectionId'];
 }
 
 export default function handler(
@@ -44,20 +48,20 @@ export default function handler(
   res: NextApiResponse
 ) {
   console.log("Connection Request Received.");
-  if (req.cookies['dbConnectionId']) {
+  if (getCookie(req)) {
     // Check if cookie exists
     console.log("ConnectDB: Cookie exists");
-    res.status(200).json({ id: req.cookies['dbConnectionId'] })
+    res.status(200).json({ id: getCookie(req)! })
   } else {
     // If cookie does not exist, connect to database and set cookie
     connection().ConnectDB({}, function (err: Error | null, response: ConnectResult) {
       if (err) {
         console.log(err);
-        delCookie(res, 'dbConnectionId');
+        delCookie(res);
         res.status(500).end('ConnectDB: Unable to connect to database');
         return;
       }
-      setCookie(res, 'dbConnectionId', response.id);
+      setCookie(res, response.id);
       console.log("ConnectDB: Connected to Database!: ", response.id);
       res.status(200).json({ id: response.id });
     });
