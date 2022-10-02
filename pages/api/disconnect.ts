@@ -1,5 +1,4 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { serialize } from 'cookie'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Empty } from '../../google/protobuf/empty'
 import { connection, delCookie } from './connect'
