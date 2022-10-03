@@ -4,9 +4,10 @@ import { useState } from "react";
 import { ConnectResult } from "./proto/connection";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
-import logo from "../assets/logo.png";
+import logo from "../public/logo.png";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 function Login() {
   const [userid, setID] = useState<string | null>(null);
@@ -51,6 +52,9 @@ function Login() {
   return (
     <div className={styles.bg}>
       <Container className={styles.container}>
+        <Head>
+          <title>GQL Login</title>
+        </Head>
         <h1 className={styles.title}>Login</h1>
         <form
           style={{
