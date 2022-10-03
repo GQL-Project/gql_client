@@ -20,7 +20,7 @@ export default function handler(
                 res.status(500).end('RunQuery: Error running query');
                 return;
             }
-            console.log("RunQuery: Query Returned!: ", response);
+            console.log("RunQuery: Query Returned!: ", JSON.stringify(response));
             res.status(200).json(response);
         });
     } else {
