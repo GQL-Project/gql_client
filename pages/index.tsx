@@ -149,12 +149,10 @@ function Home(): JSX.Element {
           }}
         >
           <Image src={logo} alt="GQL Logo" height={300} objectFit="contain" />
-          <Typography variant="h5" align="center">
-            A version control system for SQL
-          </Typography>
-          <Button className={styles.button}>
-            <Link href="/login">Continue →</Link>
-          </Button>
+          <h5 className={styles.title}>A version control system for SQL</h5>
+          <Link href="/login">
+            <Button className={styles.button}>Continue →</Button>
+          </Link>
         </div>
       </Container>
     </div>

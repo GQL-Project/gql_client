@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
   typography: {
-    fontFamily: ["Helvetica Neue", "Arial", "sans-serif"].join(","),
+    fontFamily: ["Segoe UI", "Arial"].join(","),
   },
 });
 

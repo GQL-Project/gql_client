@@ -1,4 +1,5 @@
 import { Container, TextField, InputLabel, Button } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import { ConnectResult } from "./proto/connection";
 import styles from "../styles/Home.module.css";
@@ -56,15 +57,17 @@ function Login() {
             flexDirection: "column",
           }}
         >
-          <Image src={logo} alt="GQL Logo" height={200} objectFit="contain" />
-          <InputLabel
-            style={{
-              marginTop: "2vh",
-              color: "white",
-            }}
-          >
-            Username:
-          </InputLabel>
+          <Link href="/">
+            <a>
+              <Image
+                src={logo}
+                alt="GQL Logo"
+                height={200}
+                objectFit="contain"
+              />
+            </a>
+          </Link>
+          <InputLabel className={styles.loginLabel}>Username:</InputLabel>
           <TextField
             type="text"
             sx={{ input: { color: "white" } }}
@@ -72,22 +75,16 @@ function Login() {
             value={creds.username}
             id="username"
           />
-          <InputLabel
-            style={{
-              color: "white",
-            }}
-          >
-            Password:
-          </InputLabel>
+          <InputLabel className={styles.loginLabel}>Password:</InputLabel>
           <TextField
             type="password"
-            sx={{ input: { color: "white" } }}
+            sx={{ input: { color: "white", borderColor: "white" } }}
             onChange={handlePasswordChange}
             value={creds.password}
             id="password"
           />
           <Button className={styles.loginButton} onClick={handleConnect}>
-            Login
+            Login →
           </Button>
           <h5>
             <a>

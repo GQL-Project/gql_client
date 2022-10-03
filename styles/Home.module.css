@@ -42,7 +42,7 @@
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 4rem;
+  font-size: 3rem;
 }
 
 .title,
@@ -157,7 +157,8 @@
   }
 }
 
-.button {
+.button,
+.loginButton {
   color: white;
   margin-top: 10vh;
   height: 10vh;
@@ -192,13 +193,9 @@
 }
 
 .loginButton {
-  color: white;
-  margin-top: 4vh;
-  height: 10vh;
   width: 15vw;
-  font-size: larger;
-  background-color: rgba(34, 34, 34, 0.438);
 }
+.button:hover,
 .loginButton:hover {
   background-color: rgba(34, 34, 34, 0.438);
   animation: bounce 1s;
@@ -208,4 +205,11 @@
 .loginButton[type="password"] {
   color: white;
   font-family: "Courier New", Courier, monospace;
+}
+
+.loginLabel {
+  margin-top: 2vh;
+  color: white;
+  font-size: 1.5rem;
+  border: white;
 }
