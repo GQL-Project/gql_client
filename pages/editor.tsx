@@ -37,8 +37,19 @@ function Editor() {
     } else {
       // const data: QueryResult = await response.json();
       const data = await response.json();
+      var all_row_vals = "";
+      for (var i = 0; i < data.row_values.length; i++) {
+        let row_vals = [];
+        let row = data.row_values[i];
+        for (var j = 0; j < row.cell_values.length; j++) {
+          let cell_type = row.cell_values[j].cell_type;
+          let cell_val = row.cell_values[j][cell_type];
+          row_vals.push(cell_val);
+        }
+        all_row_vals += "(" + row_vals.join(", ") + ")\n";
+      }
       setStatus(
-        data.column_names.join(", ") + "\n" + data.row_values.join("\n")
+        data.column_names.join(", ") + "\n" + all_row_vals
       );
       setText("");
     }
