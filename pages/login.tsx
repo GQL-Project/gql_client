@@ -18,6 +18,10 @@ function Login() {
   const router = useRouter();
 
   const handleConnect = async () => {
+    if (creds.username === "" || creds.password === "") {
+      setStatus("Please enter a username and password");
+      return;
+    }
     const response = await fetch("/api/connect");
     if (!response.ok) {
       setStatus("Error: " + response.statusText);
@@ -87,11 +91,7 @@ function Login() {
             Login →
           </Button>
           <h5>
-            <a>
-              {status
-                ? `Connected to server at ${status}`
-                : "Not connected to server"}
-            </a>
+            <a>{status ? `${status}` : "Not connected to server"}</a>
           </h5>
         </form>
       </Container>
