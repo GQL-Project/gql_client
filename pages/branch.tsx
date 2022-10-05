@@ -6,8 +6,12 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import logo from "../public/logo.png";
 import Image from "next/image";
+import { useContext } from "react";
+import { AuthContext } from "./context";
 
 function NewBranch() {
+  const authContext = useContext(AuthContext);
+  console.log(authContext.loggedIn);
   const [text, setText] = useState("");
   const router = useRouter();
 
@@ -21,7 +25,7 @@ function NewBranch() {
     console.log(text);
   };
 
-  return (
+  return authContext.loggedIn ? (
     <Box className={styles.modal}>
       <h1>Create New Branch</h1>
       <TextareaAutosize
@@ -53,6 +57,8 @@ function NewBranch() {
       </div>
       <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
     </Box>
+  ) : (
+    <h1>Not Logged In</h1>
   );
 }
 
