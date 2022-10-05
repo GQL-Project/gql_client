@@ -1,6 +1,6 @@
 import { Container, TextField, InputLabel, Button } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ConnectResult } from "./proto/connection";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
@@ -8,9 +8,10 @@ import logo from "../public/logo.png";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { AuthContext } from "./context";
 
 function Login() {
-  const [userid, setID] = useState<string | null>(null);
+  const authContext = useContext(AuthContext);
   const [status, setStatus] = useState<string | null>(null);
   const [creds, setCreds] = useState({
     username: "",
@@ -19,22 +20,25 @@ function Login() {
   const router = useRouter();
 
   const handleConnect = async () => {
-    if (creds.username === "" || creds.password === "") {
-      setStatus("Please enter a username and password");
-      return;
-    }
-    const response = await fetch("/api/connect");
-    if (!response.ok) {
-      setStatus("Error: " + response.statusText);
-    } else {
-      const data: ConnectResult = await response.json();
-      setID(data.id);
-      setStatus(data.id);
-      setCreds({
-        username: "",
-        password: "",
-      });
-      router.push("/editor");
+    console.log(authContext.loggedIn);
+    if (!authContext.loggedIn) {
+      if (creds.username === "" || creds.password === "") {
+        setStatus("Please enter a username and password");
+        return;
+      }
+      const response = await fetch("/api/connect");
+      if (!response.ok) {
+        setStatus("Error: " + response.statusText);
+      } else {
+        const data: ConnectResult = await response.json();
+        setStatus(data.id);
+        setCreds({
+          username: "",
+          password: "",
+        });
+        authContext.login(data.id);
+        router.push("/editor");
+      }
     }
   };
 
