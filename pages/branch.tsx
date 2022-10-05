@@ -1,5 +1,6 @@
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
+import React from 'react'
 
 function NewBranch() {
     return (
@@ -12,4 +13,5 @@ function NewBranch() {
     );
   }
   
+
   export default NewBranch;
