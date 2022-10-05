@@ -69,6 +69,10 @@ function Editor() {
     }
   };
 
+  const handleNewBranch = async () => {
+    router.push("/branch");
+  };
+
   const handleVC = async () => {
     if (text === "") {
       setStatus("Please enter a VC Command");
@@ -131,6 +135,9 @@ function Editor() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link href="/">GQL</Link>
           </Typography>
+          <Button color="inherit" onClick={handleNewBranch}>
+            New Branch
+          </Button>
           <Button color="inherit" onClick={handleCommit}>
             Commit
           </Button>
