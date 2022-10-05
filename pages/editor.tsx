@@ -183,7 +183,7 @@ function Editor() {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <NewBranch />
+          <NewBranch close={handleBranchClose} />
         </Modal>
         <AppBar position="fixed" sx={{ background: "rgba(34, 34, 34, 0.438)" }}>
           <Toolbar>

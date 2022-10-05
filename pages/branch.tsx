@@ -10,7 +10,7 @@ import { useContext } from "react";
 import { AuthContext } from "./context";
 import { QueryResult, UpdateResult } from "./proto/connection";
 
-function NewBranch() {
+function NewBranch(props) {
   const authContext = useContext(AuthContext);
   console.log(authContext.loggedIn);
   const [text, setText] = useState("");
@@ -36,15 +36,18 @@ function NewBranch() {
       method: "POST",
       body: JSON.stringify({ query:"gql branch " + text, id: authContext.loggedIn }),
     });
-    console.log(response.statusText);
+    console.log("Response status: " + response.statusText);
     if (!response.ok) {
     } else {
       const data: UpdateResult = await response.json();
     }
-    if (response.statusText === "Valid Branch Name") {
-      router.push("/editor");
+    if (response.statusText === "OK") {
+      console.log("Branch created, moving back to main page");
+      props.close();
+      
     } else {
       console.log("Receiving error with code");
+      setText("");
       handleErrorChange();
     }
   };
