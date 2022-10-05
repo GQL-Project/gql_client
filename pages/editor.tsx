@@ -152,7 +152,13 @@ function Editor() {
         value={text}
         onChange={handleTextChange}
       />
-      <h1>{status}</h1>
+
+      <div>
+      {status?.startsWith("Error: ")
+      ? <h1> Invalid Command! </h1>
+      : <h1> {status} </h1>
+      }
+      </div>
       <div
         style={{
           display: "flex",
