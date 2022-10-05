@@ -8,6 +8,7 @@ import logo from "../public/logo.png";
 import Image from "next/image";
 import { useContext } from "react";
 import { AuthContext } from "./context";
+import { QueryResult, UpdateResult } from "./proto/connection";
 
 function NewBranch() {
   const authContext = useContext(AuthContext);
@@ -20,9 +21,20 @@ function NewBranch() {
   };
 
   const handleCreateNewBranch = async () => {
-    //TODO, how do I connect this to the backend?
     console.log("Create new branch");
     console.log(text);
+    console.log(authContext.loggedIn);
+    if (text === "") {
+      return;
+    }
+    const response = await fetch("/api/vcs", {
+      method: "POST",
+      body: JSON.stringify({ query:"gql branch " + text, id: authContext.loggedIn }),
+    });
+    if (!response.ok) {
+    } else {
+      const data: UpdateResult = await response.json();
+    }
   };
 
   return authContext.loggedIn ? (
