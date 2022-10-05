@@ -157,10 +157,18 @@
   }
 }
 
-.button,
 .loginButton {
   color: white;
   margin-top: 10vh;
+  height: 10vh;
+  width: 20vw;
+  font-size: larger;
+  background-color: rgba(34, 34, 34, 0.438);
+}
+
+.button {
+  color: white;
+  margin-top: 2vh;
   height: 10vh;
   width: 20vw;
   font-size: larger;

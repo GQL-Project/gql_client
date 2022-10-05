@@ -7,6 +7,15 @@ import {
   Typography,
   Toolbar,
   Modal,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  createTheme,
+  ThemeProvider,
 } from "@mui/material";
 import { useContext, useState } from "react";
 import { QueryResult, UpdateResult } from "./proto/connection";
@@ -18,33 +27,32 @@ import Head from "next/head";
 import NewBranch from "./branch";
 import { AuthContext } from "./context";
 
-function rowVals(data: any) {
-  let all_row_vals = "";
-  for (var i = 0; i < data.row_values.length; i++) {
-    let row_vals = [];
-    let row = data.row_values[i];
-    for (var j = 0; j < row.cell_values.length; j++) {
-      let cell_type = row.cell_values[j].cell_type;
-      let cell_val = row.cell_values[j][cell_type];
-      row_vals.push(cell_val);
-    }
-    all_row_vals += "(" + row_vals.join(", ") + ")\n";
-  }
-  return all_row_vals;
-}
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 function Editor() {
   const authContext = useContext(AuthContext);
-  const [status, setStatus] = useState<string | null>(null);
+  const [status, setStatus] = useState<any | null>(null);
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
 
+  const setTextStatus = (text: string) => {
+    setStatus(<h1>{text}</h1>);
+  };
+
+  const setEmptyStatus = () => {
+    setStatus(null);
+  };
+
   const handleQuery = async () => {
     console.log(authContext.loggedIn);
     if (text === "") {
-      setStatus("Please enter a select query");
+      setTextStatus("Please enter a select query");
       return;
     }
 
@@ -53,11 +61,40 @@ function Editor() {
       body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
     if (!response.ok) {
-      setStatus("Error: " + response.statusText);
+      setTextStatus("Error: " + response.statusText);
     } else {
       // const data: QueryResult = await response.json();
       const data = await response.json();
-      setStatus(data.column_names.join(", ") + "\n" + rowVals(data));
+      // Create table from data
+      setStatus(
+        <TableContainer style={{
+          fontSize: "1.5rem",
+          height: "50vh",
+          width: "85%",
+          minHeight: "30vh",
+          marginTop: "2vh",
+          backgroundColor: 'rgba(34, 34, 34, 0.85)',
+        }}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                {data.column_names.map((name: string) => (
+                  <TableCell align="center"><b>{name}</b></TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.values.map((row: string[]) => (
+                <TableRow>
+                  {row.map((value: string) => (
+                    <TableCell align="center">{value}</TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      );
       setText("");
     }
   };
@@ -70,9 +107,9 @@ function Editor() {
         body: JSON.stringify({ id: authContext.loggedIn }),
       });
       if (!response.ok) {
-        setStatus("Error: " + response.statusText);
+        setTextStatus("Error: " + response.statusText);
       } else {
-        setStatus("Client has disconnected");
+        setTextStatus("Client has disconnected");
         authContext.logout();
         router.push("/");
       }
@@ -84,7 +121,7 @@ function Editor() {
   const handleVC = async () => {
     console.log(authContext.loggedIn);
     if (text === "") {
-      setStatus("Please enter a VC Command");
+      setTextStatus("Please enter a VC Command");
       return;
     }
     const response = await fetch("/api/vcs", {
@@ -92,17 +129,17 @@ function Editor() {
       body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
     if (!response.ok) {
-      setStatus("Error: " + response.statusText);
+      setTextStatus("Error: " + response.statusText);
     } else {
       const data: UpdateResult = await response.json();
-      setStatus(JSON.stringify(data.message));
+      setTextStatus(data.message);
     }
   };
 
   const handleUpdate = async () => {
     console.log(authContext.loggedIn);
     if (text === "") {
-      setStatus("Please enter a create/insert query");
+      setTextStatus("Please enter a create/insert query");
       return;
     }
     const response = await fetch("/api/update", {
@@ -110,10 +147,10 @@ function Editor() {
       body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
     if (!response.ok) {
-      setStatus("Error: " + response.statusText);
+      setTextStatus("Error: " + response.statusText);
     } else {
       const data: UpdateResult = await response.json();
-      setStatus(JSON.stringify(data.message));
+      setTextStatus(data.message);
       setText("");
     }
   };
@@ -127,7 +164,7 @@ function Editor() {
   };
 
   return (
-    authContext.loggedIn && (
+    authContext.loggedIn && (<ThemeProvider theme={darkTheme}>
       <Box
         className={styles.bg}
         style={{
@@ -172,12 +209,13 @@ function Editor() {
             fontSize: "1.5rem",
             height: "50vh",
             width: "50vw",
+            minHeight: "30vh",
             marginTop: "2vh",
           }}
           value={text}
           onChange={handleTextChange}
         />
-        <h1>{status}</h1>
+        {status}
         <div
           style={{
             display: "flex",
@@ -187,19 +225,19 @@ function Editor() {
             columnGap: "1vw",
           }}
         >
-          <Button className={styles.loginButton} onClick={handleQuery}>
+          <Button className={styles.button} onClick={handleQuery}>
             Execute
           </Button>
-          <Button className={styles.loginButton} onClick={handleUpdate}>
+          <Button className={styles.button} onClick={handleUpdate}>
             Update
           </Button>
-          <Button className={styles.loginButton} onClick={handleVC}>
+          <Button className={styles.button} onClick={handleVC}>
             Version Control
           </Button>
         </div>
         <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
       </Box>
-    )
+    </ThemeProvider>)
   );
 }
 

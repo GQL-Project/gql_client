@@ -31,8 +31,8 @@ export interface ConnectResult {
 
 /** Result from executing an SQL Query */
 export interface QueryResult {
-  columnNames: string[];
-  rowValues: RowValue[];
+  column_names: string[];
+  row_values: RowValue[];
 }
 
 /** Result from executing an SQL Update Command */
@@ -47,18 +47,18 @@ export interface VersionControlResult {
 
 /** Value of one row */
 export interface RowValue {
-  cellValues: CellValue[];
+  cell_values: CellValue[];
 }
 
 /** Value of one 'cell' */
 export interface CellValue {
-  colString: string | undefined;
-  colI32: number | undefined;
-  colTime: Date | undefined;
-  colFloat: number | undefined;
-  colDouble: number | undefined;
-  colI64: number | undefined;
-  colBool: boolean | undefined;
+  col_string: string | undefined;
+  col_i32: number | undefined;
+  col_time: Date | undefined;
+  col_float: number | undefined;
+  col_double: number | undefined;
+  col_i64: number | undefined;
+  col_bool: boolean | undefined;
 }
 
 function createBaseQueryRequest(): QueryRequest {
@@ -164,15 +164,15 @@ export const ConnectResult = {
 };
 
 function createBaseQueryResult(): QueryResult {
-  return { columnNames: [], rowValues: [] };
+  return { column_names: [], row_values: [] };
 }
 
 export const QueryResult = {
   encode(message: QueryResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.columnNames) {
+    for (const v of message.column_names) {
       writer.uint32(26).string(v!);
     }
-    for (const v of message.rowValues) {
+    for (const v of message.row_values) {
       RowValue.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
@@ -186,10 +186,10 @@ export const QueryResult = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 3:
-          message.columnNames.push(reader.string());
+          message.column_names.push(reader.string());
           break;
         case 4:
-          message.rowValues.push(RowValue.decode(reader, reader.uint32()));
+          message.row_values.push(RowValue.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -201,30 +201,30 @@ export const QueryResult = {
 
   fromJSON(object: any): QueryResult {
     return {
-      columnNames: Array.isArray(object?.columnNames) ? object.columnNames.map((e: any) => String(e)) : [],
-      rowValues: Array.isArray(object?.rowValues) ? object.rowValues.map((e: any) => RowValue.fromJSON(e)) : [],
+      column_names: Array.isArray(object?.column_names) ? object.column_names.map((e: any) => String(e)) : [],
+      row_values: Array.isArray(object?.row_values) ? object.row_values.map((e: any) => RowValue.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: QueryResult): unknown {
     const obj: any = {};
-    if (message.columnNames) {
-      obj.columnNames = message.columnNames.map((e) => e);
+    if (message.column_names) {
+      obj.column_names = message.column_names.map((e) => e);
     } else {
-      obj.columnNames = [];
+      obj.column_names = [];
     }
-    if (message.rowValues) {
-      obj.rowValues = message.rowValues.map((e) => e ? RowValue.toJSON(e) : undefined);
+    if (message.row_values) {
+      obj.row_values = message.row_values.map((e) => e ? RowValue.toJSON(e) : undefined);
     } else {
-      obj.rowValues = [];
+      obj.row_values = [];
     }
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryResult>, I>>(object: I): QueryResult {
     const message = createBaseQueryResult();
-    message.columnNames = object.columnNames?.map((e) => e) || [];
-    message.rowValues = object.rowValues?.map((e) => RowValue.fromPartial(e)) || [];
+    message.column_names = object.column_names?.map((e) => e) || [];
+    message.row_values = object.row_values?.map((e) => RowValue.fromPartial(e)) || [];
     return message;
   },
 };
@@ -324,12 +324,12 @@ export const VersionControlResult = {
 };
 
 function createBaseRowValue(): RowValue {
-  return { cellValues: [] };
+  return { cell_values: [] };
 }
 
 export const RowValue = {
   encode(message: RowValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.cellValues) {
+    for (const v of message.cell_values) {
       CellValue.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     return writer;
@@ -343,7 +343,7 @@ export const RowValue = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 5:
-          message.cellValues.push(CellValue.decode(reader, reader.uint32()));
+          message.cell_values.push(CellValue.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -355,61 +355,61 @@ export const RowValue = {
 
   fromJSON(object: any): RowValue {
     return {
-      cellValues: Array.isArray(object?.cellValues) ? object.cellValues.map((e: any) => CellValue.fromJSON(e)) : [],
+      cell_values: Array.isArray(object?.cell_values) ? object.cell_values.map((e: any) => CellValue.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: RowValue): unknown {
     const obj: any = {};
-    if (message.cellValues) {
-      obj.cellValues = message.cellValues.map((e) => e ? CellValue.toJSON(e) : undefined);
+    if (message.cell_values) {
+      obj.cell_values = message.cell_values.map((e) => e ? CellValue.toJSON(e) : undefined);
     } else {
-      obj.cellValues = [];
+      obj.cell_values = [];
     }
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<RowValue>, I>>(object: I): RowValue {
     const message = createBaseRowValue();
-    message.cellValues = object.cellValues?.map((e) => CellValue.fromPartial(e)) || [];
+    message.cell_values = object.cell_values?.map((e) => CellValue.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseCellValue(): CellValue {
   return {
-    colString: undefined,
-    colI32: undefined,
-    colTime: undefined,
-    colFloat: undefined,
-    colDouble: undefined,
-    colI64: undefined,
-    colBool: undefined,
+    col_string: undefined,
+    col_i32: undefined,
+    col_time: undefined,
+    col_float: undefined,
+    col_double: undefined,
+    col_i64: undefined,
+    col_bool: undefined,
   };
 }
 
 export const CellValue = {
   encode(message: CellValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.colString !== undefined) {
-      writer.uint32(50).string(message.colString);
+    if (message.col_string !== undefined) {
+      writer.uint32(50).string(message.col_string);
     }
-    if (message.colI32 !== undefined) {
-      writer.uint32(56).int32(message.colI32);
+    if (message.col_i32 !== undefined) {
+      writer.uint32(56).int32(message.col_i32);
     }
-    if (message.colTime !== undefined) {
-      Timestamp.encode(toTimestamp(message.colTime), writer.uint32(66).fork()).ldelim();
+    if (message.col_time !== undefined) {
+      Timestamp.encode(toTimestamp(message.col_time), writer.uint32(66).fork()).ldelim();
     }
-    if (message.colFloat !== undefined) {
-      writer.uint32(77).float(message.colFloat);
+    if (message.col_float !== undefined) {
+      writer.uint32(77).float(message.col_float);
     }
-    if (message.colDouble !== undefined) {
-      writer.uint32(129).double(message.colDouble);
+    if (message.col_double !== undefined) {
+      writer.uint32(129).double(message.col_double);
     }
-    if (message.colI64 !== undefined) {
-      writer.uint32(136).int64(message.colI64);
+    if (message.col_i64 !== undefined) {
+      writer.uint32(136).int64(message.col_i64);
     }
-    if (message.colBool !== undefined) {
-      writer.uint32(144).bool(message.colBool);
+    if (message.col_bool !== undefined) {
+      writer.uint32(144).bool(message.col_bool);
     }
     return writer;
   },
@@ -422,25 +422,25 @@ export const CellValue = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 6:
-          message.colString = reader.string();
+          message.col_string = reader.string();
           break;
         case 7:
-          message.colI32 = reader.int32();
+          message.col_i32 = reader.int32();
           break;
         case 8:
-          message.colTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.col_time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
         case 9:
-          message.colFloat = reader.float();
+          message.col_float = reader.float();
           break;
         case 16:
-          message.colDouble = reader.double();
+          message.col_double = reader.double();
           break;
         case 17:
-          message.colI64 = longToNumber(reader.int64() as Long);
+          message.col_i64 = longToNumber(reader.int64() as Long);
           break;
         case 18:
-          message.colBool = reader.bool();
+          message.col_bool = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -452,37 +452,37 @@ export const CellValue = {
 
   fromJSON(object: any): CellValue {
     return {
-      colString: isSet(object.colString) ? String(object.colString) : undefined,
-      colI32: isSet(object.colI32) ? Number(object.colI32) : undefined,
-      colTime: isSet(object.colTime) ? fromJsonTimestamp(object.colTime) : undefined,
-      colFloat: isSet(object.colFloat) ? Number(object.colFloat) : undefined,
-      colDouble: isSet(object.colDouble) ? Number(object.colDouble) : undefined,
-      colI64: isSet(object.colI64) ? Number(object.colI64) : undefined,
-      colBool: isSet(object.colBool) ? Boolean(object.colBool) : undefined,
+      col_string: isSet(object.colString) ? String(object.colString) : undefined,
+      col_i32: isSet(object.colI32) ? Number(object.colI32) : undefined,
+      col_time: isSet(object.col_time) ? fromJsonTimestamp(object.col_time) : undefined,
+      col_float: isSet(object.col_float) ? Number(object.col_float) : undefined,
+      col_double: isSet(object.colDouble) ? Number(object.colDouble) : undefined,
+      col_i64: isSet(object.colI64) ? Number(object.colI64) : undefined,
+      col_bool: isSet(object.colBool) ? Boolean(object.colBool) : undefined,
     };
   },
 
   toJSON(message: CellValue): unknown {
     const obj: any = {};
-    message.colString !== undefined && (obj.colString = message.colString);
-    message.colI32 !== undefined && (obj.colI32 = Math.round(message.colI32));
-    message.colTime !== undefined && (obj.colTime = message.colTime.toISOString());
-    message.colFloat !== undefined && (obj.colFloat = message.colFloat);
-    message.colDouble !== undefined && (obj.colDouble = message.colDouble);
-    message.colI64 !== undefined && (obj.colI64 = Math.round(message.colI64));
-    message.colBool !== undefined && (obj.colBool = message.colBool);
+    message.col_string !== undefined && (obj.colString = message.col_string);
+    message.col_i32 !== undefined && (obj.colI32 = Math.round(message.col_i32));
+    message.col_time !== undefined && (obj.col_time = message.col_time.toISOString());
+    message.col_float !== undefined && (obj.col_float = message.col_float);
+    message.col_double !== undefined && (obj.colDouble = message.col_double);
+    message.col_i64 !== undefined && (obj.colI64 = Math.round(message.col_i64));
+    message.col_bool !== undefined && (obj.colBool = message.col_bool);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<CellValue>, I>>(object: I): CellValue {
     const message = createBaseCellValue();
-    message.colString = object.colString ?? undefined;
-    message.colI32 = object.colI32 ?? undefined;
-    message.colTime = object.colTime ?? undefined;
-    message.colFloat = object.colFloat ?? undefined;
-    message.colDouble = object.colDouble ?? undefined;
-    message.colI64 = object.colI64 ?? undefined;
-    message.colBool = object.colBool ?? undefined;
+    message.col_string = object.col_string ?? undefined;
+    message.col_i32 = object.col_i32 ?? undefined;
+    message.col_time = object.col_time ?? undefined;
+    message.col_float = object.col_float ?? undefined;
+    message.col_double = object.col_double ?? undefined;
+    message.col_i64 = object.col_i64 ?? undefined;
+    message.col_bool = object.col_bool ?? undefined;
     return message;
   },
 };
