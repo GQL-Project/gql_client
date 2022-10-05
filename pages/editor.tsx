@@ -8,7 +8,7 @@ import {
   Toolbar,
   Modal,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { QueryResult, UpdateResult } from "./proto/connection";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -16,6 +16,7 @@ import logo from "../public/logo.png";
 import Image from "next/image";
 import Head from "next/head";
 import NewBranch from "./branch";
+import { AuthContext } from "./context";
 
 function rowVals(data: any) {
   let all_row_vals = "";
@@ -33,7 +34,7 @@ function rowVals(data: any) {
 }
 
 function Editor() {
-  const [userid, setID] = useState<string | null>(null);
+  const authContext = useContext(AuthContext);
   const [status, setStatus] = useState<string | null>(null);
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
@@ -41,6 +42,7 @@ function Editor() {
   const router = useRouter();
 
   const handleQuery = async () => {
+    console.log(authContext.loggedIn);
     if (text === "") {
       setStatus("Please enter a select query");
       return;
@@ -48,9 +50,8 @@ function Editor() {
 
     const response = await fetch("/api/query", {
       method: "POST",
-      body: JSON.stringify({ query: text }),
+      body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
-    setID(null);
     if (!response.ok) {
       setStatus("Error: " + response.statusText);
     } else {
@@ -62,31 +63,34 @@ function Editor() {
   };
 
   const handleDisconnect = async () => {
-    const response = await fetch("/api/disconnect", {
-      method: "POST",
-      body: JSON.stringify({ id: userid }),
-    });
-    setID(null);
-    if (!response.ok) {
-      setStatus("Error: " + response.statusText);
-    } else {
-      setStatus("Client has disconnected");
-      router.push("/");
+    console.log(authContext.loggedIn);
+    if (authContext.loggedIn) {
+      const response = await fetch("/api/disconnect", {
+        method: "POST",
+        body: JSON.stringify({ id: authContext.loggedIn }),
+      });
+      if (!response.ok) {
+        setStatus("Error: " + response.statusText);
+      } else {
+        setStatus("Client has disconnected");
+        authContext.logout();
+        router.push("/");
+      }
     }
   };
 
   const handleBranchOpen = () => setOpen(true);
   const handleBranchClose = () => setOpen(false);
   const handleVC = async () => {
+    console.log(authContext.loggedIn);
     if (text === "") {
       setStatus("Please enter a VC Command");
       return;
     }
     const response = await fetch("/api/vcs", {
       method: "POST",
-      body: JSON.stringify({ query: text }),
+      body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
-    setID(null);
     if (!response.ok) {
       setStatus("Error: " + response.statusText);
     } else {
@@ -96,15 +100,15 @@ function Editor() {
   };
 
   const handleUpdate = async () => {
+    console.log(authContext.loggedIn);
     if (text === "") {
       setStatus("Please enter a create/insert query");
       return;
     }
     const response = await fetch("/api/update", {
       method: "POST",
-      body: JSON.stringify({ query: text }),
+      body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
-    setID(null);
     if (!response.ok) {
       setStatus("Error: " + response.statusText);
     } else {
@@ -123,77 +127,79 @@ function Editor() {
   };
 
   return (
-    <Box
-      className={styles.bg}
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <Head>
-        <title>GQL Editor</title>
-      </Head>
-      <Modal
-        open={open}
-        onClose={handleBranchClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <NewBranch />
-      </Modal>
-      <AppBar position="fixed" sx={{ background: "rgba(34, 34, 34, 0.438)" }}>
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link href="/">GQL</Link>
-          </Typography>
-          <Button color="inherit" onClick={handleBranchOpen}>
-            New Branch
-          </Button>
-          <Button color="inherit" onClick={handleCommit}>
-            Commit
-          </Button>
-          <Button color="inherit" onClick={handleDisconnect}>
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Toolbar />
-      <TextareaAutosize
-        aria-label="empty textarea"
-        placeholder="Enter your SQL query here"
-        style={{
-          fontSize: "1.5rem",
-          height: "50vh",
-          width: "50vw",
-          marginTop: "2vh",
-        }}
-        value={text}
-        onChange={handleTextChange}
-      />
-      <h1>{status}</h1>
-      <div
+    authContext.loggedIn && (
+      <Box
+        className={styles.bg}
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          flexDirection: "row",
-          columnGap: "1vw",
+          flexDirection: "column",
         }}
       >
-        <Button className={styles.loginButton} onClick={handleQuery}>
-          Execute
-        </Button>
-        <Button className={styles.loginButton} onClick={handleUpdate}>
-          Update
-        </Button>
-        <Button className={styles.loginButton} onClick={handleVC}>
-          Version Control
-        </Button>
-      </div>
-      <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
-    </Box>
+        <Head>
+          <title>GQL Editor</title>
+        </Head>
+        <Modal
+          open={open}
+          onClose={handleBranchClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <NewBranch />
+        </Modal>
+        <AppBar position="fixed" sx={{ background: "rgba(34, 34, 34, 0.438)" }}>
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <Link href="/">GQL</Link>
+            </Typography>
+            <Button color="inherit" onClick={handleBranchOpen}>
+              New Branch
+            </Button>
+            <Button color="inherit" onClick={handleCommit}>
+              Commit
+            </Button>
+            <Button color="inherit" onClick={handleDisconnect}>
+              Logout
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Toolbar />
+        <TextareaAutosize
+          aria-label="empty textarea"
+          placeholder="Enter your SQL query here"
+          style={{
+            fontSize: "1.5rem",
+            height: "50vh",
+            width: "50vw",
+            marginTop: "2vh",
+          }}
+          value={text}
+          onChange={handleTextChange}
+        />
+        <h1>{status}</h1>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            columnGap: "1vw",
+          }}
+        >
+          <Button className={styles.loginButton} onClick={handleQuery}>
+            Execute
+          </Button>
+          <Button className={styles.loginButton} onClick={handleUpdate}>
+            Update
+          </Button>
+          <Button className={styles.loginButton} onClick={handleVC}>
+            Version Control
+          </Button>
+        </div>
+        <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
+      </Box>
+    )
   );
 }
 
