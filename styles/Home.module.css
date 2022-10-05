@@ -167,6 +167,17 @@
   background-color: rgba(34, 34, 34, 0.438);
 }
 
+
+.regularButton {
+  color: white;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+  height: 5vh;
+  width: 20vw;
+  font-size: larger;
+  background-color: rgba(34, 34, 34, 0.438);
+}
+
 .button:hover {
   background-color: rgba(34, 34, 34, 0.438);
   animation: bounce 1s;
