@@ -15,10 +15,15 @@ function NewBranch() {
   console.log(authContext.loggedIn);
   const [text, setText] = useState("");
   const router = useRouter();
+  const [error, setError] = useState("");
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
   };
+
+  const handleErrorChange = () => {
+    setError("Error Creating Branch!");
+  }
 
   const handleCreateNewBranch = async () => {
     console.log("Create new branch");
@@ -31,9 +36,16 @@ function NewBranch() {
       method: "POST",
       body: JSON.stringify({ query:"gql branch " + text, id: authContext.loggedIn }),
     });
+    console.log(response.statusText);
     if (!response.ok) {
     } else {
       const data: UpdateResult = await response.json();
+    }
+    if (response.statusText === "Valid Branch Name") {
+      router.push("/editor");
+    } else {
+      console.log("Receiving error with code");
+      handleErrorChange();
     }
   };
 
@@ -42,7 +54,7 @@ function NewBranch() {
       <h1>Create New Branch</h1>
       <TextareaAutosize
         aria-label="empty textarea"
-        placeholder="Enter name of the new branch"
+        placeholder={error}
         style={{
           fontSize: "1.2rem",
           width: "80%",
