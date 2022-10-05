@@ -6,6 +6,7 @@ import {
   AppBar,
   Typography,
   Toolbar,
+  Modal,
 } from "@mui/material";
 import { useState } from "react";
 import { QueryResult, UpdateResult } from "./proto/connection";
@@ -14,11 +15,29 @@ import Link from "next/link";
 import logo from "../public/logo.png";
 import Image from "next/image";
 import Head from "next/head";
+import NewBranch from "./branch";
+
+function rowVals(data: any) {
+  let all_row_vals = "";
+  for (var i = 0; i < data.row_values.length; i++) {
+    let row_vals = [];
+    let row = data.row_values[i];
+    for (var j = 0; j < row.cell_values.length; j++) {
+      let cell_type = row.cell_values[j].cell_type;
+      let cell_val = row.cell_values[j][cell_type];
+      row_vals.push(cell_val);
+    }
+    all_row_vals += "(" + row_vals.join(", ") + ")\n";
+  }
+  return all_row_vals;
+}
 
 function Editor() {
   const [userid, setID] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [text, setText] = useState("");
+  const [open, setOpen] = useState(false);
+
   const router = useRouter();
 
   const handleQuery = async () => {
@@ -37,20 +56,7 @@ function Editor() {
     } else {
       // const data: QueryResult = await response.json();
       const data = await response.json();
-      var all_row_vals = "";
-      for (var i = 0; i < data.row_values.length; i++) {
-        let row_vals = [];
-        let row = data.row_values[i];
-        for (var j = 0; j < row.cell_values.length; j++) {
-          let cell_type = row.cell_values[j].cell_type;
-          let cell_val = row.cell_values[j][cell_type];
-          row_vals.push(cell_val);
-        }
-        all_row_vals += "(" + row_vals.join(", ") + ")\n";
-      }
-      setStatus(
-        data.column_names.join(", ") + "\n" + all_row_vals
-      );
+      setStatus(data.column_names.join(", ") + "\n" + rowVals(data));
       setText("");
     }
   };
@@ -69,10 +75,8 @@ function Editor() {
     }
   };
 
-  const handleNewBranch = async () => {
-    router.push("/branch");
-  };
-
+  const handleBranchOpen = () => setOpen(true);
+  const handleBranchClose = () => setOpen(false);
   const handleVC = async () => {
     if (text === "") {
       setStatus("Please enter a VC Command");
@@ -106,6 +110,7 @@ function Editor() {
     } else {
       const data: UpdateResult = await response.json();
       setStatus(JSON.stringify(data.message));
+      setText("");
     }
   };
 
@@ -130,12 +135,20 @@ function Editor() {
       <Head>
         <title>GQL Editor</title>
       </Head>
+      <Modal
+        open={open}
+        onClose={handleBranchClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <NewBranch />
+      </Modal>
       <AppBar position="fixed" sx={{ background: "rgba(34, 34, 34, 0.438)" }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link href="/">GQL</Link>
           </Typography>
-          <Button color="inherit" onClick={handleNewBranch}>
+          <Button color="inherit" onClick={handleBranchOpen}>
             New Branch
           </Button>
           <Button color="inherit" onClick={handleCommit}>
