@@ -26,6 +26,7 @@ import Image from "next/image";
 import Head from "next/head";
 import NewBranch from "./branch";
 import { AuthContext } from "./context";
+import Commit from "./commit";
 
 const darkTheme = createTheme({
   palette: {
@@ -38,6 +39,7 @@ function Editor() {
   const [status, setStatus] = useState<any | null>(null);
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
+  const [commitOpen, setCommitOpen] = useState(false);
   const router = useRouter();
 
   if (!authContext.loggedIn) {
@@ -174,6 +176,8 @@ function Editor() {
 
   const handleBranchOpen = () => setOpen(true);
   const handleBranchClose = () => setOpen(false);
+  const handleCommitOpen = () => setCommitOpen(true);
+  const handleCommitClose = () => setCommitOpen(false);
 
   const handleVC = async () => {
     const response = await fetch("/api/vcs", {
@@ -223,6 +227,9 @@ function Editor() {
           <Modal open={open} onClose={handleBranchClose}>
             <NewBranch close={handleBranchClose} />
           </Modal>
+          <Modal open={commitOpen} onClose={handleCommitClose}>
+            <Commit close={handleCommitClose} />
+          </Modal>
           <AppBar
             position="fixed"
             sx={{ background: "rgba(34, 34, 34, 0.438)" }}
@@ -234,7 +241,7 @@ function Editor() {
               <Button color="inherit" onClick={handleBranchOpen}>
                 New Branch
               </Button>
-              <Button color="inherit" onClick={handleCommit}>
+              <Button color="inherit" onClick={handleCommitOpen}>
                 Commit
               </Button>
               <Button color="inherit" onClick={handleDisconnect}>
