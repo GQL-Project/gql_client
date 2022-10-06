@@ -41,8 +41,43 @@ function Editor() {
 
   const router = useRouter();
 
-  const setTextStatus = (text: string) => {
-    setStatus(<h1>{text}</h1>);
+  const setTextStatus = (text: string, com: boolean) => {
+    setStatus(
+      <h1
+        style={{
+          color: "black",
+        }}
+      >
+        {text}
+      </h1>
+    );
+    console.log("here");
+    console.log(status);
+    console.log(text);
+    //console.log(QueryResult);
+
+    if (com) {
+      if (text.startsWith("Error")) {
+        setStatus(
+          <h1
+            style={{
+              color: "red",
+            }}
+          >
+            Invalid Command!
+          </h1>
+        );
+      } else {
+        setStatus(
+          <h1
+            style={{
+              color: "cyan",
+            }}
+          >
+            {text}
+          </h1>
+        );      }
+    }
   };
 
   const setEmptyStatus = () => {
@@ -52,7 +87,7 @@ function Editor() {
   const handleQuery = async () => {
     console.log(authContext.loggedIn);
     if (text === "") {
-      setTextStatus("Please enter a select query");
+      setTextStatus("Please enter a select query", false);
       return;
     }
 
@@ -61,7 +96,8 @@ function Editor() {
       body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
     if (!response.ok) {
-      setTextStatus("Error: " + response.statusText);
+      console.log(response.json());
+      setTextStatus("Error: " + response.statusText, true);
     } else {
       // const data: QueryResult = await response.json();
       const data = await response.json();
@@ -107,9 +143,9 @@ function Editor() {
         body: JSON.stringify({ id: authContext.loggedIn }),
       });
       if (!response.ok) {
-        setTextStatus("Error: " + response.statusText);
+        setTextStatus("Error: " + response.statusText, true);
       } else {
-        setTextStatus("Client has disconnected");
+        setTextStatus("Client has disconnected", false);
         authContext.logout();
         router.push("/");
       }
@@ -121,7 +157,7 @@ function Editor() {
   const handleVC = async () => {
     console.log(authContext.loggedIn);
     if (text === "") {
-      setTextStatus("Please enter a VC Command");
+      setTextStatus("Please enter a VC Command", false);
       return;
     }
     const response = await fetch("/api/vcs", {
@@ -129,17 +165,17 @@ function Editor() {
       body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
     if (!response.ok) {
-      setTextStatus("Error: " + response.statusText);
+      setTextStatus("Error: " + response.statusText, true);
     } else {
       const data: UpdateResult = await response.json();
-      setTextStatus(data.message);
+      setTextStatus(data.message, true);
     }
   };
 
   const handleUpdate = async () => {
     console.log(authContext.loggedIn);
     if (text === "") {
-      setTextStatus("Please enter a create/insert query");
+      setTextStatus("Please enter a create/insert query", false);
       return;
     }
     const response = await fetch("/api/update", {
@@ -147,10 +183,10 @@ function Editor() {
       body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
     if (!response.ok) {
-      setTextStatus("Error: " + response.statusText);
+      setTextStatus("Error: " + response.statusText, true);
     } else {
       const data: UpdateResult = await response.json();
-      setTextStatus(data.message);
+      setTextStatus(data.message, true);
       setText("");
     }
   };
@@ -215,7 +251,9 @@ function Editor() {
           value={text}
           onChange={handleTextChange}
         />
+
         {status}
+
         <div
           style={{
             display: "flex",
