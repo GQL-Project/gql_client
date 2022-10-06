@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { StatusObject } from "@grpc/grpc-js";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { CellValue, QueryResult, RowValue } from "../proto/connection";
 import { connection } from "./connect";
@@ -19,10 +20,10 @@ export default function handler(
         {
             id: id,
             query: query,
-        }, function (err: Error | null, response: QueryResult) {
+        }, function (err: StatusObject | null, response: QueryResult) {
             if (err) {
-                console.log(err);
-                res.status(500).end('RunQuery: Error running query');
+                console.log("RunQuery Error: " + err.details);
+                res.status(500).send(err.details);
                 return;
             }
             // Parse QueryResult into QueryString

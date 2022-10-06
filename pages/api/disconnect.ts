@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { StatusObject } from "@grpc/grpc-js";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Empty } from "../../google/protobuf/empty";
 import { connection } from "./connect";
@@ -10,10 +11,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     {
       id: id,
     },
-    function (err: Error | null, response: Empty) {
+    function (err: StatusObject | null, response: Empty) {
       if (err) {
-        console.log(err);
-        res.status(500).end("DisconnectDB: Unable to connect to database");
+        console.log("Disconnect Error: " + err.details);
+        res.status(500).send(err.details);
         return;
       }
       console.log("DisconnectDB: Disconnected from Database!: ", response);
