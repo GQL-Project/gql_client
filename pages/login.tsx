@@ -1,4 +1,11 @@
-import { Container, TextField, InputLabel, Button } from "@mui/material";
+import {
+  Container,
+  TextField,
+  InputLabel,
+  Button,
+  Grid,
+  Box,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useContext, useState } from "react";
 import { ConnectResult } from "./proto/connection";
@@ -14,13 +21,14 @@ function Login() {
   const authContext = useContext(AuthContext);
   const [status, setStatus] = useState<string | null>(null);
   const [creds, setCreds] = useState({
+    address: "localhost",
+    port: "50051",
     username: "",
     password: "",
   });
   const router = useRouter();
 
   const handleConnect = async () => {
-    console.log(authContext.loggedIn);
     if (!authContext.loggedIn) {
       if (creds.username === "" || creds.password === "") {
         setStatus("Please enter a username and password");
@@ -31,13 +39,16 @@ function Login() {
         setStatus("Error: " + response.statusText);
       } else {
         const data: ConnectResult = await response.json();
-        setStatus(data.id);
+        setStatus("Connected to " + creds.address + ":" + creds.port);
         setCreds({
+          ...creds,
           username: "",
           password: "",
         });
         authContext.login(data.id);
-        router.push("/editor");
+        setTimeout(() => {
+          router.push("/editor");
+        }, 1000);
       }
     }
   };
@@ -52,6 +63,14 @@ function Login() {
   ) => {
     setCreds({ ...creds, password: event.target.value });
   };
+  const handleAddressChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setCreds({ ...creds, address: event.target.value });
+  };
+  const handlePortChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCreds({ ...creds, port: event.target.value });
+  };
 
   return (
     <div className={styles.bg}>
@@ -59,15 +78,7 @@ function Login() {
         <Head>
           <title>GQL Login</title>
         </Head>
-        <form
-          style={{
-            marginTop: "10vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
+        <Box className={styles.loginForm}>
           <h1 className={styles.title}>Login</h1>
           <Link href="/">
             <a>
@@ -79,29 +90,85 @@ function Login() {
               />
             </a>
           </Link>
-          <InputLabel className={styles.loginLabel}>Username:</InputLabel>
-          <TextField
-            type="text"
-            sx={{ input: { color: "white" } }}
-            onChange={handleUsernameChange}
-            value={creds.username}
-            id="username"
-          />
-          <InputLabel className={styles.loginLabel}>Password:</InputLabel>
-          <TextField
-            type="password"
-            sx={{ input: { color: "white", borderColor: "white" } }}
-            onChange={handlePasswordChange}
-            value={creds.password}
-            id="password"
-          />
+          <Grid container columns={2} columnSpacing={3}>
+            <Grid
+              item
+              xs={1}
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="center"
+            >
+              <Box>
+                <InputLabel className={styles.loginLabel}>Address</InputLabel>
+                <TextField
+                  type="text"
+                  sx={{ input: { color: "white", textAlign: "center" } }}
+                  onChange={handleAddressChange}
+                  value={creds.address}
+                  id="address"
+                />
+              </Box>
+            </Grid>
+            <Grid
+              item
+              xs={1}
+              display="flex"
+              justifyContent="flex-start"
+              alignItems="center"
+            >
+              <Box>
+                <InputLabel className={styles.loginLabel}>Username</InputLabel>
+                <TextField
+                  type="text"
+                  sx={{ input: { color: "white", textAlign: "center" } }}
+                  onChange={handleUsernameChange}
+                  value={creds.username}
+                  id="username"
+                />
+              </Box>
+            </Grid>
+            <Grid
+              item
+              xs={1}
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="center"
+            >
+              <Box>
+                <InputLabel className={styles.loginLabel}>Port</InputLabel>
+                <TextField
+                  type="text"
+                  sx={{ input: { color: "white", textAlign: "center" } }}
+                  onChange={handlePortChange}
+                  value={creds.port}
+                  id="port"
+                />
+              </Box>
+            </Grid>
+            <Grid
+              item
+              xs={1}
+              display="flex"
+              justifyContent="flex-start"
+              alignItems="center"
+            >
+              <Box>
+                <InputLabel className={styles.loginLabel}>Password</InputLabel>
+                <TextField
+                  type="password"
+                  sx={{ input: { color: "white", textAlign: "center" } }}
+                  onChange={handlePasswordChange}
+                  value={creds.password}
+                  id="password"
+                />
+              </Box>
+            </Grid>
+          </Grid>
           <Button className={styles.loginButton} onClick={handleConnect}>
             Login →
           </Button>
-          <h5>
-            <a>{status ? `${status}` : "Not connected to server"}</a>
-          </h5>
-        </form>
+          <h3>{status}</h3>
+        </Box>
       </Container>
     </div>
   );
