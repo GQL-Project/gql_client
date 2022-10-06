@@ -1,0 +1,35 @@
+UI Test in Editor Page
+
+BEFORE YOU BEGIN
+    1. Press "Continue"
+    2. Type "123" in Username
+    3. Type "123" in Password
+    4. Press "Login"
+    5. You should be in the editor page now
+
+Testing for the Error Message after executing the action
+    1. Type "123" in the Text Box that says "Enter your SQL query here" in the placeholder
+    2. Click the "Execute" button
+    3. Check if the error message is displayed
+    4. Check if the error message says "sql parser error: Expected an SQL statement, found: 123" in RED
+
+Testing for the Success Message after executing the CREATE TABLE
+    1. Type "CREATE TABLE test (id int, age int)" in the Text Box that says "Enter your SQL query here" in the placeholder
+    2. Click the "Execute" button
+    3. Check if the success message is displayed
+    4. Check if the success message says "Table created: test" in CYAN
+
+Testing for the Success Message after executing the INSERT INTO
+    1. Type "INSERT INTO test (id, age) VALUES (1, 20), (2,20);" in the Text Box that says "Enter your SQL query here" in the placeholder
+    2. Click the "Execute" button
+    3. Check if the success message is displayed
+    4. Check if the success message says "2 rows were successfully inserted" in CYAN
+
+Testing for the Success Message after executing the SELECT
+    1. Do the two previous tests first
+    2. Type "SELECT * FROM test;" in the Text Box that says "Enter your SQL query here" in the placeholder
+    3. Click the "Execute" button
+    4. Table should be displayed with 3 rows and 2 columns
+    5. The first row being the column names (id, age)
+    6. The second row being the values (1, 20)
+    7. The third row being the values (2, 20)
