@@ -106,6 +106,7 @@ function Login() {
                   onChange={handleAddressChange}
                   value={creds.address}
                   id="address"
+                  inputProps={{ "data-testid": "server-address" }} // The value is the id needed for testing
                 />
               </Box>
             </Grid>
@@ -143,6 +144,7 @@ function Login() {
                   onChange={handlePortChange}
                   value={creds.port}
                   id="port"
+                  inputProps={{ "data-testid": "server-port" }} // The value is the id needed for testing
                 />
               </Box>
             </Grid>
