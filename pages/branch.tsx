@@ -8,21 +8,48 @@ import logo from "../public/logo.png";
 import Image from "next/image";
 import { useContext } from "react";
 import { AuthContext } from "./context";
+import { QueryResult, UpdateResult } from "./proto/connection";
 
-function NewBranch() {
+function NewBranch(props) {
   const authContext = useContext(AuthContext);
   console.log(authContext.loggedIn);
   const [text, setText] = useState("");
   const router = useRouter();
+  const [error, setError] = useState("");
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
   };
 
+  const handleErrorChange = () => {
+    setError("Error Creating Branch!");
+  }
+
   const handleCreateNewBranch = async () => {
-    //TODO, how do I connect this to the backend?
     console.log("Create new branch");
     console.log(text);
+    console.log(authContext.loggedIn);
+    if (text === "") {
+      return;
+    }
+    const response = await fetch("/api/vcs", {
+      method: "POST",
+      body: JSON.stringify({ query:"gql branch " + text, id: authContext.loggedIn }),
+    });
+    console.log("Response status: " + response.statusText);
+    if (!response.ok) {
+    } else {
+      const data: UpdateResult = await response.json();
+    }
+    if (response.statusText === "OK") {
+      console.log("Branch created, moving back to main page");
+      props.close();
+      
+    } else {
+      console.log("Receiving error with code");
+      setText("");
+      handleErrorChange();
+    }
   };
 
   return authContext.loggedIn ? (
@@ -30,7 +57,7 @@ function NewBranch() {
       <h1>Create New Branch</h1>
       <TextareaAutosize
         aria-label="empty textarea"
-        placeholder="Enter name of the new branch"
+        placeholder={error}
         style={{
           fontSize: "1.2rem",
           width: "80%",

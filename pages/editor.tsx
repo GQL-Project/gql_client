@@ -188,7 +188,7 @@ function Editor() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <NewBranch />
+            <NewBranch close={handleBranchClose} />
           </Modal>
           <AppBar
             position="fixed"
@@ -229,15 +229,69 @@ function Editor() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              flexDirection: "row",
-              columnGap: "1vw",
+              flexDirection: "column",
             }}
           >
-            <Button className={styles.button} onClick={handleInput}>
-              Execute
-            </Button>
+            <Head>
+              <title>GQL Editor</title>
+            </Head>
+            <Modal
+              open={open}
+              onClose={handleBranchClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <NewBranch />
+            </Modal>
+            <AppBar
+              position="fixed"
+              sx={{ background: "rgba(34, 34, 34, 0.438)" }}
+            >
+              <Toolbar>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                  <Link href="/">GQL</Link>
+                </Typography>
+                <Button color="inherit" onClick={handleBranchOpen}>
+                  New Branch
+                </Button>
+                <Button color="inherit" onClick={handleCommit}>
+                  Commit
+                </Button>
+                <Button color="inherit" onClick={handleDisconnect}>
+                  Logout
+                </Button>
+              </Toolbar>
+            </AppBar>
+            <Toolbar />
+            <TextareaAutosize
+              aria-label="empty textarea"
+              placeholder="Enter your SQL query here"
+              style={{
+                fontSize: "1.5rem",
+                height: "50vh",
+                width: "50vw",
+                minHeight: "30vh",
+                marginTop: "2vh",
+              }}
+              value={text}
+              onChange={handleTextChange}
+            />
+            {status}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+                columnGap: "1vw",
+              }}
+            >
+              <Button className={styles.button} onClick={handleInput}>
+                Execute
+              </Button>
+            </div>
+            <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
           </div>
-          <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
         </Box>
       </ThemeProvider>
     )
