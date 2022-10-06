@@ -177,8 +177,8 @@
 
 .regularButton {
   color: white;
-  margin-top: 5vh;
-  margin-bottom: 5vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
   font-size: large;
   background-color: rgba(34, 34, 34, 0.438);
 }
@@ -227,6 +227,7 @@
 .loginLabel {
   margin-top: 2vh;
   color: white;
+  text-align: center;
   font-size: 1.5rem;
   border: white;
 }
@@ -240,10 +241,37 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400;
   background-color: black;
   border: 2px solid #000;
   box-shadow: 24;
   padding: 2vh;
   border-radius: 3%;
+}
+
+.loginForm {
+  margin-top: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.branchTextArea {
+  font-size: 1.2rem;
+  width: 80%;
+  text-align: center;
+}
+
+.branchList {
+  list-style: none;
+  columns: 3;
+  text-align: center;
+  padding: 0;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
