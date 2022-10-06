@@ -34,9 +34,13 @@ function Login() {
         setStatus("Please enter a username and password");
         return;
       }
-      const response = await fetch("/api/connect");
+      const response = await fetch("/api/connect", {
+        method: "POST",
+        body: JSON.stringify({ address: creds.address, port: creds.port }),
+      });
+
       if (!response.ok) {
-        setStatus("Error: " + response.statusText);
+        setStatus("Error: Could not connect to database at " + creds.address + ":" + creds.port);
       } else {
         const data: ConnectResult = await response.json();
         setStatus("Connected to " + creds.address + ":" + creds.port);

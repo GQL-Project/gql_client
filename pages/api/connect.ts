@@ -19,17 +19,26 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, options);
 const protoDescriptor =
   grpc.loadPackageDefinition(packageDefinition).db_connection;
 
+var address = "localhost";
+var port = "50051";
+
 // Function Used to Connect to the Database
 export function connection(): DatabaseConnectionClient {
   const DatabaseClient = protoDescriptor.DatabaseConnection;
   const client = new DatabaseClient(
-    "localhost:50051",
+    address + ":" + port,
     grpc.credentials.createInsecure()
   );
   return client;
 }
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  const _address: string = JSON.parse(req.body)["address"] as unknown as string;
+  const _port: string = JSON.parse(req.body)["port"] as unknown as string;
+
+  address = _address;
+  port = _port;
+
   console.log("Connection Request Received.");
   connection().ConnectDB(
     {},
