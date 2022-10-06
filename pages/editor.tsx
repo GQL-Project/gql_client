@@ -38,10 +38,13 @@ function Editor() {
   const [status, setStatus] = useState<any | null>(null);
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
-
   const router = useRouter();
 
-  const setTextStatus = (text: string, com: boolean) => {
+  if (!authContext.loggedIn) {
+    router.push("/login");
+  }
+  
+  const setTextStatus = (text: string, com: boolean, error: boolean = false) => {
     setStatus(
       <h1
         style={{
@@ -51,20 +54,19 @@ function Editor() {
         {text}
       </h1>
     );
-    console.log("here");
+
     console.log(status);
     console.log(text);
-    //console.log(QueryResult);
 
     if (com) {
-      if (text.startsWith("Error")) {
+      if (error) {
         setStatus(
           <h1
             style={{
               color: "red",
             }}
           >
-            Invalid Command!
+            {text}
           </h1>
         );
       } else {
@@ -76,7 +78,8 @@ function Editor() {
           >
             {text}
           </h1>
-        );      }
+        );
+      }
     }
   };
 
@@ -86,7 +89,7 @@ function Editor() {
 
   const handleInput = () => {
     if (text === "") {
-      setTextStatus("Please enter a valid GQL command", false);
+      setTextStatus("Please enter a valid GQL command", false, true);
       return;
     }
     if (text.toLowerCase().startsWith("select")) {
@@ -104,8 +107,8 @@ function Editor() {
       body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
     if (!response.ok) {
-      console.log(response.json());
-      setTextStatus("Error: " + response.statusText, true);
+      let text = await response.text();
+      setTextStatus(text, true, true);
     } else {
       // const data: QueryResult = await response.json();
       const data = await response.json();
@@ -116,7 +119,7 @@ function Editor() {
             fontSize: "1.5rem",
             height: "50vh",
             width: "85%",
-            minHeight: "30vh",
+            minHeight: "20vh",
             marginTop: "2vh",
             backgroundColor: "rgba(34, 34, 34, 0.85)",
           }}
@@ -155,7 +158,8 @@ function Editor() {
         body: JSON.stringify({ id: authContext.loggedIn }),
       });
       if (!response.ok) {
-        setTextStatus("Error: " + response.statusText, true);
+        let text = await response.text();
+        setTextStatus(text, true, true);
       } else {
         setTextStatus("Client has disconnected", false);
         authContext.logout();
@@ -173,7 +177,8 @@ function Editor() {
       body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
     if (!response.ok) {
-      setTextStatus("Error: " + response.statusText, true);
+      let text = await response.text();
+      setTextStatus(text, true, true);
     } else {
       const data: UpdateResult = await response.json();
       setTextStatus(data.message, true);
@@ -187,7 +192,8 @@ function Editor() {
       body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
     if (!response.ok) {
-      setTextStatus("Error: " + response.statusText, true);
+      let text = await response.text();
+      setTextStatus(text, true, true);
     } else {
       const data: UpdateResult = await response.json();
       setTextStatus(data.message, true);
@@ -213,6 +219,7 @@ function Editor() {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
+            maxHeight: "100vh",
           }}
         >
           <div
@@ -221,6 +228,7 @@ function Editor() {
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
+              maxHeight: "100vh",
             }}
           >
             <Head>

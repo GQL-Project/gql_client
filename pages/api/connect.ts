@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { StatusObject } from "@grpc/grpc-js";
 import { serialize } from "cookie";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ConnectResult, DatabaseConnectionClient } from "../proto/connection";
@@ -32,10 +33,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log("Connection Request Received.");
   connection().ConnectDB(
     {},
-    function (err: Error | null, response: ConnectResult) {
+    function (err: StatusObject | null, response: ConnectResult) {
       if (err) {
-        console.log(err);
-        res.status(500).end("ConnectDB: Unable to connect to database");
+        console.log("Connect Error: " + err.details);
+        res.status(500).send(err.details);
         return;
       }
       console.log("ConnectDB: Connected to Database!: ", response.id);

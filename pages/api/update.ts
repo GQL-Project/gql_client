@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { StatusObject } from "@grpc/grpc-js";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { UpdateResult } from "../proto/connection";
 import { connection } from "./connect";
@@ -12,10 +13,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       id: id,
       query: query,
     },
-    function (err: Error | null, response: UpdateResult) {
+    function (err: StatusObject | null, response: UpdateResult) {
       if (err) {
-        console.log(err);
-        res.status(500).end("RunUpdate: Error running query");
+        console.log("Update Error: " + err.details);
+        res.status(500).send(err.details);
         return;
       }
       console.log("RunUpdate: Update Returned!: ", response);
