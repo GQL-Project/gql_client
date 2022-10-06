@@ -14,6 +14,8 @@ function NewBranch(props) {
   const authContext = useContext(AuthContext);
   console.log(authContext.loggedIn);
   const [text, setText] = useState("");
+  const [branchListText, setBranchListText] = useState([]);
+  const [constructorHasRun, setConstructorHasRun] = useState(false);
   const router = useRouter();
   const [error, setError] = useState("");
 
@@ -25,6 +27,37 @@ function NewBranch(props) {
     setError("Error Creating Branch!");
   }
 
+  // Create a constructor that only runs once to get the list of branches
+  const constructor = () => {
+    if (constructorHasRun) return;
+    setConstructorHasRun(true);
+
+    // Log the current branch names
+    fetch("/api/vcs", {
+        method: "POST",
+        body: JSON.stringify({ query:"gql branch -l", id: authContext.loggedIn }),
+    }).then(
+        (branch_list_response) => {
+            // If failed to get branch list
+            if (!branch_list_response.ok || branch_list_response.statusText !== "OK") {
+                console.log("Receiving error with code");
+                setBranchListText([]);
+                handleErrorChange();
+            }
+            // If we succeeded
+            else {
+                branch_list_response.json().then((json_data) => {
+                    const data: UpdateResult = json_data;
+                    let branch_names = data.message.split(",");
+                    const listItems = branch_names.map((branch_name) => <li>{branch_name}</li>);
+                    setBranchListText(listItems);
+                    console.log("Branches: " + data.message);
+                });
+            }
+        });
+  };
+  constructor();
+
   const handleCreateNewBranch = async () => {
     console.log("Create new branch");
     console.log(text);
@@ -32,6 +65,7 @@ function NewBranch(props) {
     if (text === "") {
       return;
     }
+
     const response = await fetch("/api/vcs", {
       method: "POST",
       body: JSON.stringify({ query:"gql branch " + text, id: authContext.loggedIn }),
@@ -66,6 +100,27 @@ function NewBranch(props) {
         value={text}
         onChange={handleTextChange}
       />
+      <br></br>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+          columnGap: "1vw",
+        }}
+      >
+        Existing Branches:
+      </div>
+      <div
+      >
+        <ul 
+            style={{
+                columns: 2,
+                listStyle: "none",
+            }}
+        >{branchListText}</ul>
+      </div>
       <div
         style={{
           display: "flex",
