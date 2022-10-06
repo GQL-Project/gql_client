@@ -2,7 +2,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies
+```bash
+npm install next react react-dom identity-obj-proxy
+
+npm install --save-dev jest @types/jest @babel/preset-typescript ts-jest babel-plugin-transform-es2015-modules-commonjs @babel/plugin-transform-runtime @testing-library/react @testing-library/jest-dom
+```
+
+Run the development server:
 
 ```bash
 npm run dev
