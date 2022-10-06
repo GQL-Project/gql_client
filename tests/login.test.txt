@@ -1,0 +1,25 @@
+UI Test in Editor Page
+
+BEFORE YOU BEGIN
+    1. Press "Continue"
+
+Testing for the Error Message with missing credentials
+    1. Do NOT type anything in the username and password field
+    2. Click the "Login" button
+    3. Check if the error message is displayed
+    4. Check if the error message says "Please enter a username and password"
+
+Testing for the Error Message with server not started
+    1. Type "123" in Username
+    2. Type "123" in Password
+    3. Press "Login"
+    4. Check if the error message is displayed
+    5. Check if the error message says "Error: Internal Server Error"
+
+Testing for the Success Message after Login
+    1. Type "123" in Username
+    2. Type "123" in Password
+    3. Press "Login"
+    4. Check if the status message is displayed
+    5. Check if the status message says "Connected to localhost:50051"
+    6. You should be in the editor page now
