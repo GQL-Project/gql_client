@@ -59,7 +59,6 @@ function Login() {
         <Head>
           <title>GQL Login</title>
         </Head>
-        <h1 className={styles.title}>Login</h1>
         <form
           style={{
             marginTop: "10vh",
@@ -69,6 +68,7 @@ function Login() {
             flexDirection: "column",
           }}
         >
+          <h1 className={styles.title}>Login</h1>
           <Link href="/">
             <a>
               <Image
