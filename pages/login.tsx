@@ -124,6 +124,7 @@ function Login() {
                   onChange={handleUsernameChange}
                   value={creds.username}
                   id="username"
+                  inputProps={{ "data-testid": "account-username" }} // The value is the id needed for testing
                 />
               </Box>
             </Grid>
@@ -160,6 +161,7 @@ function Login() {
                   onChange={handlePasswordChange}
                   value={creds.password}
                   id="password"
+                  inputProps={{ "data-testid": "account-password" }} // The value is the id needed for testing
                 />
               </Box>
             </Grid>
