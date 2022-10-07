@@ -25,6 +25,7 @@ import logo from "../public/logo.png";
 import Image from "next/image";
 import Head from "next/head";
 import NewBranch from "./branch";
+import History from "./history";
 import { AuthContext } from "./context";
 import Commit from "./commit";
 
@@ -40,6 +41,7 @@ function Editor() {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
   const [commitOpen, setCommitOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const router = useRouter();
 
   const setTextStatus = (
@@ -174,6 +176,8 @@ function Editor() {
   const handleBranchClose = () => setOpen(false);
   const handleCommitOpen = () => setCommitOpen(true);
   const handleCommitClose = () => setCommitOpen(false);
+  const handleHistoryOpen = () => setHistoryOpen(true);
+  const handleHistoryClose = () => setHistoryOpen(false);
 
   const handleVC = async () => {
     const response = await fetch("/api/vcs", {
@@ -226,6 +230,9 @@ function Editor() {
           <Modal open={commitOpen} onClose={handleCommitClose}>
             <Commit close={handleCommitClose} />
           </Modal>
+          <Modal open={historyOpen} onClose={handleHistoryClose}>
+            <History />
+          </Modal>
           <AppBar
             position="fixed"
             sx={{ background: "rgba(34, 34, 34, 0.438)" }}
@@ -234,6 +241,9 @@ function Editor() {
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 <Link href="/">GQL</Link>
               </Typography>
+              <Button color="inherit" onClick={handleHistoryOpen}>
+                History
+              </Button>
               <Button color="inherit" onClick={handleBranchOpen}>
                 New Branch
               </Button>

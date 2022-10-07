@@ -270,6 +270,12 @@
   padding: 0;
 }
 
+.commitList {
+  list-style: none;
+  text-align: center;
+  padding: 0;
+}
+
 .center {
   display: flex;
   justify-content: center;
