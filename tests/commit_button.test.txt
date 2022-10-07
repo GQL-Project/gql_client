@@ -1,0 +1,43 @@
+UI Test in Editor Page
+
+BEFORE YOU BEGIN
+    1. Press "Continue"
+    2. Type "123" in Username
+    3. Type "123" in Password
+    4. Press "Login"
+    5. You should be in the editor page now
+
+Testing for the Error Message while using Commit button
+    1. Type the following code into the editor
+ 		CREATE TABLE Persons (
+    			PersonID int,
+    			LastName varchar(255),
+    			FirstName varchar(255),
+    			Address varchar(255),
+    			City varchar(255)
+		);
+    2. Click the "Execute" button
+    3. You should see a message stating Table Created
+    4. Click the Commit button in the top right of the screen
+    5. Do NOT type in a commit message in the window that pops open
+    6. Press the Commit button in the center of the screen
+    7. The text in the window should change to "Commit Message cannot be empty"
+
+Testing for the successful use of Commit button
+    1. Type the following code into the editor
+ 		CREATE TABLE Persons (
+    			PersonID int,
+    			LastName varchar(255),
+    			FirstName varchar(255),
+    			Address varchar(255),
+    			City varchar(255)
+		);
+    2. Click the "Execute" button
+    3. You should see a message stating Table Created
+    4. Click the Commit button in the top right of the screen
+    5. Type in a commit message in the prompted text box
+    6. Press the Commit button in the center of the screen
+        The window will disappear and the user will see the editor again
+    7. Type "gql log" into the editor
+    8. Click the "Execute" button
+        The window should return the commit's hash, message and timestamp
