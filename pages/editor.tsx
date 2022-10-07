@@ -40,10 +40,6 @@ function Editor() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  if (!authContext.loggedIn) {
-    router.push("/login");
-  }
-
   const setTextStatus = (
     text: string,
     com: boolean,
@@ -257,9 +253,14 @@ function Editor() {
             onChange={handleTextChange}
           />
           {status}
-          <Button className={styles.button} onClick={handleInput}>
-            Execute
-          </Button>
+          <Box>
+            <Button className={styles.button} onClick={handleInput}>
+              Execute
+            </Button>
+            <Button className={styles.button} onClick={setEmptyStatus}>
+              Clear Result
+            </Button>
+          </Box>
           <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
         </Box>
       </ThemeProvider>
