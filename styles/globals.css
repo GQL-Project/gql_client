@@ -12,6 +12,10 @@ body {
     Droid Sans, Helvetica Neue, sans-serif;
 }
 
+h5, h4, h2, h1, h3 {
+  color: white;
+}
+
 a {
   color: inherit;
   text-decoration: none;
