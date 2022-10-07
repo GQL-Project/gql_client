@@ -17,7 +17,7 @@ function Commit(props) {
   console.log(authContext.loggedIn);
   const [text, setText] = useState("");
   const router = useRouter();
-  const [error, setError] = useState("");
+  const [error, setError] = useState("Enter Commit Message here ...");
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
@@ -56,7 +56,7 @@ function Commit(props) {
     <Box className={styles.modal}>
       <h1>Enter Commit Message</h1>
       <TextareaAutosize
-        placeholder="Enter Commit Message here ..."
+        placeholder={error}
         style={{
           fontSize: "1.0rem",
           height: "10vh",
