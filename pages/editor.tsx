@@ -169,6 +169,7 @@ function Editor() {
       } else {
         setTextStatus("Client has disconnected", false);
         authContext.logout();
+        window.localStorage.removeItem("loggedIn");
         router.push("/");
       }
     }
