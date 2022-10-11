@@ -13,8 +13,7 @@ import { get } from "http";
 
 function Commit(props) {
   const authContext = useContext(AuthContext);
-  
-  console.log(authContext.loggedIn);
+
   const [text, setText] = useState("");
   const router = useRouter();
   const [error, setError] = useState("Enter Commit Message here ...");
@@ -26,7 +25,7 @@ function Commit(props) {
   const handleErrorChange = () => {
     setError("Error Creating Commit!");
   };
-  
+
   const handleCreateNewCommit = async () => {
     if (text === "") {
       setError("Please enter a commit message!");
@@ -64,7 +63,7 @@ function Commit(props) {
           minHeight: "30vh",
           marginTop: "2vh",
           marginLeft: "2vh",
-          marginRight: "2vh"
+          marginRight: "2vh",
         }}
         value={text}
         onChange={handleTextChange}

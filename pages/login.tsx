@@ -40,7 +40,12 @@ function Login() {
       });
 
       if (!response.ok) {
-        setStatus("Error: Could not connect to database at " + creds.address + ":" + creds.port);
+        setStatus(
+          "Error: Could not connect to database at " +
+            creds.address +
+            ":" +
+            creds.port
+        );
       } else {
         const data: ConnectResult = await response.json();
         setStatus("Connected to " + creds.address + ":" + creds.port);
@@ -50,6 +55,7 @@ function Login() {
           password: "",
         });
         authContext.login(data.id);
+        window.localStorage.setItem("loggedIn", data.id);
         setTimeout(() => {
           router.push("/editor");
         }, 1000);

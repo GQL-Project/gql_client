@@ -13,7 +13,6 @@ import { get } from "http";
 
 function NewBranch(props) {
   const authContext = useContext(AuthContext);
-  console.log(authContext.loggedIn);
   const [text, setText] = useState("");
   const [branchListText, setBranchListText] = useState<string[]>([]);
   const router = useRouter();
@@ -29,7 +28,6 @@ function NewBranch(props) {
 
   useEffect(() => {
     async function getBranchNames() {
-      console.log(branchListText);
       const response = await fetch("/api/vcs", {
         method: "POST",
         body: JSON.stringify({
