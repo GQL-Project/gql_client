@@ -13,7 +13,6 @@ import { get } from "http";
 
 function History() {
   const authContext = useContext(AuthContext);
-  console.log(authContext.loggedIn);
   const [commitListText, setCommitListText] = useState<string[]>([]);
   const [error, setError] = useState("No Commits");
 
@@ -23,7 +22,6 @@ function History() {
 
   useEffect(() => {
     async function getCommitNames() {
-      console.log(commitListText);
       const response = await fetch("/api/vcs", {
         method: "POST",
         body: JSON.stringify({
@@ -36,7 +34,6 @@ function History() {
         handleErrorChange();
       }
       const data: UpdateResult = await response.json();
-      console.log(data);
       if (data.message !== "") {
         if (data.message.toLowerCase() === "no commits!") {
           setCommitListText([]);
