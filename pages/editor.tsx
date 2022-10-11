@@ -17,7 +17,7 @@ import {
   createTheme,
   ThemeProvider,
 } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { QueryResult, UpdateResult } from "./proto/connection";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -44,6 +44,12 @@ function Editor() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const router = useRouter();
 
+  useEffect(() => {
+    if (window.localStorage.getItem("loggedIn") !== null) {
+      authContext.login(window.localStorage.getItem("loggedIn"));
+    }
+  }, []);
+
   const setTextStatus = (
     text: string,
     com: boolean,
@@ -58,9 +64,6 @@ function Editor() {
         {text}
       </h1>
     );
-
-    console.log(status);
-    console.log(text);
 
     if (com) {
       if (error) {
@@ -155,7 +158,6 @@ function Editor() {
   };
 
   const handleDisconnect = async () => {
-    console.log(authContext.loggedIn);
     if (authContext.loggedIn) {
       const response = await fetch("/api/disconnect", {
         method: "POST",
