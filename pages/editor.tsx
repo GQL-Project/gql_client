@@ -258,23 +258,25 @@ function QueryEditor() {
             </Toolbar>
           </AppBar>
           <Toolbar />
-          <Editor
-            highlight={(text) => highlight(text, Prism.languages.sql, "sql")}
-            aria-label="empty textarea"
-            placeholder="Enter your SQL query here"
-            style={{
-              fontSize: "1.5rem",
+          <Box
+            sx={{
               height: "50vh",
               width: "50vw",
-              minHeight: "30vh",
-              marginTop: "2vh",
-              backgroundColor: "rgba(34, 34, 34, 0.85)",
-              borderRadius: "10px",
+              overflowY: "auto",
+              overflowX: "clip",
             }}
-            value={text}
-            padding={10}
-            onValueChange={(text) => setText(text)}
-          />
+          >
+            <Editor
+              highlight={(text) => highlight(text, Prism.languages.sql, "sql")}
+              aria-label="empty textarea"
+              placeholder="Enter your SQL query here"
+              className={styles.editor}
+              value={text}
+              padding={10}
+              onValueChange={(text) => setText(text)}
+              preClassName={styles.prestyle}
+            />
+          </Box>
           {status}
           <Box>
             <Button className={styles.button} onClick={handleInput}>
