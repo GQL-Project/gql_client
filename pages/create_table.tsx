@@ -25,7 +25,12 @@ const CheckBoxCell = ({
       updateMyData(index, id, !value)
     }
   
-    return <input type='checkbox' checked={value} onChange={onChange} />
+    return <input 
+                type='checkbox' 
+                checked={value} 
+                onChange={onChange} 
+                className={styles.createTableCheckbox}
+                />
 }
 
 // Editable Text Box Cell
