@@ -3,7 +3,7 @@ import styles from "../../styles/Home.module.css";
 import { useTable, usePagination } from 'react-table';
 
 // Be sure to pass our updateMyData
-function DynamicTable(columns, data, updateMyData) {
+function DynamicTable({ columns, data, updateMyData} ) {
     // For this example, we're using pagination to illustrate how to stop
     // the current page from resetting when our data changes
     // Otherwise, nothing is different here.
