@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import { TextareaAutosize, Button, Box, Grid } from "@mui/material";
 import { useState } from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
 import logo from "../public/logo.png";
 import Image from "next/image";
 import { useContext } from "react";
@@ -11,11 +9,10 @@ import { AuthContext } from "./context";
 import { QueryResult, UpdateResult } from "./proto/connection";
 import { get } from "http";
 
-function NewBranch(props) {
+function NewBranch(props: { close: () => void }) {
   const authContext = useContext(AuthContext);
   const [text, setText] = useState("");
   const [branchListText, setBranchListText] = useState<string[]>([]);
-  const router = useRouter();
   const [error, setError] = useState("");
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -40,7 +37,6 @@ function NewBranch(props) {
         handleErrorChange();
       }
       const data: UpdateResult = await response.json();
-      let branchNames;
       if (data.message !== "") {
         setBranchListText(data.message.split(","));
       }

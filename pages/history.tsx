@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import { TextareaAutosize, Button, Box, Grid } from "@mui/material";
 import { useState } from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
 import logo from "../public/logo.png";
 import Image from "next/image";
 import { useContext } from "react";

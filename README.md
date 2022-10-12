@@ -3,10 +3,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Getting Started
 
 Install dependencies
-```bash
-npm install next react react-dom identity-obj-proxy
 
-npm install --save-dev jest @types/jest @babel/preset-typescript ts-jest babel-plugin-transform-es2015-modules-commonjs @babel/plugin-transform-runtime @testing-library/react @testing-library/jest-dom
+```bash
+npm install next react react-dom identity-obj-proxy prismjs react-simple-code-editor
+
+npm install --save-dev jest @types/jest @types/prismjs @babel/preset-typescript ts-jest babel-plugin-transform-es2015-modules-commonjs @babel/plugin-transform-runtime @testing-library/react @testing-library/jest-dom
 ```
 
 Run the development server:
@@ -41,12 +42,16 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 ## Building Proto Files
+
 Run the following command from the root directory, after `npm install`:
+
 ```bash
 protoc --plugin=protoc-gen-ts_proto=.\node_modules\.bin\protoc-gen-ts_proto.cmd --ts_proto_opt=esModuleInterop=true --ts_proto_opt=outputServices=grpc-js --ts_proto_out=. .\pages\proto\connection.proto
 ```
+
 This will produce (almost) valid types. However, we need to make a few changes to the generated files:
+
 - **NOTE**: This is only necessary when modifying the proto files. The generated files are already included in the repo.
-- Navigate to the `DatabaseConnectionClient` interface in `connection.ts`, and change the names of all the methods to have an uppercase first letter. 
+- Navigate to the `DatabaseConnectionClient` interface in `connection.ts`, and change the names of all the methods to have an uppercase first letter.
 - This is because the generated methods are all lowercase, but the `grpc-js` library expects them to be uppercase.
-- We don't need to change much else, as these are just used as type references. 
+- We don't need to change much else, as these are just used as type references.
