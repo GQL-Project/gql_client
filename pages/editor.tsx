@@ -26,8 +26,14 @@ import Image from "next/image";
 import Head from "next/head";
 import NewBranch from "./branch";
 import History from "./history";
+import Prism from "prismjs";
 import { AuthContext } from "./context";
 import Commit from "./commit";
+import Editor from "react-simple-code-editor";
+import "prismjs/themes/prism-twilight.css";
+import { highlight } from "prismjs";
+
+require("prismjs/components/prism-sql");
 
 const darkTheme = createTheme({
   palette: {
@@ -35,7 +41,7 @@ const darkTheme = createTheme({
   },
 });
 
-function Editor() {
+function QueryEditor() {
   const authContext = useContext(AuthContext);
   const [status, setStatus] = useState<any | null>(null);
   const [text, setText] = useState("");
@@ -135,7 +141,7 @@ function Editor() {
             <TableHead>
               <TableRow>
                 {data.column_names.map((name: string) => (
-                  <TableCell align="center">
+                  <TableCell key={0} align="center">
                     <b>{name}</b>
                   </TableCell>
                 ))}
@@ -143,9 +149,11 @@ function Editor() {
             </TableHead>
             <TableBody>
               {data.values.map((row: string[]) => (
-                <TableRow>
+                <TableRow key={0}>
                   {row.map((value: string) => (
-                    <TableCell align="center">{value}</TableCell>
+                    <TableCell key={0} align="center">
+                      {value}
+                    </TableCell>
                   ))}
                 </TableRow>
               ))}
@@ -212,14 +220,6 @@ function Editor() {
     }
   };
 
-  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
-  };
-
-  const handleCommit = () => {
-    router.push("/commit");
-  };
-
   return (
     authContext.loggedIn && (
       <ThemeProvider theme={darkTheme}>
@@ -259,7 +259,8 @@ function Editor() {
             </Toolbar>
           </AppBar>
           <Toolbar />
-          <TextareaAutosize
+          <Editor
+            highlight={(text) => highlight(text, Prism.languages.sql, "sql")}
             aria-label="empty textarea"
             placeholder="Enter your SQL query here"
             style={{
@@ -268,9 +269,12 @@ function Editor() {
               width: "50vw",
               minHeight: "30vh",
               marginTop: "2vh",
+              backgroundColor: "rgba(34, 34, 34, 0.85)",
+              borderRadius: "10px",
             }}
             value={text}
-            onChange={handleTextChange}
+            padding={10}
+            onValueChange={(text) => setText(text)}
           />
           {status}
           <Box>
@@ -288,4 +292,4 @@ function Editor() {
   );
 }
 
-export default Editor;
+export default QueryEditor;
