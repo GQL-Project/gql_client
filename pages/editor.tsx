@@ -262,8 +262,8 @@ function QueryEditor() {
             sx={{
               height: "50vh",
               width: "50vw",
+              marginTop: "2vh",
               overflowY: "auto",
-              overflowX: "clip",
             }}
           >
             <Editor
@@ -274,7 +274,6 @@ function QueryEditor() {
               value={text}
               padding={10}
               onValueChange={(text) => setText(text)}
-              preClassName={styles.prestyle}
             />
           </Box>
           {status}
