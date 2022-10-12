@@ -8,21 +8,20 @@ import { useContext } from "react";
 import { AuthContext } from "./context";
 import { QueryResult, UpdateResult } from "./proto/connection";
 import { get } from "http";
-import DynamicTable from "./components/dynamic_table";
+import DynamicTable, { EditableCellParams } from "./components/dynamic_table";
 import InlineEditable from "./components/inline_editable";
 
 type ColumnData = { name: string } & { type: string } & { nullable: boolean };
-const ColumnTypes = ["varchar", "smallint", "int", "timestamp", "float", "double", "boolean"];
+const ColumnTypes = ["char", "smallint", "int", "timestamp", "float", "double", "boolean"];
 
 // Editable Checkbox Cell
-// Lots of red lines, but these are fine to ignore
 const CheckBoxCell = ({
     value,
     row: { index },
     column: { id },
     updateMyData,
-}) => {
-    const onChange = e => {
+}: EditableCellParams) => {
+    const onChange = () => {
       updateMyData(index, id, !value)
     }
   
@@ -35,8 +34,8 @@ const TextBoxCell = ({
     row: { index },
     column: { id },
     updateMyData,
-}) => {
-    const onChange = e => {
+}: EditableCellParams) => {
+    const onChange = (e: any) => {
         updateMyData(index, id, e.target.value)
     }
 
@@ -48,6 +47,8 @@ const TextBoxCell = ({
                 <input
                     type="text"
                     value={value}
+                    style={{width: "8vw", fontSize: "0.9em"}}
+                    className={styles.createTableNameInput} 
                     onChange={onChange}
                 />
             </InlineEditable>
@@ -60,7 +61,6 @@ function CreateTable(props: { close: () => void }) {
 
     const [tableName, setTableName] = useState("");
     const [data, setData] = React.useState<ColumnData[]>([]);
-    const [skipPageReset, setSkipPageReset] = React.useState(false);
 
     const handleError = async (message: string) => {
         setError("Error Creating Table: " + message);
@@ -99,6 +99,11 @@ function CreateTable(props: { close: () => void }) {
         ],
         []
     )
+
+    const handleCreateNewRow = async () => {
+        data.push({name: "NULL", type: "NULL", nullable: false});
+        setData(data => [...data]);
+    };
 
     useEffect(() => {
         async function initializeTable() {
@@ -220,8 +225,6 @@ function CreateTable(props: { close: () => void }) {
   
     // This allows the table to edit the data in the table based on rowIndex and columnId
     const updateMyData = (rowIndex: number, columnId: number, value: any) => {
-        // We also turn on the flag to not reset the page
-        setSkipPageReset(true)
         setData((old) =>
             old.map((row, index) => {
             if (index === rowIndex) {
@@ -257,13 +260,16 @@ function CreateTable(props: { close: () => void }) {
                 columns={columns}
                 data={data}
                 updateMyData={updateMyData}
-                skipPageReset={skipPageReset}
             />
+
+            <Button className={styles.regularButton} sx={{align: "left", width: "30vw",}} onClick={handleCreateNewRow}>
+                Create New Attribute
+            </Button>
             
             <p className={styles.createTableErrorText}>{error}</p>
             <p className={styles.createTableSuccessText}>{successMsg}</p>
 
-            <Button className={styles.regularButton} onClick={handleCreateNewTable}>
+            <Button className={styles.button} onClick={handleCreateNewTable}>
                 Create Table
             </Button>
             <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
