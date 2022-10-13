@@ -4,9 +4,9 @@ import { useTable, usePagination, TableInstance } from 'react-table';
 
 type RowType = { index: number };
 type ColumnType = { id: string };
-export type EditableCellParams = { value: any } & { row: RowType } & { column: ColumnType } & { updateMyData: (rowIndex: number, columnId: string, value: any) => void };
+export type EditableCellParams = { value: any } & { row: RowType } & { column: ColumnType } & { updateMyData: (rowIndex: number, columnId: string, value: any, deleteRow: boolean) => void };
 
-function DynamicTable(props: { columns: any[], data: any[], updateMyData: (rowIndex: number, columnId: number, value: any) => void } ) {
+function DynamicTable(props: { columns: any[], data: any[], updateMyData: (rowIndex: number, columnId: number, value: any, deleteRow: boolean) => void } ) {
     const tableInstance: TableInstance<Object> = useTable(
         {
             columns: props.columns,

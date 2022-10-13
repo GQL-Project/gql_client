@@ -22,7 +22,7 @@ const CheckBoxCell = ({
     updateMyData,
 }: EditableCellParams) => {
     const onChange = () => {
-      updateMyData(index, id, !value)
+      updateMyData(index, id, !value, false)
     }
   
     return <input 
@@ -41,7 +41,7 @@ const TextBoxCell = ({
     updateMyData,
 }: EditableCellParams) => {
     const onChange = (e: any) => {
-        updateMyData(index, id, e.target.value)
+        updateMyData(index, id, e.target.value, false)
     }
 
     return <InlineEditable
@@ -106,10 +106,11 @@ function CreateTable(props: { close: () => void }) {
                 accessor: 'delete',
                 Cell: ({ row: { index }, updateMyData: updater }: EditableCellParams) => {
                     return <Button
+                                color="error"
                                 variant="contained"
                                 onClick={() => {
-                                    // Update the data using the magic delete string to remove the row from the table
-                                    updater(index, "", "%%$MAGIC_DELETE_STRING$%%");
+                                    // Remove the row from the data
+                                    updater(index, "", "", true);
                                 }}
                                 className={styles.createTableDeleteButton}
                             >
@@ -127,20 +128,7 @@ function CreateTable(props: { close: () => void }) {
         setData(data => [...data]);
     };
 
-    useEffect(() => {
-        async function initializeTable() {
-            //tableColumns.push({id: 0, name: "id", type: "int", nullable: false});
-            //tableColumns.push({id: 1, name: "id", type: "int", nullable: false});
-            //setCreateTableColumns(tableColumns => [...tableColumns]);
-            data.push({name: "id", type: "int", nullable: false});
-            data.push({name: "id", type: "int", nullable: false});
-            setData(data => [...data]);
-        }
-        initializeTable();
-    }, []);
-
     const handleCreateNewTable = async () => {
-        console.log(data);
         // Clear any previous errors
         clearError();
         setSuccessMessage("");
@@ -148,6 +136,18 @@ function CreateTable(props: { close: () => void }) {
         // Check that the table name is not empty
         if (tableName === "") {
             handleError("Table name cannot be empty");
+            return;
+        }
+
+        // Check that the table name does not have any spaces
+        if (tableName.includes(" ")) {
+            handleError("Table name cannot have spaces");
+            return;
+        }
+
+        // Check that there are columns to create
+        if (data.length === 0) {
+            handleError("Table must have at least one column");
             return;
         }
 
@@ -220,8 +220,6 @@ function CreateTable(props: { close: () => void }) {
         }
         query += ");";
 
-        console.log(query);
-
         // Run the create table query
         const response = await fetch("/api/update", {
             method: "POST",
@@ -246,11 +244,11 @@ function CreateTable(props: { close: () => void }) {
     };
   
     // This allows the table to edit the data in the table based on rowIndex and columnId
-    const updateMyData = (rowIndex: number, columnId: number, value: any) => {
+    const updateMyData = (rowIndex: number, columnId: number, value: any, deleteRow: boolean) => {
         setData((old) => {
 
-            // If the value is the magic delete string, then delete the row
-            if (value === "%%$MAGIC_DELETE_STRING$%%") {
+            // If we are deleting the row, remove it from the table
+            if (deleteRow == true) {
                 const newData = old.slice();
                 newData.splice(rowIndex, 1);
                 return newData;
@@ -293,15 +291,31 @@ function CreateTable(props: { close: () => void }) {
                 updateMyData={updateMyData}
             />
 
-            <Button className={styles.regularButton} sx={{align: "left", width: "30vw",}} onClick={handleCreateNewRow}>
-                Create New Attribute
+            <Button 
+                color="primary"
+                variant="contained"
+                className={styles.regularButton} 
+                sx={{
+                    width: "100%",
+                }}
+                onClick={handleCreateNewRow}
+                >
+                <b>Create New Attribute</b>
             </Button>
             
             <p className={styles.createTableErrorText}>{error}</p>
             <p className={styles.createTableSuccessText}>{successMsg}</p>
 
-            <Button className={styles.button} onClick={handleCreateNewTable}>
-                Create Table
+            <Button 
+                color="success"
+                variant="contained"
+                className={styles.regularButton} 
+                sx={{
+                    width: "60%",
+                }}
+                onClick={handleCreateNewTable}
+                >
+                <b>Create Table</b>
             </Button>
             <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
         </Box>
