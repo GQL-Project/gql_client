@@ -178,6 +178,7 @@
 
 .regularButton {
   color: white;
+  border-color: white;
   margin-top: 2vh;
   margin-bottom: 2vh;
   font-size: large;
@@ -274,6 +275,90 @@
   list-style: none;
   text-align: center;
   padding: 0;
+}
+
+.createTable {
+  text-align: center;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  border: 3px solid #ddd;
+  width: 100%;
+}
+
+.createTable td, .createTable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.createTable tr:nth-child(odd){
+    background-color: #c0c0c0;
+    color: black;
+}
+
+.createTable tr:nth-child(even){
+    background-color: #f2f2f2;
+    color: black;
+}
+
+.createTable tr:hover {background-color: rgb(147, 193, 230);}
+
+.createTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.createTableCheckbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: green;
+  color-scheme: light;
+}
+
+.createTableErrorText {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: red;
+}
+
+.createTableSuccessText {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: green;
+}
+
+.createTableNameInput {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  background-color: white;
+  font-size: 1.5rem;
+  border-radius: 5px;
+  color: black;
+}
+
+.createTableLabel {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.createTableDeleteButton {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    color: rgb(212, 72, 72);
+    background-color: red;
+}
+
+.thinSection {
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  margin-left: 0vw;
+  margin-right: 0vw;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .center {

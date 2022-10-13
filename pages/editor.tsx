@@ -25,6 +25,7 @@ import Image from "next/image";
 import Head from "next/head";
 import NewBranch from "./branch";
 import History from "./history";
+import CreateTable from "./create_table";
 import Prism from "prismjs";
 import { AuthContext } from "./context";
 import Commit from "./commit";
@@ -47,6 +48,7 @@ function QueryEditor() {
   const [open, setOpen] = useState(false);
   const [commitOpen, setCommitOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [createTableOpen, setCreateTableOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -188,6 +190,8 @@ function QueryEditor() {
   const handleCommitClose = () => setCommitOpen(false);
   const handleHistoryOpen = () => setHistoryOpen(true);
   const handleHistoryClose = () => setHistoryOpen(false);
+  const handleCreateTableOpen = () => setCreateTableOpen(true);
+  const handleCreateTableClose = () => setCreateTableOpen(false);
 
   const handleVC = async () => {
     const response = await fetch("/api/vcs", {
@@ -235,6 +239,9 @@ function QueryEditor() {
           <Modal open={historyOpen} onClose={handleHistoryClose}>
             <History />
           </Modal>
+          <Modal open={createTableOpen} onClose={handleCreateTableClose}>
+            <CreateTable close={handleCreateTableClose}/>
+          </Modal>
           <AppBar
             position="fixed"
             sx={{ background: "rgba(34, 34, 34, 0.438)" }}
@@ -248,6 +255,9 @@ function QueryEditor() {
               </Button>
               <Button color="inherit" onClick={handleBranchOpen}>
                 New Branch
+              </Button>
+              <Button color="inherit" onClick={handleCreateTableOpen}>
+                Create Table
               </Button>
               <Button color="inherit" onClick={handleCommitOpen}>
                 Commit
