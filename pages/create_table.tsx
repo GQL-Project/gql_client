@@ -101,6 +101,23 @@ function CreateTable(props: { close: () => void }) {
                 accessor: 'nullable',
                 Cell: CheckBoxCell,
             },
+            {
+                Header: 'Delete',
+                accessor: 'delete',
+                Cell: ({ row: { index }, updateMyData: updater }: EditableCellParams) => {
+                    return <Button
+                                variant="contained"
+                                onClick={() => {
+                                    // Update the data using the magic delete string to remove the row from the table
+                                    updater(index, "", "%%$MAGIC_DELETE_STRING$%%");
+                                }}
+                                className={styles.createTableDeleteButton}
+                            >
+                                Delete
+                            </Button>
+                }
+
+            }
         ],
         []
     )
@@ -230,17 +247,26 @@ function CreateTable(props: { close: () => void }) {
   
     // This allows the table to edit the data in the table based on rowIndex and columnId
     const updateMyData = (rowIndex: number, columnId: number, value: any) => {
-        setData((old) =>
-            old.map((row, index) => {
-            if (index === rowIndex) {
-                return {
-                    ...old[rowIndex],
-                    [columnId]: value,
-                }
+        setData((old) => {
+
+            // If the value is the magic delete string, then delete the row
+            if (value === "%%$MAGIC_DELETE_STRING$%%") {
+                const newData = old.slice();
+                newData.splice(rowIndex, 1);
+                return newData;
             }
-            return row
+
+            // Otherwise, update the value at the column index
+            return old.map((row, index) => {
+                if (index === rowIndex) {
+                    return {
+                        ...old[rowIndex],
+                        [columnId]: value,
+                    }
+                }
+                return row
             })
-        )
+        })
     }
 
     return authContext.loggedIn ? (
