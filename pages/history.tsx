@@ -8,14 +8,14 @@ import { useContext } from "react";
 import { AuthContext } from "./context";
 import { QueryResult, UpdateResult } from "./proto/connection";
 import { get } from "http";
+import Link from "next/link";
 
 function History() {
   const authContext = useContext(AuthContext);
   const [commitListText, setCommitListText] = useState<string[]>([]);
   const [error, setError] = useState("No Commits");
-
   const handleErrorChange = () => {
-    setError("Error Creating Branch!");
+    setError("Error Retrieving Log!");
   };
 
   useEffect(() => {
@@ -36,7 +36,9 @@ function History() {
         if (data.message.toLowerCase() === "no commits!") {
           setCommitListText([]);
         } else {
-          setCommitListText(data.message.split("-----------------------"));
+          setCommitListText(
+            data.message.split("-----------------------").slice(0, 10)
+          );
         }
       }
     }
@@ -56,6 +58,7 @@ function History() {
           ))}
         </ul>
       </Box>
+      <Link href="/log">View all logs</Link>
       <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
     </Box>
   ) : (
