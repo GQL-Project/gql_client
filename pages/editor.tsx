@@ -224,6 +224,16 @@ function QueryEditor() {
   const handleCreateTableOpen = () => setCreateTableOpen(true);
   const handleCreateTableClose = () => setCreateTableOpen(false);
 
+  //  TODO: Implement Discard changes functionality
+  const handleDiscardClick = () =>
+    setTextStatus("Discard changes not yet implemented", true);
+
+  //TODO: Implement Save functionality
+  const handleSaveQueries = () => {};
+
+  //TODO: Implement Load functionality
+  const handleLoadQueries = () => {};
+
   const handleVC = async () => {
     const response = await fetch("/api/vcs", {
       method: "POST",
@@ -304,6 +314,7 @@ function QueryEditor() {
                   <MenuItem onClick={handleHistoryOpen}>History</MenuItem>
                   <MenuItem onClick={handleBranchOpen}>Branches</MenuItem>
                   <MenuItem onClick={handleCommitOpen}>Create Commit</MenuItem>
+                  <MenuItem title="Discard all uncommitted changes" onClick={handleDiscardClick}>Discard</MenuItem>
                 </Menu>
               </div>
               <div>
@@ -327,8 +338,8 @@ function QueryEditor() {
                   TransitionComponent={Fade}
                 >
                   <MenuItem onClick={handleCreateTableOpen}>Create Table</MenuItem>
-                  {/* <MenuItem onClick={handleBranchOpen}>Branches</MenuItem> */}
-                  {/* <MenuItem onClick={handleCommitOpen}>Create Commit</MenuItem> */}
+                  <MenuItem title="Save the current queries as a file to your computer..." onClick={handleSaveQueries}>Save Queries</MenuItem>
+                  <MenuItem title="Load queries from a file on your computer..." onClick={handleLoadQueries}>Load Queries</MenuItem>
                 </Menu>
               </div>
               <Button color="inherit" onClick={handleDisconnect}>
