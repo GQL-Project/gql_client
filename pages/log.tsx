@@ -84,6 +84,15 @@ function Log() {
         </Head>
         <Button
           className={styles.button}
+          sx={{
+            color: "white",
+            marginTop: "2vh",
+            height: "10vh",
+            width: "20vw",
+            margin: "2vw",
+            fontSize: "larger",
+            backgroundColor: "rgba(34, 34, 34, 0.438)",
+          }}
           onClick={handleBack}
         >{`← Back`}</Button>
         <Box className={styles.center}>

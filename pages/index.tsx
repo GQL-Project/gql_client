@@ -33,7 +33,20 @@ function Home(): JSX.Element {
           <Image src={logo} alt="GQL Logo" height={300} objectFit="contain" />
           <h5 className={styles.title}>A version control system for SQL</h5>
           <Link href="/login">
-            <Button className={styles.button}>Continue →</Button>
+            <Button
+              className={styles.button}
+              sx={{
+                color: "white",
+                marginTop: "2vh",
+                height: "10vh",
+                width: "20vw",
+                margin: "2vw",
+                fontSize: "larger",
+                backgroundColor: "rgba(34, 34, 34, 0.438)",
+              }}
+            >
+              Continue →
+            </Button>
           </Link>
         </div>
       </Container>
