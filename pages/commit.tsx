@@ -65,7 +65,18 @@ function Commit(props: { close: () => void }) {
         onChange={handleTextChange}
       />
       <br />
-      <Button className={styles.regularButton} onClick={handleCreateNewCommit}>
+      <Button
+        className={styles.regularButton}
+        sx={{
+          color: "white",
+          borderColor: "white",
+          marginTop: "2vh",
+          marginBottom: "2vh",
+          fontSize: "large",
+          backgroundColor: "rgba(34, 34, 34, 0.438)",
+        }}
+        onClick={handleCreateNewCommit}
+      >
         Commit
       </Button>
       <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />

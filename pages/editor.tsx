@@ -240,7 +240,7 @@ function QueryEditor() {
             <History />
           </Modal>
           <Modal open={createTableOpen} onClose={handleCreateTableClose}>
-            <CreateTable close={handleCreateTableClose}/>
+            <CreateTable close={handleCreateTableClose} />
           </Modal>
           <AppBar
             position="fixed"
@@ -288,10 +288,34 @@ function QueryEditor() {
           </Box>
           {status}
           <Box>
-            <Button className={styles.button} onClick={handleInput}>
+            <Button
+              className={styles.button}
+              sx={{
+                color: "white",
+                marginTop: "2vh",
+                height: "10vh",
+                width: "20vw",
+                margin: "2vw",
+                fontSize: "larger",
+                backgroundColor: "rgba(34, 34, 34, 0.438)",
+              }}
+              onClick={handleInput}
+            >
               Execute
             </Button>
-            <Button className={styles.button} onClick={setEmptyStatus}>
+            <Button
+              className={styles.button}
+              sx={{
+                color: "white",
+                marginTop: "2vh",
+                height: "10vh",
+                width: "20vw",
+                margin: "2vw",
+                fontSize: "larger",
+                backgroundColor: "rgba(34, 34, 34, 0.438)",
+              }}
+              onClick={setEmptyStatus}
+            >
               Clear Result
             </Button>
           </Box>

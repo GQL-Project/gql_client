@@ -178,7 +178,18 @@ function Login() {
               </Box>
             </Grid>
           </Grid>
-          <Button className={styles.loginButton} onClick={handleConnect}>
+          <Button
+            className={styles.loginButton}
+            sx={{
+              color: "white",
+              marginTop: "5vh",
+              height: "10vh",
+              width: "20vw",
+              fontSize: "larger",
+              backgroundColor: "rgba(34, 34, 34, 0.438)",
+            }}
+            onClick={handleConnect}
+          >
             Login →
           </Button>
           <h3>{status}</h3>

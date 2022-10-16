@@ -88,7 +88,18 @@ function NewBranch(props: { close: () => void }) {
           ))}
         </ul>
       </Box>
-      <Button className={styles.regularButton} onClick={handleCreateNewBranch}>
+      <Button
+        className={styles.regularButton}
+        sx={{
+          color: "white",
+          borderColor: "white",
+          marginTop: "2vh",
+          marginBottom: "2vh",
+          fontSize: "large",
+          backgroundColor: "rgba(34, 34, 34, 0.438)",
+        }}
+        onClick={handleCreateNewBranch}
+      >
         Create
       </Button>
       <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
