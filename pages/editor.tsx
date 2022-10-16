@@ -15,6 +15,9 @@ import {
   TableBody,
   createTheme,
   ThemeProvider,
+  Menu,
+  MenuItem,
+  Fade,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { QueryResult, UpdateResult } from "./proto/connection";
@@ -50,6 +53,13 @@ function QueryEditor() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [createTableOpen, setCreateTableOpen] = useState(false);
   const router = useRouter();
+  //VCS Drop-down menu variables
+  const [anchorElVCS, setAnchorElVCS] = useState<null | HTMLElement>(null);
+  const openVCSMenu = Boolean(anchorElVCS);
+
+  //Table Drop-down menu variables
+  const [anchorElTable, setAnchorElTable] = useState<null | HTMLElement>(null);
+  const openTableMenu = Boolean(anchorElTable);
 
   useEffect(() => {
     if (window.localStorage.getItem("loggedIn") !== null) {
@@ -96,6 +106,27 @@ function QueryEditor() {
       }
     }
   };
+
+  //Drop-down menu functions
+  //VCS
+  const handleVCSDropDownClose = () => {
+    setAnchorElVCS(null);
+  };
+
+  const handleVCSDropDownClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElVCS(event.currentTarget);
+  };
+
+  //Table
+  const handleTableDropDownClose = () => {
+    setAnchorElTable(null);
+  };
+
+  const handleTableDropDownClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElTable(event.currentTarget);
+  };
+
+  //End Drop-down menu functions
 
   const setEmptyStatus = () => {
     setStatus(null);
@@ -240,7 +271,7 @@ function QueryEditor() {
             <History />
           </Modal>
           <Modal open={createTableOpen} onClose={handleCreateTableClose}>
-            <CreateTable close={handleCreateTableClose}/>
+            <CreateTable close={handleCreateTableClose} />
           </Modal>
           <AppBar
             position="fixed"
@@ -250,18 +281,56 @@ function QueryEditor() {
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 <Link href="/">GQL</Link>
               </Typography>
-              <Button color="inherit" onClick={handleHistoryOpen}>
-                History
-              </Button>
-              <Button color="inherit" onClick={handleBranchOpen}>
-                New Branch
-              </Button>
-              <Button color="inherit" onClick={handleCreateTableOpen}>
-                Create Table
-              </Button>
-              <Button color="inherit" onClick={handleCommitOpen}>
-                Commit
-              </Button>
+              <div>
+                <Button
+                  id="fade-button"
+                  aria-controls={openVCSMenu ? 'fade-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={openVCSMenu ? 'true' : undefined}
+                  onClick={handleVCSDropDownClick}
+                >
+                  VCS Commands
+                </Button>
+                <Menu
+                  id="fade-menu"
+                  MenuListProps={{
+                    'aria-labelledby': 'fade-button',
+                  }}
+                  anchorEl={anchorElVCS}
+                  open={openVCSMenu}
+                  onClose={handleVCSDropDownClose}
+                  TransitionComponent={Fade}
+                >
+                  <MenuItem onClick={handleHistoryOpen}>History</MenuItem>
+                  <MenuItem onClick={handleBranchOpen}>Branches</MenuItem>
+                  <MenuItem onClick={handleCommitOpen}>Create Commit</MenuItem>
+                </Menu>
+              </div>
+              <div>
+                <Button
+                  id="fade-button"
+                  aria-controls={openTableMenu ? 'fade-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={openTableMenu ? 'true' : undefined}
+                  onClick={handleTableDropDownClick}
+                >
+                  Table Commands
+                </Button>
+                <Menu
+                  id="fade-menu"
+                  MenuListProps={{
+                    'aria-labelledby': 'fade-button',
+                  }}
+                  anchorEl={anchorElTable}
+                  open={openTableMenu}
+                  onClose={handleTableDropDownClose}
+                  TransitionComponent={Fade}
+                >
+                  <MenuItem onClick={handleCreateTableOpen}>Create Table</MenuItem>
+                  {/* <MenuItem onClick={handleBranchOpen}>Branches</MenuItem> */}
+                  {/* <MenuItem onClick={handleCommitOpen}>Create Commit</MenuItem> */}
+                </Menu>
+              </div>
               <Button color="inherit" onClick={handleDisconnect}>
                 Logout
               </Button>
