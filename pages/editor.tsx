@@ -296,15 +296,19 @@ function QueryEditor() {
     openDoc.onchange = e => { 
 
       // Grabbing the file reference
-      var file = e.target.files[0]; 
-
+      const result = (e.target as HTMLInputElement).files;
+      if (result === null) {
+        setTextStatus("No file selected", true, true);
+        return;
+      }
+      var file = result[0];
       // Creating the reader
       var reader = new FileReader();
       reader.readAsText(file,'UTF-8');
 
       // Code to execute once the reader has loaded and read the file
       reader.onload = readerEvent => {
-        var fileContent = readerEvent.target.result; // Contents of user's chosen file
+        var fileContent = readerEvent?.target?.result; // Contents of user's chosen file
         console.log( fileContent );
         //setTextStatus(data.message, true);
         if (fileContent = "") {
