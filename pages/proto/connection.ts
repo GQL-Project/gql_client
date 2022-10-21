@@ -18,7 +18,7 @@ import { Timestamp } from "../../google/protobuf/timestamp";
 
 export const protobufPackage = "db_connection";
 
-/** Arguments used for queries and any updates. */
+/** Arguments used for queries and any Updates. */
 export interface QueryRequest {
   id: string;
   query: string;
@@ -54,11 +54,12 @@ export interface RowValue {
 export interface CellValue {
   col_string: string | undefined;
   col_i32: number | undefined;
-  col_time: Date | undefined;
+  col_time: Timestamp | undefined;
   col_float: number | undefined;
   col_double: number | undefined;
   col_i64: number | undefined;
   col_bool: boolean | undefined;
+  col_null: Empty | undefined;
 }
 
 function createBaseQueryRequest(): QueryRequest {
@@ -385,6 +386,7 @@ function createBaseCellValue(): CellValue {
     col_double: undefined,
     col_i64: undefined,
     col_bool: undefined,
+    col_null: undefined,
   };
 }
 
@@ -397,7 +399,7 @@ export const CellValue = {
       writer.uint32(56).int32(message.col_i32);
     }
     if (message.col_time !== undefined) {
-      Timestamp.encode(toTimestamp(message.col_time), writer.uint32(66).fork()).ldelim();
+      Timestamp.encode(message.col_time, writer.uint32(66).fork()).ldelim();
     }
     if (message.col_float !== undefined) {
       writer.uint32(77).float(message.col_float);
@@ -410,6 +412,9 @@ export const CellValue = {
     }
     if (message.col_bool !== undefined) {
       writer.uint32(144).bool(message.col_bool);
+    }
+    if (message.col_null !== undefined) {
+      Empty.encode(message.col_null, writer.uint32(154).fork()).ldelim();
     }
     return writer;
   },
@@ -428,7 +433,7 @@ export const CellValue = {
           message.col_i32 = reader.int32();
           break;
         case 8:
-          message.col_time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.col_time = Timestamp.decode(reader, reader.uint32());
           break;
         case 9:
           message.col_float = reader.float();
@@ -442,6 +447,9 @@ export const CellValue = {
         case 18:
           message.col_bool = reader.bool();
           break;
+        case 19:
+          message.col_null = Empty.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -454,11 +462,12 @@ export const CellValue = {
     return {
       col_string: isSet(object.colString) ? String(object.colString) : undefined,
       col_i32: isSet(object.colI32) ? Number(object.colI32) : undefined,
-      col_time: isSet(object.col_time) ? fromJsonTimestamp(object.col_time) : undefined,
-      col_float: isSet(object.col_float) ? Number(object.col_float) : undefined,
+      col_time: isSet(object.colTime) ? toTimestamp(fromJsonTimestamp(object.colTime)) : undefined,
+      col_float: isSet(object.colFloat) ? Number(object.colFloat) : undefined,
       col_double: isSet(object.colDouble) ? Number(object.colDouble) : undefined,
       col_i64: isSet(object.colI64) ? Number(object.colI64) : undefined,
       col_bool: isSet(object.colBool) ? Boolean(object.colBool) : undefined,
+      col_null: isSet(object.colNull) ? Empty.fromJSON(object.colNull) : undefined,
     };
   },
 
@@ -466,11 +475,12 @@ export const CellValue = {
     const obj: any = {};
     message.col_string !== undefined && (obj.colString = message.col_string);
     message.col_i32 !== undefined && (obj.colI32 = Math.round(message.col_i32));
-    message.col_time !== undefined && (obj.col_time = message.col_time.toISOString());
-    message.col_float !== undefined && (obj.col_float = message.col_float);
+    message.col_time !== undefined && (obj.colTime = message.col_time);
+    message.col_float !== undefined && (obj.colFloat = message.col_float);
     message.col_double !== undefined && (obj.colDouble = message.col_double);
     message.col_i64 !== undefined && (obj.colI64 = Math.round(message.col_i64));
     message.col_bool !== undefined && (obj.colBool = message.col_bool);
+    message.col_null !== undefined && (obj.colNull = message.col_null ? Empty.toJSON(message.col_null) : undefined);
     return obj;
   },
 
@@ -483,6 +493,9 @@ export const CellValue = {
     message.col_double = object.col_double ?? undefined;
     message.col_i64 = object.col_i64 ?? undefined;
     message.col_bool = object.col_bool ?? undefined;
+    message.col_null = (object.col_null !== undefined && object.col_null !== null)
+      ? Empty.fromPartial(object.col_null)
+      : undefined;
     return message;
   },
 };
@@ -491,7 +504,7 @@ export const CellValue = {
 export type DatabaseConnectionService = typeof DatabaseConnectionService;
 export const DatabaseConnectionService = {
   /** We can optionally have a VC query function here, or just parse that within Update */
-  connectDB: {
+  ConnectDB: {
     path: "/db_connection.DatabaseConnection/ConnectDB",
     requestStream: false,
     responseStream: false,
@@ -500,7 +513,7 @@ export const DatabaseConnectionService = {
     responseSerialize: (value: ConnectResult) => Buffer.from(ConnectResult.encode(value).finish()),
     responseDeserialize: (value: Buffer) => ConnectResult.decode(value),
   },
-  disconnectDB: {
+  DisconnectDB: {
     path: "/db_connection.DatabaseConnection/DisconnectDB",
     requestStream: false,
     responseStream: false,
@@ -509,7 +522,7 @@ export const DatabaseConnectionService = {
     responseSerialize: (value: Empty) => Buffer.from(Empty.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Empty.decode(value),
   },
-  runQuery: {
+  RunQuery: {
     path: "/db_connection.DatabaseConnection/RunQuery",
     requestStream: false,
     responseStream: false,
@@ -518,7 +531,7 @@ export const DatabaseConnectionService = {
     responseSerialize: (value: QueryResult) => Buffer.from(QueryResult.encode(value).finish()),
     responseDeserialize: (value: Buffer) => QueryResult.decode(value),
   },
-  runUpdate: {
+  RunUpdate: {
     path: "/db_connection.DatabaseConnection/RunUpdate",
     requestStream: false,
     responseStream: false,
@@ -527,7 +540,7 @@ export const DatabaseConnectionService = {
     responseSerialize: (value: UpdateResult) => Buffer.from(UpdateResult.encode(value).finish()),
     responseDeserialize: (value: Buffer) => UpdateResult.decode(value),
   },
-  runVersionControlCommand: {
+  RunVersionControlCommand: {
     path: "/db_connection.DatabaseConnection/RunVersionControlCommand",
     requestStream: false,
     responseStream: false,
@@ -540,22 +553,22 @@ export const DatabaseConnectionService = {
 
 export interface DatabaseConnectionServer extends UntypedServiceImplementation {
   /** We can optionally have a VC query function here, or just parse that within Update */
-  connectDB: handleUnaryCall<Empty, ConnectResult>;
-  disconnectDB: handleUnaryCall<ConnectResult, Empty>;
-  runQuery: handleUnaryCall<QueryRequest, QueryResult>;
-  runUpdate: handleUnaryCall<QueryRequest, UpdateResult>;
-  runVersionControlCommand: handleUnaryCall<QueryRequest, VersionControlResult>;
+  ConnectDB: handleUnaryCall<Empty, ConnectResult>;
+  DisconnectDB: handleUnaryCall<ConnectResult, Empty>;
+  RunQuery: handleUnaryCall<QueryRequest, QueryResult>;
+  RunUpdate: handleUnaryCall<QueryRequest, UpdateResult>;
+  RunVersionControlCommand: handleUnaryCall<QueryRequest, VersionControlResult>;
 }
 
 export interface DatabaseConnectionClient extends Client {
   /** We can optionally have a VC query function here, or just parse that within Update */
   ConnectDB(request: Empty, callback: (error: ServiceError | null, response: ConnectResult) => void): ClientUnaryCall;
-  connectDB(
+  ConnectDB(
     request: Empty,
     metadata: Metadata,
     callback: (error: ServiceError | null, response: ConnectResult) => void,
   ): ClientUnaryCall;
-  connectDB(
+  ConnectDB(
     request: Empty,
     metadata: Metadata,
     options: Partial<CallOptions>,
@@ -565,12 +578,12 @@ export interface DatabaseConnectionClient extends Client {
     request: ConnectResult,
     callback: (error: ServiceError | null, response: Empty) => void,
   ): ClientUnaryCall;
-  disconnectDB(
+  DisconnectDB(
     request: ConnectResult,
     metadata: Metadata,
     callback: (error: ServiceError | null, response: Empty) => void,
   ): ClientUnaryCall;
-  disconnectDB(
+  DisconnectDB(
     request: ConnectResult,
     metadata: Metadata,
     options: Partial<CallOptions>,
@@ -580,12 +593,12 @@ export interface DatabaseConnectionClient extends Client {
     request: QueryRequest,
     callback: (error: ServiceError | null, response: QueryResult) => void,
   ): ClientUnaryCall;
-  runQuery(
+  RunQuery(
     request: QueryRequest,
     metadata: Metadata,
     callback: (error: ServiceError | null, response: QueryResult) => void,
   ): ClientUnaryCall;
-  runQuery(
+  RunQuery(
     request: QueryRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
@@ -595,12 +608,12 @@ export interface DatabaseConnectionClient extends Client {
     request: QueryRequest,
     callback: (error: ServiceError | null, response: UpdateResult) => void,
   ): ClientUnaryCall;
-  runUpdate(
+  RunUpdate(
     request: QueryRequest,
     metadata: Metadata,
     callback: (error: ServiceError | null, response: UpdateResult) => void,
   ): ClientUnaryCall;
-  runUpdate(
+  RunUpdate(
     request: QueryRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
@@ -610,12 +623,12 @@ export interface DatabaseConnectionClient extends Client {
     request: QueryRequest,
     callback: (error: ServiceError | null, response: VersionControlResult) => void,
   ): ClientUnaryCall;
-  runVersionControlCommand(
+  RunVersionControlCommand(
     request: QueryRequest,
     metadata: Metadata,
     callback: (error: ServiceError | null, response: VersionControlResult) => void,
   ): ClientUnaryCall;
-  runVersionControlCommand(
+  RunVersionControlCommand(
     request: QueryRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
@@ -650,7 +663,7 @@ var globalThis: any = (() => {
   throw "Unable to locate global object";
 })();
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+type Builtin = Timestamp | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
@@ -667,7 +680,7 @@ function toTimestamp(date: Date): Timestamp {
   return { seconds, nanos };
 }
 
-function fromTimestamp(t: Timestamp): Date {
+export function fromTimestamp(t: Timestamp): Date {
   let millis = t.seconds * 1_000;
   millis += t.nanos / 1_000_000;
   return new Date(millis);

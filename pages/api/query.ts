@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { StatusObject } from "@grpc/grpc-js";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { CellValue, QueryResult, RowValue } from "../proto/connection";
+import { CellValue, fromTimestamp, QueryResult, RowValue } from "../proto/connection";
 import { connection } from "./connect";
 
 export interface QueryString {
@@ -30,22 +30,24 @@ export default function handler(
             const queryString: QueryString = {
                 column_names: response.column_names,
                 values: response.row_values.map((row: RowValue) => row.cell_values.map((cell: CellValue) => {
-                    if (cell.col_bool) {
+                    if (cell.col_bool !== undefined) {
                         return cell.col_bool.toString();
-                    } else if (cell.col_i32) {
+                    } else if (cell.col_i32 !== undefined) {
                         return cell.col_i32.toString();
-                    } else if (cell.col_i64) {
+                    } else if (cell.col_i64 !== undefined) {
                         return cell.col_i64.toString();
-                    } else if (cell.col_double) {
+                    } else if (cell.col_double !== undefined) {
                         // floating point three decimal places
                         return cell.col_double.toFixed(4);
-                    } else if (cell.col_time) {
-                        return cell.col_time.toString();
-                    } else if (cell.col_float) {
+                    } else if (cell.col_time !== undefined) {
+                        return fromTimestamp(cell.col_time).toISOString();
+                    } else if (cell.col_float !== undefined) {
                         // floating point three decimal places
                         return cell.col_float.toFixed(4);
-                    } else if (cell.col_string) {
+                    } else if (cell.col_string !== undefined) {
                         return cell.col_string;
+                    } else if (cell.col_null !== undefined) {
+                        return "NULL";
                     } else {
                         return "";
                     }
