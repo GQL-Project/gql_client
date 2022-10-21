@@ -65,7 +65,7 @@ function QueryEditor() {
 
   //Save Button Query Array
   // var query_array: string[] = [];
-  const [queryArray, setQueryArray] = useState([]);
+  const [queryArray, setQueryArray] = useState<string[]>([]);
 
   useEffect(() => {
     if (window.localStorage.getItem("loggedIn") !== null) {
