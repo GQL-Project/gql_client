@@ -35,6 +35,8 @@ import Commit from "./commit";
 import Editor from "react-simple-code-editor";
 import "prismjs/themes/prism-twilight.css";
 import { highlight } from "prismjs";
+import saveAs from "file-saver";
+import { Cookies } from "next/dist/server/web/spec-extension/cookies";
 
 require("prismjs/components/prism-sql");
 
@@ -60,6 +62,10 @@ function QueryEditor() {
   //Table Drop-down menu variables
   const [anchorElTable, setAnchorElTable] = useState<null | HTMLElement>(null);
   const openTableMenu = Boolean(anchorElTable);
+
+  //Save Button Query Array
+  // var query_array: string[] = [];
+  const [queryArray, setQueryArray] = useState([]);
 
   useEffect(() => {
     if (window.localStorage.getItem("loggedIn") !== null) {
@@ -138,10 +144,18 @@ function QueryEditor() {
       return;
     }
     if (text.toLowerCase().startsWith("select")) {
+      //Adding the query to the current session's array
+      const previousState = queryArray;
+      previousState.push(text);
+      setQueryArray(previousState);
+      //Processing Query
       handleQuery();
     } else if (text.toLowerCase().startsWith("gql")) {
       handleVC();
     } else {
+      const previousState = queryArray;
+      previousState.push(text);
+      setQueryArray(previousState);
       handleUpdate();
     }
   };
@@ -228,11 +242,39 @@ function QueryEditor() {
   const handleDiscardClick = () =>
     setTextStatus("Discard changes not yet implemented", true);
 
-  //TODO: Implement Save functionality
-  const handleSaveQueries = () => {};
+  //Save Queries Functionality
+  const handleSaveQueries = () => {
+    //Saving the file
+    //queryArray.join() turns the Array into a single string with \n as the 
+    // delimiting token into the teext file GQL_Queries.txt
+    var blob = new Blob([queryArray.join("\n")], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, "GQL_Queries.txt"); 
+  };
 
-  //TODO: Implement Load functionality
-  const handleLoadQueries = () => {};
+  //Load Queries Functionality
+  const handleLoadQueries = () => {
+    var openDoc = document.createElement('input');
+    openDoc.type = 'file';
+
+    openDoc.onchange = e => { 
+
+      // Grabbing the file reference
+      var file = e.target.files[0]; 
+
+      // Creating the reader
+      var reader = new FileReader();
+      reader.readAsText(file,'UTF-8');
+
+      // Code to execute once the reader has loaded and read the file
+      reader.onload = readerEvent => {
+        var content = readerEvent.target.result; // Contents of user's chosen file
+        console.log( content );
+        //setTextStatus(data.message, true);
+        setText(content?.toString());
+      }
+    }
+    openDoc.click();
+  };
 
   const handleVC = async () => {
     const response = await fetch("/api/vcs", {
