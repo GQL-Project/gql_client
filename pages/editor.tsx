@@ -37,6 +37,8 @@ import "prismjs/themes/prism-twilight.css";
 import { highlight } from "prismjs";
 import saveAs from "file-saver";
 import { Cookies } from "next/dist/server/web/spec-extension/cookies";
+import MergeBranch from "./merge_branch";
+import SwitchBranch from "./switch_branch";
 
 require("prismjs/components/prism-sql");
 
@@ -50,7 +52,10 @@ function QueryEditor() {
   const authContext = useContext(AuthContext);
   const [status, setStatus] = useState<any | null>(null);
   const [text, setText] = useState("");
+  const [currentBranchName, setCurrentBranchName] = useState("");
   const [open, setOpen] = useState(false);
+  const [mergeBranchOpen, setMergeBranchOpen] = useState(false);
+  const [switchBranchOpen, setSwitchBranchOpen] = useState(false);
   const [commitOpen, setCommitOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [createTableOpen, setCreateTableOpen] = useState(false);
@@ -70,6 +75,7 @@ function QueryEditor() {
   useEffect(() => {
     if (window.localStorage.getItem("loggedIn") !== null) {
       authContext.login(window.localStorage.getItem("loggedIn"));
+      refreshCurrentBranch();
     }
   }, []);
 
@@ -133,6 +139,24 @@ function QueryEditor() {
   };
 
   //End Drop-down menu functions
+
+  // Refreshes the current branch that the user is on
+  async function refreshCurrentBranch() {
+    const response = await fetch("/api/vcs", {
+      method: "POST",
+      body: JSON.stringify({
+        query: "gql branch -c",
+        id: authContext.loggedIn,
+      }),
+    });
+    if (!response.ok) {
+      setTextStatus("Could not retrieve current branch name", true, true);
+    }
+    const data: UpdateResult = await response.json();
+    if (data.message !== "") {
+      setCurrentBranchName(data.message);
+    }
+  }
 
   const setEmptyStatus = () => {
     setStatus(null);
@@ -208,6 +232,9 @@ function QueryEditor() {
         </TableContainer>
       );
       setText("");
+
+      // Refresh current branch
+      refreshCurrentBranch();
     }
   };
 
@@ -230,7 +257,11 @@ function QueryEditor() {
   };
 
   const handleBranchOpen = () => setOpen(true);
-  const handleBranchClose = () => setOpen(false);
+  const handleBranchClose = () => { setOpen(false); refreshCurrentBranch(); };
+  const handleMergeBranchOpen = () => setMergeBranchOpen(true);
+  const handleMergeBranchClose = () => { setMergeBranchOpen(false); refreshCurrentBranch(); };
+  const handleSwitchBranchOpen = () => setSwitchBranchOpen(true);
+  const handleSwitchBranchClose = () => { setSwitchBranchOpen(false); refreshCurrentBranch(); };
   const handleCommitOpen = () => setCommitOpen(true);
   const handleCommitClose = () => setCommitOpen(false);
   const handleHistoryOpen = () => setHistoryOpen(true);
@@ -327,6 +358,12 @@ function QueryEditor() {
           <Modal open={open} onClose={handleBranchClose}>
             <NewBranch close={handleBranchClose} />
           </Modal>
+          <Modal open={mergeBranchOpen} onClose={handleMergeBranchClose}>
+            <MergeBranch close={handleMergeBranchClose} />
+          </Modal>
+          <Modal open={switchBranchOpen} onClose={handleSwitchBranchClose}>
+            <SwitchBranch close={handleSwitchBranchClose} />
+          </Modal>
           <Modal open={commitOpen} onClose={handleCommitClose}>
             <Commit close={handleCommitClose} />
           </Modal>
@@ -365,7 +402,9 @@ function QueryEditor() {
                   TransitionComponent={Fade}
                 >
                   <MenuItem onClick={handleHistoryOpen}>History</MenuItem>
-                  <MenuItem onClick={handleBranchOpen}>Branches</MenuItem>
+                  <MenuItem onClick={handleBranchOpen}>Create Branch</MenuItem>
+                  <MenuItem onClick={handleSwitchBranchOpen}>Switch Branch</MenuItem>
+                  <MenuItem onClick={handleMergeBranchOpen}>Merge Branches</MenuItem>
                   <MenuItem onClick={handleCommitOpen}>Create Commit</MenuItem>
                   <MenuItem title="Discard all uncommitted changes" onClick={handleDiscardClick}>Discard</MenuItem>
                 </Menu>
@@ -419,6 +458,11 @@ function QueryEditor() {
               onValueChange={(text) => setText(text)}
             />
           </Box>
+          <div
+            className={styles.currentBranchText}
+            >
+                Current Branch: {currentBranchName}
+          </div>
           {status}
           <Box>
             <Button
