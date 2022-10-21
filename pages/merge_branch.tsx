@@ -134,8 +134,7 @@ function MergeBranch(props: { close: () => void }) {
               <Input
                   placeholder={'Merge Commit Message...'}
                   onChange={handleCmtMsgChange}
-                  >
-              </Input>
+                  />
           </div>
       </form>
 
