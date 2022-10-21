@@ -15,6 +15,9 @@ import {
   TableBody,
   createTheme,
   ThemeProvider,
+  Menu,
+  MenuItem,
+  Fade,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { QueryResult, UpdateResult } from "./proto/connection";
@@ -32,6 +35,8 @@ import Commit from "./commit";
 import Editor from "react-simple-code-editor";
 import "prismjs/themes/prism-twilight.css";
 import { highlight } from "prismjs";
+import saveAs from "file-saver";
+import { Cookies } from "next/dist/server/web/spec-extension/cookies";
 
 require("prismjs/components/prism-sql");
 
@@ -50,6 +55,17 @@ function QueryEditor() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [createTableOpen, setCreateTableOpen] = useState(false);
   const router = useRouter();
+  //VCS Drop-down menu variables
+  const [anchorElVCS, setAnchorElVCS] = useState<null | HTMLElement>(null);
+  const openVCSMenu = Boolean(anchorElVCS);
+
+  //Table Drop-down menu variables
+  const [anchorElTable, setAnchorElTable] = useState<null | HTMLElement>(null);
+  const openTableMenu = Boolean(anchorElTable);
+
+  //Save Button Query Array
+  // var query_array: string[] = [];
+  const [queryArray, setQueryArray] = useState([]);
 
   useEffect(() => {
     if (window.localStorage.getItem("loggedIn") !== null) {
@@ -97,6 +113,27 @@ function QueryEditor() {
     }
   };
 
+  //Drop-down menu functions
+  //VCS
+  const handleVCSDropDownClose = () => {
+    setAnchorElVCS(null);
+  };
+
+  const handleVCSDropDownClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElVCS(event.currentTarget);
+  };
+
+  //Table
+  const handleTableDropDownClose = () => {
+    setAnchorElTable(null);
+  };
+
+  const handleTableDropDownClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElTable(event.currentTarget);
+  };
+
+  //End Drop-down menu functions
+
   const setEmptyStatus = () => {
     setStatus(null);
   };
@@ -107,10 +144,18 @@ function QueryEditor() {
       return;
     }
     if (text.toLowerCase().startsWith("select")) {
+      //Adding the query to the current session's array
+      const previousState = queryArray;
+      previousState.push(text);
+      setQueryArray(previousState);
+      //Processing Query
       handleQuery();
     } else if (text.toLowerCase().startsWith("gql")) {
       handleVC();
     } else {
+      const previousState = queryArray;
+      previousState.push(text);
+      setQueryArray(previousState);
       handleUpdate();
     }
   };
@@ -193,6 +238,44 @@ function QueryEditor() {
   const handleCreateTableOpen = () => setCreateTableOpen(true);
   const handleCreateTableClose = () => setCreateTableOpen(false);
 
+  //  TODO: Implement Discard changes functionality
+  const handleDiscardClick = () =>
+    setTextStatus("Discard changes not yet implemented", true);
+
+  //Save Queries Functionality
+  const handleSaveQueries = () => {
+    //Saving the file
+    //queryArray.join() turns the Array into a single string with \n as the 
+    // delimiting token into the teext file GQL_Queries.txt
+    var blob = new Blob([queryArray.join("\n")], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, "GQL_Queries.txt"); 
+  };
+
+  //Load Queries Functionality
+  const handleLoadQueries = () => {
+    var openDoc = document.createElement('input');
+    openDoc.type = 'file';
+
+    openDoc.onchange = e => { 
+
+      // Grabbing the file reference
+      var file = e.target.files[0]; 
+
+      // Creating the reader
+      var reader = new FileReader();
+      reader.readAsText(file,'UTF-8');
+
+      // Code to execute once the reader has loaded and read the file
+      reader.onload = readerEvent => {
+        var content = readerEvent.target.result; // Contents of user's chosen file
+        console.log( content );
+        //setTextStatus(data.message, true);
+        setText(content?.toString());
+      }
+    }
+    openDoc.click();
+  };
+
   const handleVC = async () => {
     const response = await fetch("/api/vcs", {
       method: "POST",
@@ -250,18 +333,57 @@ function QueryEditor() {
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 <Link href="/">GQL</Link>
               </Typography>
-              <Button color="inherit" onClick={handleHistoryOpen}>
-                History
-              </Button>
-              <Button color="inherit" onClick={handleBranchOpen}>
-                New Branch
-              </Button>
-              <Button color="inherit" onClick={handleCreateTableOpen}>
-                Create Table
-              </Button>
-              <Button color="inherit" onClick={handleCommitOpen}>
-                Commit
-              </Button>
+              <div>
+                <Button
+                  id="fade-button"
+                  aria-controls={openVCSMenu ? 'fade-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={openVCSMenu ? 'true' : undefined}
+                  onClick={handleVCSDropDownClick}
+                >
+                  VCS Commands
+                </Button>
+                <Menu
+                  id="fade-menu"
+                  MenuListProps={{
+                    'aria-labelledby': 'fade-button',
+                  }}
+                  anchorEl={anchorElVCS}
+                  open={openVCSMenu}
+                  onClose={handleVCSDropDownClose}
+                  TransitionComponent={Fade}
+                >
+                  <MenuItem onClick={handleHistoryOpen}>History</MenuItem>
+                  <MenuItem onClick={handleBranchOpen}>Branches</MenuItem>
+                  <MenuItem onClick={handleCommitOpen}>Create Commit</MenuItem>
+                  <MenuItem title="Discard all uncommitted changes" onClick={handleDiscardClick}>Discard</MenuItem>
+                </Menu>
+              </div>
+              <div>
+                <Button
+                  id="fade-button"
+                  aria-controls={openTableMenu ? 'fade-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={openTableMenu ? 'true' : undefined}
+                  onClick={handleTableDropDownClick}
+                >
+                  Table Commands
+                </Button>
+                <Menu
+                  id="fade-menu"
+                  MenuListProps={{
+                    'aria-labelledby': 'fade-button',
+                  }}
+                  anchorEl={anchorElTable}
+                  open={openTableMenu}
+                  onClose={handleTableDropDownClose}
+                  TransitionComponent={Fade}
+                >
+                  <MenuItem onClick={handleCreateTableOpen}>Create Table</MenuItem>
+                  <MenuItem title="Save the current queries as a file to your computer..." onClick={handleSaveQueries}>Save Queries</MenuItem>
+                  <MenuItem title="Load queries from a file on your computer..." onClick={handleLoadQueries}>Load Queries</MenuItem>
+                </Menu>
+              </div>
               <Button color="inherit" onClick={handleDisconnect}>
                 Logout
               </Button>
