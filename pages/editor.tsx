@@ -244,11 +244,17 @@ function QueryEditor() {
 
   //Save Queries Functionality
   const handleSaveQueries = () => {
+    //Checking if there have been any queries
+    if (queryArray.length === 0) {
+      setTextStatus("No queries have been run so far", true, true);
+      return;
+    }
+
     //Saving the file
     //queryArray.join() turns the Array into a single string with \n as the 
     // delimiting token into the teext file GQL_Queries.txt
     var blob = new Blob([queryArray.join("\n")], {type: "text/plain;charset=utf-8"});
-    saveAs(blob, "GQL_Queries.txt"); 
+    saveAs(blob, "GQL_Queries.txt");
   };
 
   //Load Queries Functionality
@@ -267,10 +273,15 @@ function QueryEditor() {
 
       // Code to execute once the reader has loaded and read the file
       reader.onload = readerEvent => {
-        var content = readerEvent.target.result; // Contents of user's chosen file
-        console.log( content );
+        var fileContent = readerEvent.target.result; // Contents of user's chosen file
+        console.log( fileContent );
         //setTextStatus(data.message, true);
-        setText(content?.toString());
+        if (fileContent = "") {
+          setTextStatus("File is empty", true, true);
+        }
+        else {
+          setText(fileContent?.toString());
+        }
       }
     }
     openDoc.click();
