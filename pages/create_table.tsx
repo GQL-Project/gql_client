@@ -232,7 +232,10 @@ function CreateTable(props: { close: () => void }) {
     let query = "CREATE TABLE " + tableName + " (";
     for (let i = 0; i < data.length; i++) {
       query += data[i].name.trim() + " " + data[i].type.trim();
-      // TODO: add support for null values
+      
+      if (data[i].nullable) {
+        query += " NULL";
+      }
 
       if (i < data.length - 1) {
         query += ", ";

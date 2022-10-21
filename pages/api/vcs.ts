@@ -16,7 +16,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     function (err: StatusObject | null, response: UpdateResult) {
       if (err) {
         console.log("VCS Error: " + err.details);
-        res.status(500).send(err.details);
+        res.status(500).send({ message: err.details });
         return;
       }
       console.log("RunVCS: Update Returned!: ", response);
