@@ -1,4 +1,4 @@
-UI Test in Editor Page
+Load Button Test in Editor Page
 
 BEFORE YOU BEGIN
     1. Press "Continue"
@@ -8,12 +8,9 @@ BEFORE YOU BEGIN
     5. You should be in the editor page now
 
 Testing for the Error Message after clicking the "Save" Button
-    1. Click on the "Table Commands" button
-    2. Click the "Save" button in the drop-down menu that appears
-    3. Check if the error message is displayed
-    4. Check if the error message says "No queries have been run so far" in RED
+    1. TODO
 
-Testing for Correct File created after clicking the "Save" Button with 1 query
+Testing for queries loaded after clicking the "Load" Button with 1 query
     1. Click on the Editor.
     2. Type the following command into the editor:
         CREATE TABLE Persons (
@@ -39,9 +36,23 @@ Testing for Correct File created after clicking the "Save" Button with 1 query
             City varchar(255),
             Country varchar(255)
         );
+    9. Delete the text in the editor
+    10. Click the "Load" button
+    11. A dialog box should open, prompting the user to choose a file.
+    12. Navigate to the Downloads folder and select GQL_Queries.txt that was created BEFORE
+    13. Click "Open"
+    14. The commands listed in the file should now be displayed in the editor:
+        CREATE TABLE Persons (
+            PersonID int,
+            FirstName varchar(255),
+            LastName varchar(255),
+            Address varchar(255),
+            City varchar(255),
+            Country varchar(255)
+        );
 
-Testing for Correct File created after clicking the "Save" Button with multiple queries run separately.
-    1. 1. Click on the Editor.
+Testing for queries loaded after clicking the "Load" Button with multiple queries
+    1. Click on the Editor.
     2. Type the following command into the editor:
         CREATE TABLE Persons (
             PersonID int,
@@ -55,13 +66,28 @@ Testing for Correct File created after clicking the "Save" Button with multiple 
     4. There should be a success message stating "Table created: Persons" in CYAN.
     5. Type the following command into the editor:
         SELECT * FROM Persons;
-    6. There should be a table displayed with the columns: FirstName, LastName, 
-        Address, City, Country with no data in each column.
-    7. Click the "Save" Button
+    6. A table should be displayed with the following columns: FirstName, LastName,
+        Address, City, Country with no data in any columns.
+    7. Click the "Save" button.
     8. The result from the query should not disappear. There should be a file created in the 
         Downloads directory of the machine created called GQL_Queries.txt
     9. Open the file
-    10. The file should contain the follwing text:
+    10. The file should contain the queries run in earlier steps:
+        CREATE TABLE Persons (
+            PersonID int,
+            FirstName varchar(255),
+            LastName varchar(255),
+            Address varchar(255),
+            City varchar(255),
+            Country varchar(255)
+        );
+        SELECT * FROM Persons;
+    11. Delete the text in the editor
+    12. Click the "Load" button
+    13. A dialog box should open, prompting the user to choose a file.
+    14. Navigate to the Downloads folder and select GQL_Queries.txt that was created BEFORE
+    15. Click "Open"
+    16. The commands listed in the file should now be displayed in the editor:
         CREATE TABLE Persons (
             PersonID int,
             FirstName varchar(255),
@@ -72,12 +98,9 @@ Testing for Correct File created after clicking the "Save" Button with multiple 
         );
         SELECT * FROM Persons;
 
-Testing for Correct File created after clicking the "Save" Button with subqueries.
-//TODO: Complete test case once subqueries are implemented
-
-Testing for Error Message generated after clicking the "Save" Button after re-login
-    1. Click on the Editor.
-    2. Type the following command into the editor:
+Testing for multiple queries loaded after clicking the "Load" Button with custom file
+    1. Open Notepad
+    2. Type the following command into the text file:
         CREATE TABLE Persons (
             PersonID int,
             FirstName varchar(255),
@@ -86,13 +109,14 @@ Testing for Error Message generated after clicking the "Save" Button after re-lo
             City varchar(255),
             Country varchar(255)
         );
-    3. Click the "Execute" button.
-    4. There should be a success message stating "Table created: Persons" in CYAN.
-    5. Click the "Save" button.
-    6. The result from the query should not disappear. There should be a file created in the 
-        Downloads directory of the machine created called GQL_Queries.txt
-    7. Open the file
-    8. The file should contain the query run in step 2:
+        SELECT * FROM Persons;
+    3. Save the file as "Custom.txt" on the machine's Desktop
+    4. Navigate back to the Internet browser
+    5. Click the "Load" Button
+    6. A dialog box should open, prompting the user to choose a file.
+    7. Navigate to the Desktop in the dialog box and click on Custom.txt
+    8. Click "Open"
+    9. The commands listed in the file should now be displayed in the editor:
         CREATE TABLE Persons (
             PersonID int,
             FirstName varchar(255),
@@ -101,12 +125,5 @@ Testing for Error Message generated after clicking the "Save" Button after re-lo
             City varchar(255),
             Country varchar(255)
         );
-    9. Click the "Logout" button
-    10. Press "Continue"
-    11. Type "123" in Username
-    12. Type "123" in Password
-    13. Press "Login"
-    14. You should be in the editor page now
-    15. Click the "Save" button
-    16. Check if the error message is displayed
-    17. Check if the error message says "No queries have been run so far" in RED
+        SELECT * FROM Persons; 
+    

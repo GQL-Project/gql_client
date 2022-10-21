@@ -1,0 +1,112 @@
+Save Button Test in Editor Page
+
+BEFORE YOU BEGIN
+    1. Press "Continue"
+    2. Type "123" in Username
+    3. Type "123" in Password
+    4. Press "Login"
+    5. You should be in the editor page now
+
+Testing for the Error Message after clicking the "Save" Button
+    1. Click on the "Table Commands" button
+    2. Click the "Save" button in the drop-down menu that appears
+    3. Check if the error message is displayed
+    4. Check if the error message says "No queries have been run so far" in RED
+
+Testing for Correct File created after clicking the "Save" Button with 1 query
+    1. Click on the Editor.
+    2. Type the following command into the editor:
+        CREATE TABLE Persons (
+            PersonID int,
+            FirstName varchar(255),
+            LastName varchar(255),
+            Address varchar(255),
+            City varchar(255),
+            Country varchar(255)
+        );
+    3. Click the "Execute" button.
+    4. There should be a success message stating "Table created: Persons" in CYAN.
+    5. Click the "Save" button.
+    6. The result from the query should not disappear. There should be a file created in the 
+        Downloads directory of the machine created called GQL_Queries.txt
+    7. Open the file
+    8. The file should contain the query run in step 2:
+        CREATE TABLE Persons (
+            PersonID int,
+            FirstName varchar(255),
+            LastName varchar(255),
+            Address varchar(255),
+            City varchar(255),
+            Country varchar(255)
+        );
+
+Testing for Correct File created after clicking the "Save" Button with multiple queries run separately.
+    1. 1. Click on the Editor.
+    2. Type the following command into the editor:
+        CREATE TABLE Persons (
+            PersonID int,
+            FirstName varchar(255),
+            LastName varchar(255),
+            Address varchar(255),
+            City varchar(255),
+            Country varchar(255)
+        );
+    3. Click the "Execute" button.
+    4. There should be a success message stating "Table created: Persons" in CYAN.
+    5. Type the following command into the editor:
+        SELECT * FROM Persons;
+    6. There should be a table displayed with the columns: FirstName, LastName, 
+        Address, City, Country with no data in each column.
+    7. Click the "Save" Button
+    8. The result from the query should not disappear. There should be a file created in the 
+        Downloads directory of the machine created called GQL_Queries.txt
+    9. Open the file
+    10. The file should contain the follwing text:
+        CREATE TABLE Persons (
+            PersonID int,
+            FirstName varchar(255),
+            LastName varchar(255),
+            Address varchar(255),
+            City varchar(255),
+            Country varchar(255)
+        );
+        SELECT * FROM Persons;
+
+Testing for Correct File created after clicking the "Save" Button with subqueries.
+//TODO: Complete test case once subqueries are implemented
+
+Testing for Error Message generated after clicking the "Save" Button after re-login
+    1. Click on the Editor.
+    2. Type the following command into the editor:
+        CREATE TABLE Persons (
+            PersonID int,
+            FirstName varchar(255),
+            LastName varchar(255),
+            Address varchar(255),
+            City varchar(255),
+            Country varchar(255)
+        );
+    3. Click the "Execute" button.
+    4. There should be a success message stating "Table created: Persons" in CYAN.
+    5. Click the "Save" button.
+    6. The result from the query should not disappear. There should be a file created in the 
+        Downloads directory of the machine created called GQL_Queries.txt
+    7. Open the file
+    8. The file should contain the query run in step 2:
+        CREATE TABLE Persons (
+            PersonID int,
+            FirstName varchar(255),
+            LastName varchar(255),
+            Address varchar(255),
+            City varchar(255),
+            Country varchar(255)
+        );
+    9. Click the "Logout" button
+    10. Press "Continue"
+    11. Type "123" in Username
+    12. Type "123" in Password
+    13. Press "Login"
+    14. You should be in the editor page now
+    15. Click the "Save" button
+    16. Check if the error message is displayed
+    17. Check if the error message says "No queries have been run so far" in RED
