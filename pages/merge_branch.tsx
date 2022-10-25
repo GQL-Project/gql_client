@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import { TextareaAutosize, Button, Box, Grid, Select, SelectChangeEvent, Input, MenuItem } from "@mui/material";
+import { TextareaAutosize, Button, Box, Grid, Select, SelectChangeEvent, Input, MenuItem, Checkbox } from "@mui/material";
 import { useState } from "react";
 import logo from "../public/logo.png";
 import Image from "next/image";
@@ -15,6 +15,8 @@ function MergeBranch(props: { close: () => void }) {
   const [cmtMsg, setCmtMsg] = useState("");
   const [srcBranch, setSrcBranch] = useState("");
   const [destBranch, setDestBranch] = useState("");
+  const [doDeleteSrcBranch, setDoDeleteSrcBranch] = useState(false);
+  const [conflictResolution, setConflictResolution] = useState("clean");
   const [branchListText, setBranchListText] = useState<string[]>([]);
   const [error, setError] = useState("");
   
@@ -28,6 +30,14 @@ function MergeBranch(props: { close: () => void }) {
 
   const handleCmtMsgChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCmtMsg(event.target.value);
+  };
+
+  const handleConflictResolutionChange = (event: SelectChangeEvent) => {
+    setConflictResolution(event.target.value);
+  };
+
+  const handleDoDeleteSrcBranchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDoDeleteSrcBranch(event.target.checked);
   };
   
   const handleErrorChange = (text: string) => {
@@ -74,9 +84,27 @@ function MergeBranch(props: { close: () => void }) {
         return;
     }
 
+    if (srcBranch === destBranch) {
+        handleErrorChange("Source and destination branches cannot be the same");
+        return;
+    }
+
+    // Check the flag arguments
+    let flagArgs = "";
+    if (doDeleteSrcBranch) {
+      flagArgs += " -d";
+    }
+
+    if (conflictResolution == "ours" || conflictResolution == "theirs") {
+      flagArgs += " -s " + conflictResolution;
+    } else if (conflictResolution != "clean") {
+      handleErrorChange("Invalid conflict resolution");
+      return;
+    }
+
     let positionalArgs = srcBranch + " " + destBranch + " " + cmtMsg + " ";
 
-    let merge_query = "gql merge_branch " + positionalArgs;
+    let merge_query = "gql merge_branch " + positionalArgs.trim() + flagArgs;
     
     const response = await fetch("/api/vcs", {
       method: "POST",
@@ -127,6 +155,32 @@ function MergeBranch(props: { close: () => void }) {
                   ))}
               </Select>
           </div>
+
+          <br></br>
+
+          <div>
+              <label className={styles.mergeBranchesLabel}>Conflict Resolution: </label>
+
+              <Select
+                  defaultValue="clean"
+                  onChange={handleConflictResolutionChange}
+                  >
+                  <MenuItem value="clean">No Conflicts</MenuItem>
+                  <MenuItem value="ours">ours</MenuItem>
+                  <MenuItem value="theirs">theirs</MenuItem>
+              </Select>
+          </div>
+
+          <div>
+              <label className={styles.mergeBranchesLabel}>Delete Source Branch: </label>
+
+              <Checkbox
+                  defaultChecked={false}
+                  onChange={handleDoDeleteSrcBranchChange}
+                  />
+          </div>
+
+          <br></br>
 
           <div>
               <label className={styles.mergeBranchesLabel}>Merge Commit Message: </label>
