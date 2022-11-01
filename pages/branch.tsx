@@ -28,7 +28,7 @@ function NewBranch(props: { close: () => void }) {
       const response = await fetch("/api/vcs", {
         method: "POST",
         body: JSON.stringify({
-          query: "gql branch -l",
+          query: "gql list",
           id: authContext.loggedIn,
         }),
       });
@@ -38,7 +38,12 @@ function NewBranch(props: { close: () => void }) {
       }
       const data: UpdateResult = await response.json();
       if (data.message !== "") {
-        setBranchListText(data.message.split(","));
+        let splitMsg = data.message.split("\n");
+        splitMsg = splitMsg.slice(0, -1);
+        for (let i = 0; i < splitMsg.length; i++) {
+            splitMsg[i] = splitMsg[i].trim().replace("*", "");
+        }
+        setBranchListText(splitMsg);
       }
     }
     getBranchNames();

@@ -145,7 +145,7 @@ function QueryEditor() {
     const response = await fetch("/api/vcs", {
       method: "POST",
       body: JSON.stringify({
-        query: "gql branch -c",
+        query: "gql list --current",
         id: authContext.loggedIn,
       }),
     });
