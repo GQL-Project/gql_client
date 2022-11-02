@@ -41,9 +41,6 @@ function Log() {
     if (window.localStorage.getItem("loggedIn") !== null) {
       authContext.login(window.localStorage.getItem("loggedIn"));
     }
-  }, []);
-
-  useEffect(() => {
     async function getLogs() {
       const response = await fetch("/api/vcs", {
         method: "POST",
@@ -86,7 +83,7 @@ function Log() {
           className={styles.button}
           sx={{
             color: "white",
-            marginTop: "2vh",
+            marginTop: "1vh",
             height: "10vh",
             width: "20vw",
             margin: "2vw",
@@ -134,6 +131,7 @@ function Log() {
           })}
         </Stack>
         <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
+        <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
       </Box>
     )
   );

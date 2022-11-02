@@ -368,21 +368,21 @@
 }
 
 .mergeBranchesLabel {
-    font-size: 1.2rem;
-    display: inline-block;
-    width: 15vw;
-    color: white;
-    margin-right: 1vw;
+  font-size: 1.2rem;
+  display: inline-block;
+  width: 15vw;
+  color: white;
+  margin-right: 1vw;
 }
 
 .currentBranchText {
-    font-size: 0.8rem;
-    margin-right: 10px;
-    text-align: right;
-    width: 50vw;
-    margin-top: -2px;
-    padding-top: 0px;
-    color: white;
+  font-size: 0.8rem;
+  margin-right: 10px;
+  text-align: right;
+  width: 50vw;
+  margin-top: -2px;
+  padding-top: 0px;
+  color: white;
 }
 
 .thinSection {
@@ -404,6 +404,22 @@
   flex-direction: column;
 }
 
+.commitPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.5rem;
+  text-align: center;
+  flex-direction: column;
+  white-space: pre-line;
+}
 .editor {
   font-size: 1.5rem;
   border-radius: 5px;
