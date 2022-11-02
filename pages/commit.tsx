@@ -12,11 +12,37 @@ import { get } from "http";
 function Commit(props: { close: () => void }) {
   const authContext = useContext(AuthContext);
   const [text, setText] = useState("");
+  const [status, setStatus] = useState("");
   const [error, setError] = useState("Enter Commit Message here ...");
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
   };
+
+  useEffect(() => {
+    if (window.localStorage.getItem("loggedIn") !== null) {
+      authContext.login(window.localStorage.getItem("loggedIn"));
+    }
+    async function getStatus() {
+      const response = await fetch("/api/vcs", {
+        method: "POST",
+        body: JSON.stringify({
+          query: "gql status",
+          id: authContext.loggedIn,
+        }),
+      });
+      if (!response.ok) {
+        setStatus("Error retrieving status");
+      }
+      const data: UpdateResult = await response.json();
+      console.log(data);
+
+      if (data.message !== "") {
+        setStatus(data.message.split("\n").join("\n"));
+      }
+    }
+    getStatus();
+  }, [authContext.loggedIn]);
 
   const handleErrorChange = () => {
     setError("Error Creating Commit!");
@@ -50,20 +76,25 @@ function Commit(props: { close: () => void }) {
   return authContext.loggedIn ? (
     <Box className={styles.modal}>
       <h1>Enter Commit Message</h1>
-      <TextareaAutosize
-        placeholder={error}
-        style={{
-          fontSize: "1.0rem",
-          height: "10vh",
-          width: "30vw",
-          minHeight: "30vh",
-          marginTop: "2vh",
-          marginLeft: "2vh",
-          marginRight: "2vh",
-        }}
-        value={text}
-        onChange={handleTextChange}
-      />
+      <Box className={styles.commitPage}>
+        <Box className={styles.status}>
+          <h2>{status}</h2>
+        </Box>
+        <TextareaAutosize
+          placeholder={error}
+          style={{
+            fontSize: "1.0rem",
+            height: "10vh",
+            width: "30vw",
+            minHeight: "30vh",
+            marginTop: "2vh",
+            marginLeft: "2vh",
+            marginRight: "2vh",
+          }}
+          value={text}
+          onChange={handleTextChange}
+        />
+      </Box>
       <br />
       <Button
         className={styles.regularButton}
