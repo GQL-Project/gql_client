@@ -48,7 +48,7 @@ function Log() {
       const response = await fetch("/api/vcs", {
         method: "POST",
         body: JSON.stringify({
-          query: "gql log -json",
+          query: "gql log -j",
           id: authContext.loggedIn,
         }),
       });
