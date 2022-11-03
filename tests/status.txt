@@ -1,0 +1,61 @@
+User Story 11
+
+BEFORE YOU BEGIN
+    1. Press "Continue"
+    2. Type "123" in Username
+    3. Type "123" in Password
+    4. Press "Login"
+    5. You should be in the editor page now
+
+Testing for status with no uncommitted changes
+    1. In the top navbar of the screen, click on the dropdown menu called "VCS Commands". Click on the option "Create Commit".
+    2. You should see the following message on the left of the commit pop-up:
+          On branch main
+          Your branch is up to date with main
+
+          Nothing to commit, working tree clean
+
+Testing for status with uncommitted changes
+    1. Type "CREATE TABLE People(id int, firstname char(20), lastname char(20), age int);" in the Text Box that says "Enter your SQL query here" in the placeholder
+    2. Type "INSERT INTO People VALUES (20, 'Aryan', 'Wadhwani', 10);" in the Text Box on the editor screen
+    3. Type "INSERT INTO People VALUES (20, 'Shayne', 'Marques', 10);" in the Text Box on the editor screen
+    4. In the top navbar of the screen, click on the dropdown menu called "VCS Commands". Click on the option "Create Commit".
+    5. In the commit pop-up, you should see the following message on the left:
+          On branch main
+          Your branch is up to date with main
+
+          You have 3 uncommitted changes:
+
+          CREATE TABLE People(id int, firstname char(20), lastname char(20), age int);
+          INSERT INTO People VALUES (20, 'Aryan', 'Wadhwani', 10);
+          INSERT INTO People VALUES (20, 'Shayne', 'Marques', 10);
+
+Testing for status with user's branch behind actual branch 
+    1. Type "CREATE TABLE People(id int, firstname char(20), lastname char(20), age int);" in the Text Box that says "Enter your SQL query here" in the placeholder
+    2. Type "INSERT INTO People VALUES (20, 'Aryan', 'Wadhwani', 10);" in the Text Box on the editor screen
+    3. Type "INSERT INTO People VALUES (20, 'Shayne', 'Marques', 10);" in the Text Box on the editor screen
+    4. In the top navbar of the screen, click on the dropdown menu called "VCS Commands". Click on the option "Create Commit".
+    5. In the commit pop-up, enter any arbitrary string as the commit message and click commit.
+    
+    6. In another browser, open a new web client. Enter the username "456" and password "456" and click "Login". You should now be on the Editor screen.
+    7. Type "INSERT INTO People VALUES (20, 'Umang', 'Sharma', 10);" in the Text Box on the editor screen
+    
+    8. Switch back to the first client window.
+    9. Type "INSERT INTO People VALUES (20, 'Ryan', 'Hawks', 10);" in the Text Box on the editor screen
+    10. In the top navbar of the screen, click on the dropdown menu called "VCS Commands". Click on the option "Create Commit".
+    11. In the commit pop-up, enter any arbitrary string as the commit message and click commit.
+    12. Type "INSERT INTO People VALUES (20, 'June', 'Seo', 10);" in the Text Box on the editor screen
+    13. In the top navbar of the screen, click on the dropdown menu called "VCS Commands". Click on the option "Create Commit".
+    14. In the commit pop-up, enter any arbitrary string as the commit message and click commit.
+    
+    15. Switch back to the second client
+    16. In the top navbar of the screen, click on the dropdown menu called "VCS Commands". Click on the option "Create Commit".
+    17. On the left of the commit pop-up you should be able to see the following message:
+            On branch main
+            Your branch is behind main by 2 commits
+
+            You have 1 uncommitted changes:
+
+            INSERT INTO People VALUES (20, 'Umang', 'Sharma', 10);
+
+
