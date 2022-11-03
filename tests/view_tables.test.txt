@@ -1,0 +1,36 @@
+UI Test in Editor Page
+
+BEFORE YOU BEGIN
+    1. Press "Continue"
+    2. Type "123" in Username
+    3. Type "123" in Password
+    4. Press "Login"
+    5. Have the back end running with "cargo run"
+    6. You should be in the editor page now
+
+Testing view tables with no tables in the branch
+    1. Press "VCS COMMANDS"
+    2. Press "View Tables"
+    3. You should see a message saying "No tables in this branch"
+
+Testing view tables with tables in the branch
+    1. Type the following code into the editor
+ 		CREATE TABLE Persons (
+    			PersonID int
+		);
+    2. Press "VCS COMMANDS"
+    3. Press "View Tables"
+    4. You should see a table with the name "Persons" with its schemas
+    and type of the schemas
+
+Testing view table with multiple table in the branch
+    1. Type the following code into the editor
+ 		CREATE TABLE Persons (
+    			PersonID int
+		);
+    2. Repeat step 1 five times with different names
+    3. Press "VCS COMMANDS"
+    4. Press "View Tables"
+    5. You should see a table with the name "Persons" with its schemas
+    and type of the schemas
+    6. You should be a scroll bar to see all of the possible tables
