@@ -311,6 +311,13 @@ function QueryEditor() {
       var reader = new FileReader();
       reader.readAsText(file,'UTF-8');
 
+      // Error checking the file
+      var extensionCheck = file.name.endsWith(".txt");
+      if (!extensionCheck) {
+        setTextStatus("Invalid file type! Only files that end with '.txt' are accepted.", true, true);
+        return;
+      }
+
       // Code to execute once the reader has loaded and read the file
       reader.onload = readerEvent => {
         var fileContent = readerEvent?.target?.result; // Contents of user's chosen file
