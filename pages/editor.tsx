@@ -275,7 +275,7 @@ function QueryEditor() {
   const handleRevertOpen = () => setRevertOpen(true);
   const handleRevertClose = () => setRevertOpen(false);
 
-  //Implement Discard changes functionality
+  // Discard button functionality
   const handleDiscardClick = async () => {
     const response = await fetch("/api/vcs", {
       method: "POST",
