@@ -1,0 +1,24 @@
+User Story 30
+
+BEFORE YOU BEGIN
+    1. Press "Continue"
+    2. Type "123" in Username
+    3. Type "123" in Password
+    4. Press "Login"
+    5. You should be in the editor page now
+
+Testing for syntax highlighting for SQL keywords
+    1. Type "select insert into update delete from create" in the Text Box that says "Enter your SQL query here" in the placeholder
+    2. You should see all the words displayed in the same font color
+
+Testing for syntax highlighting for identifier names
+    1. Type "people places employees workers inventory food_list" in the Text Box that says "Enter your SQL query here" in the placeholder
+    2. You should see all the words displayed in the same font color
+
+Testing for syntax highlighting for identifier names
+    1. Type "1 2 3 4 "Hi" 'Hi' 'No' 'Bob' "Mary" " in the Text Box that says "Enter your SQL query here" in the placeholder
+    2. You should see all the numbers displayed in one color and the quoted strings displayed in another font color
+
+Testing for syntax highlighting for a complete SQL query
+    1. Type "SELECT * FROM People WHERE Name = "Raj" AND Age < 10;" in the Text Box that says "Enter your SQL query here" in the placeholder
+    2. You should see all the numbers, strings, keywords and iddetifiers displayed in their respective colors.
