@@ -1,0 +1,32 @@
+User Story 11
+
+BEFORE YOU BEGIN
+    1. Press "Continue"
+    2. Type "123" in Username
+    3. Type "123" in Password
+    4. Press "Login"
+    5. You should be in the editor page now
+
+Testing for empty commit history:
+    1. In the top navbar of the screen, click on the dropdown menu called "VCS Commands". Click on the option "History".
+    2. You should see the message "No Commits" in the commit history pop-up
+    3. Click on the "View all logs" button. 
+    4. You should see an empty page with no commit history
+
+
+Testing for commit history
+    1. Type "CREATE TABLE People(id int, firstname char(20), lastname char(20), age int);" in the Text Box that says "Enter your SQL query here" in the placeholder
+    2. In the top navbar of the screen, click on the dropdown menu called "VCS Commands". Click on the option "Create Commit".
+    3. In the commit pop-up, enter any arbitrary string as the commit message and click commit.
+    4. Type "INSERT INTO People VALUES (20, 'Aryan', 'Wadhwani', 10);" in the Text Box on the editor screen
+    5. In the top navbar of the screen, click on the dropdown menu called "VCS Commands". Click on the option "Create Commit".
+    6. In the commit pop-up, enter any arbitrary string as the commit message and click commit.
+    7. Type "INSERT INTO People VALUES (20, 'Shayne', 'Marques', 10);" in the Text Box on the editor screen
+    8. In the top navbar of the screen, click on the dropdown menu called "VCS Commands". Click on the option "Create Commit".
+    9. In the commit pop-up, enter any arbitrary string as the commit message and click commit.
+    10. In the top navbar of the screen, click on the dropdown menu called "VCS Commands". Click on the option "History".
+    11. You should be able to see all 3 commits with their hash, message and timestamp with the most recent at the top of the list.
+    12. Click on the "View all logs" button. 
+    13. You should be able to see a detailed view of all 3 commits grouped by date and the time since the commit, with the most recent appearing at the top of the list.
+
+

@@ -40,6 +40,8 @@ import { Cookies } from "next/dist/server/web/spec-extension/cookies";
 import MergeBranch from "./merge_branch";
 import SwitchBranch from "./switch_branch";
 import Revert from "./revert";
+import ViewTable from "./view_table";
+
 
 require("prismjs/components/prism-sql");
 
@@ -59,6 +61,7 @@ function QueryEditor() {
   const [switchBranchOpen, setSwitchBranchOpen] = useState(false);
   const [commitOpen, setCommitOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [viewTableOpen, setViewTableOpen] = useState(false);
   const [createTableOpen, setCreateTableOpen] = useState(false);
   const router = useRouter();
   //VCS Drop-down menu variables
@@ -199,6 +202,7 @@ function QueryEditor() {
     } else {
       // const data: QueryResult = await response.json();
       const data = await response.json();
+      
       // Create table from data
       setStatus(
         <TableContainer
@@ -270,6 +274,8 @@ function QueryEditor() {
   const handleCommitClose = () => setCommitOpen(false);
   const handleHistoryOpen = () => setHistoryOpen(true);
   const handleHistoryClose = () => setHistoryOpen(false);
+  const handleViewTableOpen = () => setViewTableOpen(true);
+  const handleViewTableClose = () => setViewTableOpen(false);
   const handleCreateTableOpen = () => setCreateTableOpen(true);
   const handleCreateTableClose = () => setCreateTableOpen(false);
   const handleRevertOpen = () => setRevertOpen(true);
@@ -404,6 +410,9 @@ function QueryEditor() {
           <Modal open={historyOpen} onClose={handleHistoryClose}>
             <History />
           </Modal>
+          <Modal open={viewTableOpen} onClose={handleViewTableClose}>
+            <ViewTable />
+          </Modal>
           <Modal open={createTableOpen} onClose={handleCreateTableClose}>
             <CreateTable close={handleCreateTableClose} />
           </Modal>
@@ -439,6 +448,7 @@ function QueryEditor() {
                   TransitionComponent={Fade}
                 >
                   <MenuItem onClick={handleHistoryOpen}>History</MenuItem>
+                  <MenuItem onClick={handleViewTableOpen}>View Table</MenuItem>
                   <MenuItem onClick={handleBranchOpen}>Create Branch</MenuItem>
                   <MenuItem onClick={handleSwitchBranchOpen}>Switch Branch</MenuItem>
                   <MenuItem onClick={handleMergeBranchOpen}>Merge Branches</MenuItem>

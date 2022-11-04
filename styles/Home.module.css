@@ -253,7 +253,6 @@
 .modal {
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
   position: absolute;
   top: 50%;
@@ -264,6 +263,8 @@
   box-shadow: 24;
   padding: 2vh;
   border-radius: 3%;
+  height: 75vh;
+  overflow: auto;
 }
 
 .loginForm {
