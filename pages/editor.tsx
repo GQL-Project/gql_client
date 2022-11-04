@@ -39,7 +39,9 @@ import saveAs from "file-saver";
 import { Cookies } from "next/dist/server/web/spec-extension/cookies";
 import MergeBranch from "./merge_branch";
 import SwitchBranch from "./switch_branch";
+import Revert from "./revert";
 import ViewTable from "./view_table";
+
 
 require("prismjs/components/prism-sql");
 
@@ -73,6 +75,9 @@ function QueryEditor() {
   //Save Button Query Array
   // var query_array: string[] = [];
   const [queryArray, setQueryArray] = useState<string[]>([]);
+
+  //Revert Window
+  const [revertOpen, setRevertOpen] = useState(false);
 
   useEffect(() => {
     if (window.localStorage.getItem("loggedIn") !== null) {
@@ -273,10 +278,29 @@ function QueryEditor() {
   const handleViewTableClose = () => setViewTableOpen(false);
   const handleCreateTableOpen = () => setCreateTableOpen(true);
   const handleCreateTableClose = () => setCreateTableOpen(false);
+  const handleRevertOpen = () => setRevertOpen(true);
+  const handleRevertClose = () => setRevertOpen(false);
 
-  //  TODO: Implement Discard changes functionality
-  const handleDiscardClick = () =>
-    setTextStatus("Discard changes not yet implemented", true);
+  // Discard button functionality
+  const handleDiscardClick = async () => {
+    const response = await fetch("/api/vcs", {
+      method: "POST",
+      body: JSON.stringify({
+        query: "gql discard",
+        id: authContext.loggedIn,
+      }),
+    });
+    if (!response.ok) {
+      setTextStatus("Failed to revert!", true, true);
+    } else {
+      const data: UpdateResult = await response.json();
+    }
+    if (response.statusText === "OK") {
+      setText("");
+    } else {
+      setTextStatus("Failed to revert!", true, true);
+    }
+  }
 
   //Save Queries Functionality
   const handleSaveQueries = () => {
@@ -392,6 +416,9 @@ function QueryEditor() {
           <Modal open={createTableOpen} onClose={handleCreateTableClose}>
             <CreateTable close={handleCreateTableClose} />
           </Modal>
+          <Modal open={revertOpen} onClose={handleRevertClose}>
+            <Revert close={handleRevertClose} />
+          </Modal>
           <AppBar
             position="fixed"
             sx={{ background: "rgba(34, 34, 34, 0.438)" }}
@@ -426,6 +453,7 @@ function QueryEditor() {
                   <MenuItem onClick={handleSwitchBranchOpen}>Switch Branch</MenuItem>
                   <MenuItem onClick={handleMergeBranchOpen}>Merge Branches</MenuItem>
                   <MenuItem onClick={handleCommitOpen}>Create Commit</MenuItem>
+                  <MenuItem onClick={handleRevertOpen}>Revert</MenuItem>
                   <MenuItem title="Discard all uncommitted changes" onClick={handleDiscardClick}>Discard</MenuItem>
                 </Menu>
               </div>
