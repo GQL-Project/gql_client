@@ -42,7 +42,6 @@ import SwitchBranch from "./switch_branch";
 import Revert from "./revert";
 import ViewTable from "./view_table";
 
-
 require("prismjs/components/prism-sql");
 
 const darkTheme = createTheme({
@@ -53,7 +52,9 @@ const darkTheme = createTheme({
 
 function QueryEditor() {
   const authContext = useContext(AuthContext);
-  const [status, setStatus] = useState<any | null>(null);
+  const [status, setStatus] = useState(
+    <Image src={logo} alt="GQL Logo" height={350} objectFit="contain" />
+  );
   const [text, setText] = useState("");
   const [currentBranchName, setCurrentBranchName] = useState("");
   const [open, setOpen] = useState(false);
@@ -166,7 +167,9 @@ function QueryEditor() {
   }
 
   const setEmptyStatus = () => {
-    setStatus(null);
+    setStatus(
+      <Image src={logo} alt="GQL Logo" height={350} objectFit="contain" />
+    );
   };
 
   const handleInput = () => {
@@ -202,7 +205,7 @@ function QueryEditor() {
     } else {
       // const data: QueryResult = await response.json();
       const data = await response.json();
-      
+
       // Create table from data
       setStatus(
         <TableContainer
@@ -265,11 +268,20 @@ function QueryEditor() {
   };
 
   const handleBranchOpen = () => setOpen(true);
-  const handleBranchClose = () => { setOpen(false); refreshCurrentBranch(); };
+  const handleBranchClose = () => {
+    setOpen(false);
+    refreshCurrentBranch();
+  };
   const handleMergeBranchOpen = () => setMergeBranchOpen(true);
-  const handleMergeBranchClose = () => { setMergeBranchOpen(false); refreshCurrentBranch(); };
+  const handleMergeBranchClose = () => {
+    setMergeBranchOpen(false);
+    refreshCurrentBranch();
+  };
   const handleSwitchBranchOpen = () => setSwitchBranchOpen(true);
-  const handleSwitchBranchClose = () => { setSwitchBranchOpen(false); refreshCurrentBranch(); };
+  const handleSwitchBranchClose = () => {
+    setSwitchBranchOpen(false);
+    refreshCurrentBranch();
+  };
   const handleCommitOpen = () => setCommitOpen(true);
   const handleCommitClose = () => setCommitOpen(false);
   const handleHistoryOpen = () => setHistoryOpen(true);
@@ -300,7 +312,7 @@ function QueryEditor() {
     } else {
       setTextStatus("Failed to revert!", true, true);
     }
-  }
+  };
 
   //Save Queries Functionality
   const handleSaveQueries = () => {
@@ -311,19 +323,20 @@ function QueryEditor() {
     }
 
     //Saving the file
-    //queryArray.join() turns the Array into a single string with \n as the 
+    //queryArray.join() turns the Array into a single string with \n as the
     // delimiting token into the teext file GQL_Queries.txt
-    var blob = new Blob([queryArray.join("\n")], {type: "text/plain;charset=utf-8"});
+    var blob = new Blob([queryArray.join("\n")], {
+      type: "text/plain;charset=utf-8",
+    });
     saveAs(blob, "GQL_Queries.txt");
   };
 
   //Load Queries Functionality
   const handleLoadQueries = () => {
-    var openDoc = document.createElement('input');
-    openDoc.type = 'file';
+    var openDoc = document.createElement("input");
+    openDoc.type = "file";
 
-    openDoc.onchange = e => { 
-
+    openDoc.onchange = (e) => {
       // Grabbing the file reference
       const result = (e.target as HTMLInputElement).files;
       if (result === null) {
@@ -333,28 +346,31 @@ function QueryEditor() {
       var file = result[0];
       // Creating the reader
       var reader = new FileReader();
-      reader.readAsText(file,'UTF-8');
+      reader.readAsText(file, "UTF-8");
 
       // Error checking the file
       var extensionCheck = file.name.endsWith(".txt");
       if (!extensionCheck) {
-        setTextStatus("Invalid file type! Only files that end with '.txt' are accepted.", true, true);
+        setTextStatus(
+          "Invalid file type! Only files that end with '.txt' are accepted.",
+          true,
+          true
+        );
         return;
       }
 
       // Code to execute once the reader has loaded and read the file
-      reader.onload = readerEvent => {
+      reader.onload = (readerEvent) => {
         var fileContent = readerEvent?.target?.result; // Contents of user's chosen file
-        console.log( fileContent );
+        console.log(fileContent);
         //setTextStatus(data.message, true);
-        if (fileContent = "") {
+        if ((fileContent = "")) {
           setTextStatus("File is empty", true, true);
-        }
-        else {
+        } else {
           setText(fileContent?.toString());
         }
-      }
-    }
+      };
+    };
     openDoc.click();
   };
 
@@ -430,9 +446,9 @@ function QueryEditor() {
               <div>
                 <Button
                   id="fade-button"
-                  aria-controls={openVCSMenu ? 'fade-menu' : undefined}
+                  aria-controls={openVCSMenu ? "fade-menu" : undefined}
                   aria-haspopup="true"
-                  aria-expanded={openVCSMenu ? 'true' : undefined}
+                  aria-expanded={openVCSMenu ? "true" : undefined}
                   onClick={handleVCSDropDownClick}
                 >
                   VCS Commands
@@ -440,7 +456,7 @@ function QueryEditor() {
                 <Menu
                   id="fade-menu"
                   MenuListProps={{
-                    'aria-labelledby': 'fade-button',
+                    "aria-labelledby": "fade-button",
                   }}
                   anchorEl={anchorElVCS}
                   open={openVCSMenu}
@@ -450,19 +466,28 @@ function QueryEditor() {
                   <MenuItem onClick={handleHistoryOpen}>History</MenuItem>
                   <MenuItem onClick={handleViewTableOpen}>View Table</MenuItem>
                   <MenuItem onClick={handleBranchOpen}>Create Branch</MenuItem>
-                  <MenuItem onClick={handleSwitchBranchOpen}>Switch Branch</MenuItem>
-                  <MenuItem onClick={handleMergeBranchOpen}>Merge Branches</MenuItem>
+                  <MenuItem onClick={handleSwitchBranchOpen}>
+                    Switch Branch
+                  </MenuItem>
+                  <MenuItem onClick={handleMergeBranchOpen}>
+                    Merge Branches
+                  </MenuItem>
                   <MenuItem onClick={handleCommitOpen}>Create Commit</MenuItem>
                   <MenuItem onClick={handleRevertOpen}>Revert</MenuItem>
-                  <MenuItem title="Discard all uncommitted changes" onClick={handleDiscardClick}>Discard</MenuItem>
+                  <MenuItem
+                    title="Discard all uncommitted changes"
+                    onClick={handleDiscardClick}
+                  >
+                    Discard
+                  </MenuItem>
                 </Menu>
               </div>
               <div>
                 <Button
                   id="fade-button"
-                  aria-controls={openTableMenu ? 'fade-menu' : undefined}
+                  aria-controls={openTableMenu ? "fade-menu" : undefined}
                   aria-haspopup="true"
-                  aria-expanded={openTableMenu ? 'true' : undefined}
+                  aria-expanded={openTableMenu ? "true" : undefined}
                   onClick={handleTableDropDownClick}
                 >
                   Table Commands
@@ -470,16 +495,28 @@ function QueryEditor() {
                 <Menu
                   id="fade-menu"
                   MenuListProps={{
-                    'aria-labelledby': 'fade-button',
+                    "aria-labelledby": "fade-button",
                   }}
                   anchorEl={anchorElTable}
                   open={openTableMenu}
                   onClose={handleTableDropDownClose}
                   TransitionComponent={Fade}
                 >
-                  <MenuItem onClick={handleCreateTableOpen}>Create Table</MenuItem>
-                  <MenuItem title="Save the current queries as a file to your computer..." onClick={handleSaveQueries}>Save Queries</MenuItem>
-                  <MenuItem title="Load queries from a file on your computer..." onClick={handleLoadQueries}>Load Queries</MenuItem>
+                  <MenuItem onClick={handleCreateTableOpen}>
+                    Create Table
+                  </MenuItem>
+                  <MenuItem
+                    title="Save the current queries as a file to your computer..."
+                    onClick={handleSaveQueries}
+                  >
+                    Save Queries
+                  </MenuItem>
+                  <MenuItem
+                    title="Load queries from a file on your computer..."
+                    onClick={handleLoadQueries}
+                  >
+                    Load Queries
+                  </MenuItem>
                 </Menu>
               </div>
               <Button color="inherit" onClick={handleDisconnect}>
@@ -490,28 +527,37 @@ function QueryEditor() {
           <Toolbar />
           <Box
             sx={{
-              height: "50vh",
-              width: "50vw",
-              marginTop: "2vh",
-              overflowY: "auto",
+              display: "flex",
+              flexDirection: "row",
             }}
           >
-            <Editor
-              highlight={(text) => highlight(text, Prism.languages.sql, "sql")}
-              aria-label="empty textarea"
-              placeholder="Enter your SQL query here"
-              className={styles.editor}
-              value={text}
-              padding={10}
-              onValueChange={(text) => setText(text)}
-            />
-          </Box>
-          <div
-            className={styles.currentBranchText}
-            >
+            <Box>
+              <Box
+                sx={{
+                  height: "50vh",
+                  width: "50vw",
+                  marginTop: "2vh",
+                  overflowY: "auto",
+                }}
+              >
+                <Editor
+                  highlight={(text) =>
+                    highlight(text, Prism.languages.sql, "sql")
+                  }
+                  aria-label="empty textarea"
+                  placeholder="Enter your SQL query here"
+                  className={styles.editor}
+                  value={text}
+                  padding={10}
+                  onValueChange={(text) => setText(text)}
+                />
+              </Box>
+              <div className={styles.currentBranchText}>
                 Current Branch: {currentBranchName}
-          </div>
-          {status}
+              </div>
+            </Box>
+            <Box className={styles.commandOutput}>{status}</Box>
+          </Box>
           <Box>
             <Button
               className={styles.button}
