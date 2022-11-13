@@ -345,13 +345,12 @@ function QueryEditor() {
       // Code to execute once the reader has loaded and read the file
       reader.onload = readerEvent => {
         var fileContent = readerEvent?.target?.result; // Contents of user's chosen file
-        console.log( fileContent );
-        //setTextStatus(data.message, true);
-        if (fileContent = "") {
+        if ((fileContent === null) || (fileContent === "")) {
+          console.log("oopsie");
           setTextStatus("File is empty", true, true);
         }
         else {
-          setText(fileContent?.toString());
+          setText( fileContent.toString() );
         }
       }
     }
