@@ -22,7 +22,7 @@ import { UpdateResult } from "./proto/connection";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-function ViewTable() {
+function ViewTable(props: { close: () => void }) {
     const authContext = useContext(AuthContext);
     const [tableList, setTableList] = useState({});
     const [error, setError] = useState("No Tables");
@@ -39,6 +39,27 @@ function ViewTable() {
     const handleBack = () => {
         router.push("/editor");
     };
+
+    const handleDropTable = async (key) => {
+        console.log(key);
+        const response = await fetch("/api/update", {
+          method: "POST",
+          body: JSON.stringify({
+            query: "DROP TABLE " + key,
+            id: authContext.loggedIn,
+          }),
+        });
+        if (!response.ok) {
+        } else {
+          const data: UpdateResult = await response.json();
+        }
+        if (response.statusText === "OK") {
+          //props.close();
+        } else {
+          //setText("");
+          //handleErrorChange();
+        }
+      };
 
     useEffect(() => {
         if (window.localStorage.getItem("loggedIn") !== null) {
@@ -114,6 +135,11 @@ function ViewTable() {
                                         <Button
                                             color="error"
                                             variant="contained"
+                                            onClick={() => {
+                                                // Remove the row from the data
+                                                console.log(key);
+                                                handleDropTable(key);
+                                              }}
                                         >
                                             Drop Table
                                         </Button>
@@ -165,5 +191,4 @@ function ViewTable() {
             )
     );
 }
-
 export default ViewTable;
