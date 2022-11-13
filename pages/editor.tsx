@@ -314,6 +314,11 @@ function QueryEditor() {
     }
   };
 
+  //Pull Button functionality
+  const handlePullClick = async () => {
+    //TODO: Add pull functionality
+  };
+
   //Save Queries Functionality
   const handleSaveQueries = () => {
     //Checking if there have been any queries
@@ -480,6 +485,11 @@ function QueryEditor() {
                   >
                     Discard
                   </MenuItem>
+                  <MenuItem 
+                    title="Retrieve any new changes made to the database made by other users" 
+                    onClick={handlePullClick}>
+                      Pull
+                      </MenuItem>
                 </Menu>
               </div>
               <div>
