@@ -111,6 +111,12 @@ function ViewTable() {
                                             m: 1,
                                         }}
                                     >
+                                        <Button
+                                            color="error"
+                                            variant="contained"
+                                        >
+                                            Drop Table
+                                        </Button>
                                         <h2>{key}</h2>
                                         {tableList[key].map((table) => {
                                             return (
