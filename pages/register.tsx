@@ -6,7 +6,6 @@ import {
   Grid,
   Box,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useContext, useState } from "react";
 import { ConnectResult } from "./proto/connection";
 import styles from "../styles/Home.module.css";
@@ -17,18 +16,39 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { AuthContext } from "./context";
 
-function Login() {
+function Register() {
   const authContext = useContext(AuthContext);
   const [status, setStatus] = useState<string | null>(null);
   const [creds, setCreds] = useState({
     address: "localhost",
     port: "50051",
-    username: "admin",
-    password: "admin",
+    username: "",
+    password1: "",
+    password2: "",
   });
   const router = useRouter();
 
   const handleConnect = async () => {
+    if (creds.password1 !== creds.password2) {
+      setStatus("Passwords do not match");
+      return;
+    }
+    if (
+      creds.username === "" ||
+      creds.password1 === "" ||
+      creds.password2 === ""
+    ) {
+      setStatus("Username and password cannot be empty");
+      return;
+    }
+    if (
+      creds.username.length > 32 ||
+      creds.password1.length > 32 ||
+      creds.password2.length > 32
+    ) {
+      setStatus("Username and password cannot be longer than 32 characters");
+      return;
+    }
     if (!authContext.loggedIn) {
       const response = await fetch("/api/connect", {
         method: "POST",
@@ -36,8 +56,8 @@ function Login() {
           address: creds.address,
           port: creds.port,
           username: creds.username,
-          password: creds.password,
-          create: false,
+          password: creds.password1,
+          create: true,
         }),
       });
 
@@ -46,11 +66,19 @@ function Login() {
         setStatus("Error: " + data.error);
       } else {
         const data: ConnectResult = await response.json();
-        setStatus("Connected to " + creds.address + ":" + creds.port);
+        setStatus(
+          "User " +
+            data.id +
+            " created and connected to " +
+            creds.address +
+            ":" +
+            creds.port
+        );
         setCreds({
           ...creds,
           username: "",
-          password: "",
+          password1: "",
+          password2: "",
         });
         authContext.login(data.id);
         window.localStorage.setItem("loggedIn", data.id);
@@ -64,10 +92,15 @@ function Login() {
   ) => {
     setCreds({ ...creds, username: event.target.value });
   };
-  const handlePasswordChange = (
+  const handlePassword1Change = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setCreds({ ...creds, password: event.target.value });
+    setCreds({ ...creds, password1: event.target.value });
+  };
+  const handlePassword2Change = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setCreds({ ...creds, password2: event.target.value });
   };
   const handleAddressChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -82,10 +115,10 @@ function Login() {
     <div className={styles.bg}>
       <Container className={styles.container}>
         <Head>
-          <title>GQL Login</title>
+          <title>GQL Register</title>
         </Head>
         <Box className={styles.loginForm}>
-          <h1 className={styles.title}>Login</h1>
+          <h1 className={styles.title}>Register</h1>
           <Link href="/">
             <a>
               <Image
@@ -101,8 +134,8 @@ function Login() {
               item
               xs={1}
               display="flex"
-              alignItems="center"
               justifyContent="center"
+              alignItems="center"
             >
               <Box>
                 <InputLabel className={styles.loginLabel}>Address</InputLabel>
@@ -112,7 +145,6 @@ function Login() {
                   onChange={handleAddressChange}
                   value={creds.address}
                   id="address"
-                  inputProps={{ "data-testid": "server-address" }} // The value is the id needed for testing
                 />
               </Box>
             </Grid>
@@ -120,8 +152,8 @@ function Login() {
               item
               xs={1}
               display="flex"
-              alignItems="center"
               justifyContent="center"
+              alignItems="center"
             >
               <Box>
                 <InputLabel className={styles.loginLabel}>Port</InputLabel>
@@ -131,47 +163,58 @@ function Login() {
                   onChange={handlePortChange}
                   value={creds.port}
                   id="port"
-                  inputProps={{ "data-testid": "server-port" }} // The value is the id needed for testing
                 />
               </Box>
             </Grid>
             <Grid
-              item
-              xs={1}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
+              container
+              columns={3}
+              columnSpacing={3}
+              justifyContent="space-evenly"
             >
-              <Box>
-                <InputLabel className={styles.loginLabel}>Username</InputLabel>
-                <TextField
-                  type="text"
-                  sx={{ input: { color: "white", textAlign: "center" } }}
-                  onChange={handleUsernameChange}
-                  value={creds.username}
-                  id="username"
-                  inputProps={{ "data-testid": "account-username" }} // The value is the id needed for testing
-                />
-              </Box>
-            </Grid>
-            <Grid
-              item
-              xs={1}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Box>
-                <InputLabel className={styles.loginLabel}>Password</InputLabel>
-                <TextField
-                  type="password"
-                  sx={{ input: { color: "white", textAlign: "center" } }}
-                  onChange={handlePasswordChange}
-                  value={creds.password}
-                  id="password"
-                  inputProps={{ "data-testid": "account-password" }} // The value is the id needed for testing
-                />
-              </Box>
+              <Grid item xs={1} display="flex" alignItems="center">
+                <Box>
+                  <InputLabel className={styles.loginLabel}>
+                    Username
+                  </InputLabel>
+                  <TextField
+                    type="text"
+                    sx={{ input: { color: "white", textAlign: "center" } }}
+                    onChange={handleUsernameChange}
+                    value={creds.username}
+                    id="username"
+                  />
+                </Box>
+              </Grid>
+
+              <Grid item xs={1} display="flex" alignItems="center">
+                <Box>
+                  <InputLabel className={styles.loginLabel}>
+                    Password
+                  </InputLabel>
+                  <TextField
+                    type="password"
+                    sx={{ input: { color: "white", textAlign: "center" } }}
+                    onChange={handlePassword1Change}
+                    value={creds.password1}
+                    id="password"
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={1} display="flex" alignItems="center">
+                <Box>
+                  <InputLabel className={styles.loginLabel}>
+                    Confirm password
+                  </InputLabel>
+                  <TextField
+                    type="password"
+                    sx={{ input: { color: "white", textAlign: "center" } }}
+                    onChange={handlePassword2Change}
+                    value={creds.password2}
+                    id="password"
+                  />
+                </Box>
+              </Grid>
             </Grid>
           </Grid>
           <Button
@@ -186,7 +229,7 @@ function Login() {
             }}
             onClick={handleConnect}
           >
-            Login →
+            Register →
           </Button>
           <h3>{status}</h3>
         </Box>
@@ -195,4 +238,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
