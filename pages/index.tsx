@@ -1,4 +1,4 @@
-import { Container, Typography, Button } from "@mui/material";
+import { Container, Typography, Button, Box } from "@mui/material";
 import Head from "next/head";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
@@ -32,22 +32,45 @@ function Home(): JSX.Element {
         >
           <Image src={logo} alt="GQL Logo" height={300} objectFit="contain" />
           <h5 className={styles.title}>A version control system for SQL</h5>
-          <Link href="/login">
-            <Button
-              className={styles.button}
-              sx={{
-                color: "white",
-                marginTop: "2vh",
-                height: "10vh",
-                width: "20vw",
-                margin: "2vw",
-                fontSize: "larger",
-                backgroundColor: "rgba(34, 34, 34, 0.438)",
-              }}
-            >
-              Continue →
-            </Button>
-          </Link>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Link href="/login">
+              <Button
+                className={styles.button}
+                sx={{
+                  color: "white",
+                  marginTop: "2vh",
+                  height: "10vh",
+                  width: "20vw",
+                  margin: "2vw",
+                  fontSize: "larger",
+                  backgroundColor: "rgba(34, 34, 34, 0.438)",
+                }}
+              >
+                Continue →
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button
+                className={styles.button}
+                sx={{
+                  color: "white",
+                  marginTop: "2vh",
+                  height: "10vh",
+                  width: "20vw",
+                  margin: "2vw",
+                  fontSize: "larger",
+                  backgroundColor: "rgba(34, 34, 34, 0.438)",
+                }}
+              >
+                Register →
+              </Button>
+            </Link>
+          </Box>
         </div>
       </Container>
     </div>
