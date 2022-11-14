@@ -41,6 +41,14 @@ function Register() {
       setStatus("Username and password cannot be empty");
       return;
     }
+    if (
+      creds.username.length > 32 ||
+      creds.password1.length > 32 ||
+      creds.password2.length > 32
+    ) {
+      setStatus("Username and password cannot be longer than 32 characters");
+      return;
+    }
     if (!authContext.loggedIn) {
       const response = await fetch("/api/connect", {
         method: "POST",

@@ -96,13 +96,13 @@ function Login() {
               />
             </a>
           </Link>
-          <Grid container columns={2} columnSpacing={3}>
+          <Grid container columns={2} columnSpacing={3} sx={{ width: "60%" }}>
             <Grid
               item
               xs={1}
               display="flex"
-              justifyContent="flex-end"
               alignItems="center"
+              justifyContent="center"
             >
               <Box>
                 <InputLabel className={styles.loginLabel}>Address</InputLabel>
@@ -120,27 +120,8 @@ function Login() {
               item
               xs={1}
               display="flex"
-              justifyContent="flex-start"
               alignItems="center"
-            >
-              <Box>
-                <InputLabel className={styles.loginLabel}>Username</InputLabel>
-                <TextField
-                  type="text"
-                  sx={{ input: { color: "white", textAlign: "center" } }}
-                  onChange={handleUsernameChange}
-                  value={creds.username}
-                  id="username"
-                  inputProps={{ "data-testid": "account-username" }} // The value is the id needed for testing
-                />
-              </Box>
-            </Grid>
-            <Grid
-              item
-              xs={1}
-              display="flex"
-              justifyContent="flex-end"
-              alignItems="center"
+              justifyContent="center"
             >
               <Box>
                 <InputLabel className={styles.loginLabel}>Port</InputLabel>
@@ -158,8 +139,27 @@ function Login() {
               item
               xs={1}
               display="flex"
-              justifyContent="flex-start"
               alignItems="center"
+              justifyContent="center"
+            >
+              <Box>
+                <InputLabel className={styles.loginLabel}>Username</InputLabel>
+                <TextField
+                  type="text"
+                  sx={{ input: { color: "white", textAlign: "center" } }}
+                  onChange={handleUsernameChange}
+                  value={creds.username}
+                  id="username"
+                  inputProps={{ "data-testid": "account-username" }} // The value is the id needed for testing
+                />
+              </Box>
+            </Grid>
+            <Grid
+              item
+              xs={1}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
             >
               <Box>
                 <InputLabel className={styles.loginLabel}>Password</InputLabel>
