@@ -23,29 +23,27 @@ function Login() {
   const [creds, setCreds] = useState({
     address: "localhost",
     port: "50051",
-    username: "",
-    password: "",
+    username: "admin",
+    password: "admin",
   });
   const router = useRouter();
 
   const handleConnect = async () => {
     if (!authContext.loggedIn) {
-      if (creds.username === "" || creds.password === "") {
-        setStatus("Please enter a username and password");
-        return;
-      }
       const response = await fetch("/api/connect", {
         method: "POST",
-        body: JSON.stringify({ address: creds.address, port: creds.port }),
+        body: JSON.stringify({
+          address: creds.address,
+          port: creds.port,
+          username: creds.username,
+          password: creds.password,
+          create: false,
+        }),
       });
 
       if (!response.ok) {
-        setStatus(
-          "Error: Could not connect to database at " +
-            creds.address +
-            ":" +
-            creds.port
-        );
+        const data = await response.json();
+        setStatus("Error: " + data.error);
       } else {
         const data: ConnectResult = await response.json();
         setStatus("Connected to " + creds.address + ":" + creds.port);
@@ -56,9 +54,7 @@ function Login() {
         });
         authContext.login(data.id);
         window.localStorage.setItem("loggedIn", data.id);
-        setTimeout(() => {
-          router.push("/editor");
-        }, 1000);
+        router.push("/editor");
       }
     }
   };
