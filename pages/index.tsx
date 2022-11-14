@@ -51,7 +51,7 @@ function Home(): JSX.Element {
                   backgroundColor: "rgba(34, 34, 34, 0.438)",
                 }}
               >
-                Continue →
+                Login →
               </Button>
             </Link>
             <Link href="/register">
