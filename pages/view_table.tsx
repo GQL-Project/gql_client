@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
     TextareaAutosize,
+    Modal,
     Button,
     Box,
     Grid,
@@ -12,6 +13,7 @@ import {
     TableHead,
     TableBody,
     TableCell,
+    getTableSortLabelUtilityClass,
 } from "@mui/material";
 import styles from "../styles/Home.module.css";
 import logo from "../public/logo.png";
@@ -21,12 +23,17 @@ import { AuthContext } from "./context";
 import { UpdateResult } from "./proto/connection";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import ViewConfirmation from "./confirmation";
 
 function ViewTable(props: { close: () => void }) {
     const authContext = useContext(AuthContext);
     const [tableList, setTableList] = useState({});
     const [error, setError] = useState("No Tables");
     const [empty, setEmpty] = useState(false);
+    const [confirmationOpen, setConfirmationOpen] = useState(false);
+
+    const handleConfirmationOpen = () => setConfirmationOpen(true);
+    const handleConfirmationClose = () => setConfirmationOpen(false);
 
     function groupArrayOfObjects(list, key) {
         return list.reduce(function (rv, x) {
@@ -43,23 +50,22 @@ function ViewTable(props: { close: () => void }) {
     const handleDropTable = async (key) => {
         console.log(key);
         const response = await fetch("/api/update", {
-          method: "POST",
-          body: JSON.stringify({
-            query: "DROP TABLE " + key,
-            id: authContext.loggedIn,
-          }),
+            method: "POST",
+            body: JSON.stringify({
+                query: "DROP TABLE " + key,
+                id: authContext.loggedIn,
+            }),
         });
         if (!response.ok) {
         } else {
-          const data: UpdateResult = await response.json();
+            const data: UpdateResult = await response.json();
         }
         if (response.statusText === "OK") {
-          //props.close();
         } else {
-          //setText("");
-          //handleErrorChange();
+            //setText("");
+            //handleErrorChange();
         }
-      };
+    };
 
     useEffect(() => {
         if (window.localStorage.getItem("loggedIn") !== null) {
@@ -136,13 +142,17 @@ function ViewTable(props: { close: () => void }) {
                                             color="error"
                                             variant="contained"
                                             onClick={() => {
-                                                // Remove the row from the data
+                                                // Drop the table
                                                 console.log(key);
+                                                handleConfirmationOpen();
                                                 handleDropTable(key);
-                                              }}
+                                            }}
                                         >
                                             Drop Table
                                         </Button>
+                                        <Modal open={confirmationOpen} onClose={handleConfirmationClose}>
+                                            <ViewConfirmation />
+                                        </Modal>
                                         <h2>{key}</h2>
                                         {tableList[key].map((table) => {
                                             return (
