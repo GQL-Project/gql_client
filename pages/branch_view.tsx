@@ -20,14 +20,16 @@ import Head from "next/head";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import BranchDiagram from "./components/branch_diagram";
+import { ReactFlowProvider } from "reactflow";
 
 function BranchView() {
   const authContext = useContext(AuthContext);
-
   const router = useRouter();
   const handleBack = () => {
     router.push("/editor");
   };
+
+
   return (
     authContext.loggedIn && (
       <Box className={`${styles.background}`}>
@@ -47,10 +49,9 @@ function BranchView() {
           }}
           onClick={handleBack}
         >{`← Back`}</Button>
-        <Box className={styles.center}>
-          <h1>Database Log</h1>
-        </Box>
-        <BranchView></BranchView>
+        <div style={{height: "60vh", width: "100%", borderStyle: "solid", borderColor: "black", borderWidth: "1px"}}>
+            <BranchDiagram></BranchDiagram>
+        </div>
         
         <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
         <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
