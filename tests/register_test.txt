@@ -1,0 +1,15 @@
+User Story 21
+
+Testing for incorrect register - duplicate user:
+    1. Press "Register"
+    2. Enter the username "admin"
+    3. Enter a password of your choice twice
+    4. Press "Register"
+    5. You should see an error message
+
+Testing for correct register:
+    1. Press "Register"
+    2. Enter the username "adminx"
+    3. Enter a password of your choice twice
+    4. Press "Register"
+    5. You should be in the editor page now
