@@ -18,6 +18,7 @@ function History() {
     setError("Error Retrieving Log!");
   };
 
+
   useEffect(() => {
     async function getCommitNames() {
       const response = await fetch("/api/vcs", {
@@ -48,13 +49,15 @@ function History() {
   return authContext.loggedIn ? (
     <Box className={styles.modal}>
       <h1>Commit History</h1>
-      <h2>Filter: 
-      <Select
-        defaultValue="Recent"
-      >
-        <MenuItem value="My Committs">My Commits</MenuItem>
-      </Select>
-      </h2>
+      {commitListText.length > 0 ?
+        <h2>Filter:
+          <Select
+            defaultValue="Recent"
+            style={{ marginLeft: '.5rem' }}
+          >
+            <MenuItem value="My Committs">My Commits</MenuItem>
+          </Select>
+        </h2> : <h2></h2>}
       {commitListText.length > 0 ? <h2>Commits</h2> : <h2>{error}</h2>}
       <Box className={styles.branchForm}>
         <ul className={styles.commitList}>
