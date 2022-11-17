@@ -167,9 +167,13 @@ function ViewTable(props: { close: () => void }) {
                                             m: 1,
                                         }}
                                     >
+                                        
+                                       
+                                        <h2>{key}
                                         <Button
                                             color="error"
                                             variant="contained"
+                                            style={{ float: "right" }}
                                             onClick={() => {
                                                 // Drop the table
                                                 console.log(key);
@@ -179,11 +183,7 @@ function ViewTable(props: { close: () => void }) {
                                             }}
                                         >
                                             Drop Table
-                                        </Button>
-                                        <Modal open={confirmationOpen} onClose={handleConfirmationClose}>
-                                            <ViewConfirmation />
-                                        </Modal>
-                                        <h2>{key}</h2>
+                                        </Button></h2>
                                         {tableList[key].map((table) => {
                                             return (
                                                 <Grid key={table.hash} container spacing={2}>
