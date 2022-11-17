@@ -47,6 +47,39 @@ function ViewTable(props: { close: () => void }) {
         router.push("/editor");
     };
 
+    const refreshPage = async () => {
+        const response = await fetch("/api/vcs", {
+            method: "POST",
+            body: JSON.stringify({
+                query: "gql table -j",
+                id: authContext.loggedIn,
+            }),
+        });
+        if (!response.ok) {
+            setTableList([]);
+            setError("Error Retrieving Table!");
+        }
+        const data: UpdateResult = await response.json();
+        if (data.message !== "") {
+            const schemas: [] = JSON.parse(data.message).map((schema) => {
+                const newSchema = {
+                    table_name: schema.table_name,
+                    table_schema: schema.table_schema,
+                    schema_type: schema.schema_type,
+                };
+                return newSchema;
+            });
+            if (schemas == null) {
+
+            }
+            setTableList(groupArrayOfObjects(schemas, "table_name"));
+            setEmpty(false);
+        }
+        else {
+            setEmpty(true);
+        }
+    }
+
     const handleDropTable = async (key) => {
         console.log(key);
         const response = await fetch("/api/update", {
@@ -58,12 +91,8 @@ function ViewTable(props: { close: () => void }) {
         });
         if (!response.ok) {
         } else {
-            const data: UpdateResult = await response.json();
-        }
-        if (response.statusText === "OK") {
-        } else {
-            //setText("");
-            //handleErrorChange();
+            //const data: UpdateResult = await response.json();
+           refreshPage();
         }
     };
 
@@ -144,8 +173,9 @@ function ViewTable(props: { close: () => void }) {
                                             onClick={() => {
                                                 // Drop the table
                                                 console.log(key);
-                                                handleConfirmationOpen();
+                                                //handleConfirmationOpen();
                                                 handleDropTable(key);
+
                                             }}
                                         >
                                             Drop Table
