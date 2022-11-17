@@ -1,34 +1,22 @@
 import React, { useCallback, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import { 
-  TextareaAutosize,
   Button,
-  Box,
-  Grid,
-  Card,
-  Stack } from "@mui/material";
+  Box } from "@mui/material";
 import { useState } from "react";
 import logo from "../public/logo.png";
 import Image from "next/image";
 import { useContext } from "react";
 import { AuthContext } from "./context";
-import { QueryResult, UpdateResult } from "./proto/connection";
-import { get } from "http";
-import Link from "next/link";
+import { UpdateResult } from "./proto/connection";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en";
-import BranchDiagram from "./components/branch_diagram";
 import ReactFlow, {
-  MiniMap,
-  Controls,
   Background,
   useNodesState,
   useEdgesState,
   addEdge,
 } from 'reactflow';
-import 'reactflow/dist/style.css';
 
 function BranchView() {
   const authContext = useContext(AuthContext);
@@ -60,7 +48,7 @@ function BranchView() {
       const data: any = JSON.parse(updateResult.message);
       
       let nodes: any[] = [];
-      data.nodes.forEach((element: { commit_hash: string; row: number; column: number; }) => {
+      data.nodes.forEach((element: any) => {
         nodes.push(
             {
                 id: element.commit_hash,
@@ -72,7 +60,23 @@ function BranchView() {
             }
         );
       });
-      console.log(nodes);
+      nodes.push(
+        {
+            id: "start",
+            position: {
+                x: 0,
+                y: -15
+            },
+            data: { label: "test_branch1" },
+            style: { 
+                background: "#00ff00",
+                width: "120px",
+                height: "18px",
+                paddingTop: "0px",
+                paddingBottom: "0px",
+            },
+        }
+      )
 
       let edges: { id: string; source: string; target: string; }[] = [];
       data.edges.forEach((element: { src_commit_hash: string; dest_commit_hash: string; }) => {
@@ -84,7 +88,6 @@ function BranchView() {
             }
         );
       });
-      console.log(edges);
 
       setNodes(nodes);
       setEdges(edges);
