@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import { TextareaAutosize, Button, Box, Grid } from "@mui/material";
+import { TextareaAutosize, Button, Box, Grid, Select, SelectChangeEvent, Input, MenuItem, Checkbox } from "@mui/material";
 import { useState } from "react";
 import logo from "../public/logo.png";
 import Image from "next/image";
@@ -48,6 +48,13 @@ function History() {
   return authContext.loggedIn ? (
     <Box className={styles.modal}>
       <h1>Commit History</h1>
+      <h2>Filter: 
+      <Select
+        defaultValue="Recent"
+      >
+        <MenuItem value="My Committs">My Commits</MenuItem>
+      </Select>
+      </h2>
       {commitListText.length > 0 ? <h2>Commits</h2> : <h2>{error}</h2>}
       <Box className={styles.branchForm}>
         <ul className={styles.commitList}>
