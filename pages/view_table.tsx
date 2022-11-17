@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
     TextareaAutosize,
+    Modal,
     Button,
     Box,
     Grid,
@@ -12,6 +13,7 @@ import {
     TableHead,
     TableBody,
     TableCell,
+    getTableSortLabelUtilityClass,
 } from "@mui/material";
 import styles from "../styles/Home.module.css";
 import logo from "../public/logo.png";
@@ -21,12 +23,17 @@ import { AuthContext } from "./context";
 import { UpdateResult } from "./proto/connection";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import ViewConfirmation from "./confirmation";
 
-function ViewTable() {
+function ViewTable(props: { close: () => void }) {
     const authContext = useContext(AuthContext);
     const [tableList, setTableList] = useState({});
     const [error, setError] = useState("No Tables");
     const [empty, setEmpty] = useState(false);
+    const [confirmationOpen, setConfirmationOpen] = useState(false);
+
+    const handleConfirmationOpen = () => setConfirmationOpen(true);
+    const handleConfirmationClose = () => setConfirmationOpen(false);
 
     function groupArrayOfObjects(list, key) {
         return list.reduce(function (rv, x) {
@@ -38,6 +45,55 @@ function ViewTable() {
     const router = useRouter();
     const handleBack = () => {
         router.push("/editor");
+    };
+
+    const refreshPage = async () => {
+        const response = await fetch("/api/vcs", {
+            method: "POST",
+            body: JSON.stringify({
+                query: "gql table -j",
+                id: authContext.loggedIn,
+            }),
+        });
+        if (!response.ok) {
+            setTableList([]);
+            setError("Error Retrieving Table!");
+        }
+        const data: UpdateResult = await response.json();
+        if (data.message !== "") {
+            const schemas: [] = JSON.parse(data.message).map((schema) => {
+                const newSchema = {
+                    table_name: schema.table_name,
+                    table_schema: schema.table_schema,
+                    schema_type: schema.schema_type,
+                };
+                return newSchema;
+            });
+            if (schemas == null) {
+
+            }
+            setTableList(groupArrayOfObjects(schemas, "table_name"));
+            setEmpty(false);
+        }
+        else {
+            setEmpty(true);
+        }
+    }
+
+    const handleDropTable = async (key) => {
+        console.log(key);
+        const response = await fetch("/api/update", {
+            method: "POST",
+            body: JSON.stringify({
+                query: "DROP TABLE " + key,
+                id: authContext.loggedIn,
+            }),
+        });
+        if (!response.ok) {
+        } else {
+            //const data: UpdateResult = await response.json();
+           refreshPage();
+        }
     };
 
     useEffect(() => {
@@ -111,7 +167,23 @@ function ViewTable() {
                                             m: 1,
                                         }}
                                     >
-                                        <h2>{key}</h2>
+                                        
+                                       
+                                        <h2>{key}
+                                        <Button
+                                            color="error"
+                                            variant="contained"
+                                            style={{ float: "right" }}
+                                            onClick={() => {
+                                                // Drop the table
+                                                console.log(key);
+                                                //handleConfirmationOpen();
+                                                handleDropTable(key);
+
+                                            }}
+                                        >
+                                            Drop Table
+                                        </Button></h2>
                                         {tableList[key].map((table) => {
                                             return (
                                                 <Grid key={table.hash} container spacing={2}>
@@ -159,5 +231,4 @@ function ViewTable() {
             )
     );
 }
-
 export default ViewTable;
