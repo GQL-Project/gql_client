@@ -21,6 +21,7 @@ import ReactFlow, {
 function BranchView() {
   const authContext = useContext(AuthContext);
   const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
   const router = useRouter();
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -49,6 +50,23 @@ function BranchView() {
       
       let nodes: any[] = [];
       data.nodes.forEach((element: any) => {
+        if (element.first_branch_commit == true) {
+            nodes.push({
+                id: "start" + element.branch_name,
+                position: {
+                    x: element.column * 200,
+                    y: (element.row * 100) - 17
+                },
+                data: { label: element.branch_name },
+                style: { 
+                    background: "#00ff00",
+                    width: "120px",
+                    height: "18px",
+                    paddingTop: "0px",
+                    paddingBottom: "0px",
+                },
+            });
+        }
         nodes.push(
             {
                 id: element.commit_hash,
@@ -60,23 +78,6 @@ function BranchView() {
             }
         );
       });
-      nodes.push(
-        {
-            id: "start",
-            position: {
-                x: 0,
-                y: -15
-            },
-            data: { label: "test_branch1" },
-            style: { 
-                background: "#00ff00",
-                width: "120px",
-                height: "18px",
-                paddingTop: "0px",
-                paddingBottom: "0px",
-            },
-        }
-      )
 
       let edges: { id: string; source: string; target: string; }[] = [];
       data.edges.forEach((element: { src_commit_hash: string; dest_commit_hash: string; }) => {
@@ -91,6 +92,24 @@ function BranchView() {
 
       setNodes(nodes);
       setEdges(edges);
+      
+
+      const response2 = await fetch("/api/vcs", {
+        method: "POST",
+        body: JSON.stringify({
+          query: "gql info nnZYj6BTMulzK4cClvLa8uifhsnxwo --json",
+          id: authContext.loggedIn,
+        }),
+      });
+      if (response2.ok) {
+        const infoResult: UpdateResult = await response2.json();
+        const infoJson: any = JSON.parse(infoResult.message);
+  
+        console.log(infoJson);
+        let infoMessage: string = "";
+        infoMessage += "Hash: " + infoJson.hash + " \n Message: " + infoJson.message + " \n Command: " + infoJson.command;
+        setInfo(infoMessage);
+      }
     }
     getBranchView();
   }, [authContext.loggedIn]);
@@ -114,6 +133,7 @@ function BranchView() {
           }}
           onClick={handleBack}
         >{`← Back`}</Button>
+        <p>{info}</p>
         <div style={{height: "60vh", width: "100%", borderStyle: "solid", borderColor: "black", borderWidth: "1px"}}>
             <ReactFlow
                 nodes={nodes}
@@ -122,6 +142,7 @@ function BranchView() {
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
                 elementsSelectable={true}
+                onNodeClick={(event, node) => console.log(node)}
                 nodesConnectable={false}
                 nodesDraggable={false}
                 edgesFocusable={false}
