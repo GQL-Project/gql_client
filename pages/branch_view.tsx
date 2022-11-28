@@ -67,16 +67,31 @@ function BranchView() {
                 },
             });
         }
-        nodes.push(
-            {
-                id: element.commit_hash,
-                position: {
-                    x: element.column * 200,
-                    y: element.row * 100
-                },
-                data: { label: element.commit_hash.substring(0, 7) },
-            }
-        );
+        
+        if (element.is_merged_branch == true) {
+          nodes.push(
+              {
+                  id: element.commit_hash,
+                  position: {
+                      x: element.column * 200,
+                      y: element.row * 100
+                  },
+                  data: { label: "<Deleted Branch>" },
+              }
+          );
+        }
+        else {
+          nodes.push(
+              {
+                  id: element.commit_hash,
+                  position: {
+                      x: element.column * 200,
+                      y: element.row * 100
+                  },
+                  data: { label: element.commit_hash.substring(0, 7) },
+              }
+          );
+        }
       });
 
       let edges: { id: string; source: string; target: string; }[] = [];
@@ -92,7 +107,6 @@ function BranchView() {
 
       setNodes(nodes);
       setEdges(edges);
-      
 
       const response2 = await fetch("/api/vcs", {
         method: "POST",
