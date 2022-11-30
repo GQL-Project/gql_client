@@ -43,9 +43,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   ] as unknown as string;
   const create: boolean = JSON.parse(req.body)["create"] as unknown as boolean;
 
-  console.log("Username: " + username);
-  console.log("Password: " + password);
-
   address = _address;
   port = _port;
 

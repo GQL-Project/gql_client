@@ -1,0 +1,18 @@
+User Story 22
+
+Testing for default user login:
+    1. Press "Login"
+    2. Press "Login"
+    3. You should be in the editor page now
+
+Testing for incorrect login - password:
+    1. Press "Login"
+    2. Enter the password "adminx"
+    3. Press "Login"
+    4. You should see an error message
+
+Testing for incorrect login - username:
+    1. Press "Login"
+    2. Enter the username "adminx"
+    3. Press "Login"
+    4. You should see an error message
