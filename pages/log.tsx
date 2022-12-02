@@ -43,15 +43,21 @@ function Log() {
 
   const handleFilterChange = (event: SelectChangeEvent) => {
     setFilterSelection(event.target.value);
-    if (filterSelection == "My Commits") {
+    var selection = event.target.value;
+    console.log("testing");
+    if (selection == "My Commits") {
       // TODO Sorting Logic for my commits
-      
-    } else if (filterSelection == "Newest Commits"){
-      // TODO Sort to have newest commits first
-      
-    } else if (filterSelection == "Oldest Commits"){
+      console.log("Testing my commits");
+    } else if (selection == "Newest Commits"){
+      // TODO Sort to have newest commits first\
+      console.log("Testing newest commits");
+      for (let i = 0; i < logList.length; i++) {
+        console.log("Testing newest commits");
+        console.log(logList[i]);
+      }
+    } else if (selection == "Oldest Commits"){
       // TODO Sort by the oldest commits first
-      
+      console.log("Testing oldest commits");
     }
   };
 
