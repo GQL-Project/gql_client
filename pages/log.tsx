@@ -6,6 +6,9 @@ import {
   Grid,
   Card,
   Stack,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
 } from "@mui/material";
 import styles from "../styles/Home.module.css";
 import logo from "../public/logo.png";
@@ -22,6 +25,7 @@ function Log() {
   const authContext = useContext(AuthContext);
   const [logList, setLogList] = useState({});
   const [error, setError] = useState("No Commits");
+  const [filterSelection, setFilterSelection] = useState("My Commits")
   TimeAgo.addDefaultLocale(en);
   const timeAgo = new TimeAgo("en-US");
 
@@ -35,6 +39,20 @@ function Log() {
   const router = useRouter();
   const handleBack = () => {
     router.push("/editor");
+  };
+
+  const handleFilterChange = (event: SelectChangeEvent) => {
+    setFilterSelection(event.target.value);
+    if (filterSelection == "My Commits") {
+      // TODO Sorting Logic for my commits
+      
+    } else if (filterSelection == "Newest Commits"){
+      // TODO Sort to have newest commits first
+      
+    } else if (filterSelection == "Oldest Commits"){
+      // TODO Sort by the oldest commits first
+      
+    }
   };
 
   useEffect(() => {
@@ -95,6 +113,19 @@ function Log() {
         <Box className={styles.center}>
           <h1>Database Log</h1>
         </Box>
+       {/* {logList.length > 0 ?*/} 
+        <h2 className={styles.center}>Order By:
+          <Select
+            defaultValue="My Commits"
+            style={{ marginLeft: '.5rem' }}
+            onChange={handleFilterChange}
+          >
+            <MenuItem value="My Commits">My Commits</MenuItem>
+            <MenuItem value="Newest Commits">Newest Commits</MenuItem>
+            <MenuItem value="Oldest Commits">Oldest Commits</MenuItem>
+          </Select>
+          </h2>
+       {/*</h2> : <h2></h2>} */} 
         <Stack className={styles.center}>
           {Object.keys(logList).map((key) => {
             return (

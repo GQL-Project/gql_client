@@ -63,18 +63,6 @@ function History() {
   return authContext.loggedIn ? (
     <Box className={styles.modal}>
       <h1>Commit History</h1>
-      {commitListText.length > 0 ?
-        <h2>Order By:
-          <Select
-            defaultValue="My Commits"
-            style={{ marginLeft: '.5rem' }}
-            onChange={handleFilterChange}
-          >
-            <MenuItem value="My Commits">My Commits</MenuItem>
-            <MenuItem value="Newest Commits">Newest Commits</MenuItem>
-            <MenuItem value="Oldest Commits">Oldest Commits</MenuItem>
-          </Select>
-        </h2> : <h2></h2>}
       {commitListText.length > 0 ? <h2>Commits</h2> : <h2>{error}</h2>}
       <Box className={styles.branchForm}>
         <ul className={styles.commitList}>
