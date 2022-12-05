@@ -550,6 +550,11 @@ function QueryEditor() {
                   value={text}
                   padding={10}
                   onValueChange={(text) => setText(text)}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      handleInput();
+                    }
+                  }}
                 />
               </Box>
               <div className={styles.currentBranchText}>
