@@ -9,6 +9,7 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
+  getLinearProgressUtilityClass,
 } from "@mui/material";
 import styles from "../styles/Home.module.css";
 import logo from "../public/logo.png";
@@ -26,8 +27,10 @@ function Log() {
   const [logList, setLogList] = useState({});
   const [error, setError] = useState("No Commits");
   const [filterSelection, setFilterSelection] = useState("My Commits")
+  const [newToOld, setNewToOld] = useState(true)
   TimeAgo.addDefaultLocale(en);
   const timeAgo = new TimeAgo("en-US");
+  
 
   function groupArrayOfObjects(list, key) {
     return list.reduce(function (rv, x) {
@@ -44,20 +47,38 @@ function Log() {
   const handleFilterChange = (event: SelectChangeEvent) => {
     setFilterSelection(event.target.value);
     var selection = event.target.value;
-    console.log("testing");
+    var temp = [];
+    
     if (selection == "My Commits") {
       // TODO Sorting Logic for my commits
       console.log("Testing my commits");
+      
     } else if (selection == "Newest Commits"){
       // TODO Sort to have newest commits first\
       console.log("Testing newest commits");
-      for (let i = 0; i < logList.length; i++) {
-        console.log("Testing newest commits");
-        console.log(logList[i]);
+      if (!newToOld) {
+        for (var key in logList) {
+          temp.push(logList[key]);
+        }
+        temp.reverse();
+        setLogList(temp);
+        setNewToOld(true);
       }
+      //setLogList(logList.reverse());
     } else if (selection == "Oldest Commits"){
       // TODO Sort by the oldest commits first
       console.log("Testing oldest commits");
+      for (var key in logList) {
+        console.log(logList[key][0].timestamp);
+      }
+      if (newToOld) {
+        for (var key in logList) {
+          temp.push(logList[key]);
+        }
+        temp.reverse();
+        setLogList(temp);
+        setNewToOld(false);
+      }
     }
   };
 
@@ -122,13 +143,13 @@ function Log() {
        {/* {logList.length > 0 ?*/} 
         <h2 className={styles.center}>Order By:
           <Select
-            defaultValue="My Commits"
+            defaultValue="Newest Commits"
             style={{ marginLeft: '.5rem' }}
             onChange={handleFilterChange}
           >
-            <MenuItem value="My Commits">My Commits</MenuItem>
             <MenuItem value="Newest Commits">Newest Commits</MenuItem>
             <MenuItem value="Oldest Commits">Oldest Commits</MenuItem>
+            <MenuItem value="My Commits">My Commits</MenuItem>
           </Select>
           </h2>
        {/*</h2> : <h2></h2>} */} 
