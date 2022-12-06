@@ -41,6 +41,7 @@ import MergeBranch from "./merge_branch";
 import SwitchBranch from "./switch_branch";
 import Revert from "./revert";
 import ViewTable from "./view_table";
+import BranchView from "./branch_view";
 
 require("prismjs/components/prism-sql");
 
@@ -293,6 +294,10 @@ function QueryEditor() {
   const handleRevertOpen = () => setRevertOpen(true);
   const handleRevertClose = () => setRevertOpen(false);
 
+  const handleBranchViewClick = () => {
+    router.push("/branch_view");
+  };
+
   // Discard button functionality
   const handleDiscardClick = async () => {
     const response = await fetch("/api/vcs", {
@@ -480,6 +485,7 @@ function QueryEditor() {
                   >
                     Discard
                   </MenuItem>
+                  <MenuItem onClick={handleBranchViewClick}>Branch View</MenuItem>
                 </Menu>
               </div>
               <div>
