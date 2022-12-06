@@ -48,14 +48,17 @@ function BranchView() {
       const updateResult: UpdateResult = await response.json();
       const data: any = JSON.parse(updateResult.message);
       
+      const defaultXOffset = 200;
+      const defaultYOffset = 100;
+
       let nodes: any[] = [];
       data.nodes.forEach((element: any) => {
         if (element.first_branch_commit == true) {
             nodes.push({
                 id: "start" + element.branch_name,
                 position: {
-                    x: element.column * 200,
-                    y: (element.row * 100) - 17
+                    x: element.column * 200 + defaultXOffset,
+                    y: (element.row * 100) - 17 + defaultYOffset,
                 },
                 data: { label: element.branch_name },
                 style: { 
@@ -73,8 +76,8 @@ function BranchView() {
               {
                   id: element.commit_hash,
                   position: {
-                      x: element.column * 200,
-                      y: element.row * 100
+                      x: element.column * 200 + defaultXOffset,
+                      y: element.row * 100 + defaultYOffset,
                   },
                   data: { label: "<Deleted Branch>" },
               }
@@ -85,8 +88,8 @@ function BranchView() {
               {
                   id: element.commit_hash,
                   position: {
-                      x: element.column * 200,
-                      y: element.row * 100
+                      x: element.column * 200 + defaultXOffset,
+                      y: element.row * 100 + defaultYOffset,
                   },
                   data: { label: element.commit_hash.substring(0, 7) },
               }
