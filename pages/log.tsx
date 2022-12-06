@@ -105,7 +105,7 @@ function Log() {
         } else {
           const logs: [] = JSON.parse(data.message).map((log) => {
             const newLog = {
-              user: log.user_id,
+              userid: log.user_id,
               message: log.message,
               hash: log.hash.slice(0, 7),
               timestamp: new Date(+log.timestamp).toDateString(),
