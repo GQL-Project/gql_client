@@ -23,6 +23,7 @@ import { AuthContext } from "./context";
 import { UpdateResult } from "./proto/connection";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import InlineEditable from "./components/inline_editable";
 import ViewConfirmation from "./confirmation";
 
 function ViewTable(props: { close: () => void }) {
@@ -31,9 +32,35 @@ function ViewTable(props: { close: () => void }) {
     const [error, setError] = useState("No Tables");
     const [empty, setEmpty] = useState(false);
     const [confirmationOpen, setConfirmationOpen] = useState(false);
+    const [type, setType] = useState("");
 
     const handleConfirmationOpen = () => setConfirmationOpen(true);
     const handleConfirmationClose = () => setConfirmationOpen(false);
+
+    const onTypeChange = (e) => {
+        setType(e.target.value);
+        console.log(e);
+        console.log('this was e');
+    };
+
+    const onTypeKeyDown = async (e, i : number, schemaName: string, tableName : string) => {
+        if (e.key === "Enter" || e.key === "Escape") {
+            e.target.blur();
+            setType(e.target.value);
+            const response = await fetch("/api/update", {
+                method: "POST",
+                body: JSON.stringify({
+                    query: "ALTER TABLE " + tableName + " CHANGE " + schemaName + " " + schemaName + " " + e.target.value,
+                    id: authContext.loggedIn,
+                }),
+            });
+            console.log(schemaName);
+            console.log(tableName);
+            console.log(e.target);
+            console.log('this was e.target ' + i);
+            if (response.ok) refreshPage();
+        }
+    }
 
     function groupArrayOfObjects(list, key) {
         return list.reduce(function (rv, x) {
@@ -200,17 +227,37 @@ function ViewTable(props: { close: () => void }) {
                                                                 <TableHead>
                                                                     <TableRow>
                                                                         {table.table_schema.map((name: string) => (
+                                                                            // <TableCell key={0} align="center">
+                                                                            //     <b>{name}</b>
+                                                                            // </TableCell>
                                                                             <TableCell key={0} align="center">
-                                                                                <b>{name}</b>
+                                                                                <InlineEditable text={name} type="input" placeholder={name}>
+                                                                                    <input
+                                                                                    type="text"
+                                                                                    value={name}
+                                                                                    style={{ width: "8vw", fontSize: "0.9em" }}
+                                                                                    className={styles.createTableNameInput}
+                                                                                    onChange={(e) => console.log(e)}
+                                                                                    />
+                                                                                </InlineEditable>
                                                                             </TableCell>
                                                                         ))}
                                                                     </TableRow>
                                                                 </TableHead>
                                                                 <TableBody>
                                                                     <TableRow key={0}>
-                                                                        {table.schema_type.map((value: string) => (
+                                                                        {table.schema_type.map((value: string, i: number) => (
                                                                             <TableCell key={0} align="center">
-                                                                                {value}
+                                                                                <InlineEditable text={value} type="input" placeholder={value}>
+                                                                                    <input
+                                                                                    type="text"
+                                                                                    defaultValue={value}
+                                                                                    style={{ width: "8vw", fontSize: "0.9em" }}
+                                                                                    className={styles.createTableNameInput}
+                                                                                    onChange={onTypeChange}
+                                                                                    onKeyDown={e => onTypeKeyDown(e, i, table.table_schema[i], key)}
+                                                                                    />
+                                                                                </InlineEditable>
                                                                             </TableCell>
                                                                         ))}
                                                                     </TableRow>
