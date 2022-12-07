@@ -58,6 +58,7 @@ function QueryEditor() {
   );
   const [text, setText] = useState("");
   const [currentBranchName, setCurrentBranchName] = useState("");
+  const [queryDuration, setQueryDuration] = useState("");
   const [open, setOpen] = useState(false);
   const [mergeBranchOpen, setMergeBranchOpen] = useState(false);
   const [switchBranchOpen, setSwitchBranchOpen] = useState(false);
@@ -196,16 +197,20 @@ function QueryEditor() {
   };
 
   const handleQuery = async () => {
+    setQueryDuration("Running...");
     const response = await fetch("/api/query", {
       method: "POST",
       body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
     if (!response.ok) {
+      setQueryDuration("");
       let text = await response.text();
       setTextStatus(text, true, true);
     } else {
       // const data: QueryResult = await response.json();
       const data = await response.json();
+
+      setQueryDuration("Query Duration: " + data.time_taken + "s");
 
       // Create table from data
       setStatus(
@@ -395,15 +400,20 @@ function QueryEditor() {
   };
 
   const handleUpdate = async () => {
+    setQueryDuration("Running...")
     const response = await fetch("/api/update", {
       method: "POST",
       body: JSON.stringify({ query: text, id: authContext.loggedIn }),
     });
     if (!response.ok) {
+      setQueryDuration("");
       let text = await response.text();
       setTextStatus(text, true, true);
     } else {
       const data: UpdateResult = await response.json();
+
+      setQueryDuration("Query Duration: " + data.time_taken + "s");
+
       setTextStatus(data.message, true);
       setText("");
     }
@@ -563,9 +573,18 @@ function QueryEditor() {
                   }}
                 />
               </Box>
-              <div className={styles.currentBranchText}>
-                Current Branch: {currentBranchName}
-              </div>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row"
+                }}>
+                <div className={styles.queryDurationText}>
+                  {queryDuration}
+                </div>
+                <div className={styles.currentBranchText}>
+                  Current Branch: {currentBranchName}
+                </div>
+              </Box>
             </Box>
             <Box className={styles.commandOutput}>{status}</Box>
           </Box>

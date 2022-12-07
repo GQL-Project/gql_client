@@ -40,11 +40,13 @@ export interface ConnectResult {
 export interface QueryResult {
   columnNames: string[];
   rowValues: RowValue[];
+  timeTaken: number;
 }
 
 /** Result from executing an SQL Update Command */
 export interface UpdateResult {
   message: string;
+  timeTaken: number;
 }
 
 /** Result from executing a Version Control Command */
