@@ -183,13 +183,13 @@ function Log() {
                           <h3>{log.userid}</h3>
                         </Grid>
                         <Grid item xs>
-                          <h4>{log.message}</h4>
+                          <h3>{log.message}</h3>
                         </Grid>
                         <Grid item xs>
-                          <h5>{log.hash}</h5>
+                          <h4>{log.hash}</h4>
                         </Grid>
                         <Grid item>
-                          <h6>{log.timeAgo}</h6>
+                          <h5>{log.timeAgo}</h5>
                         </Grid>
                       </Grid>
                     </Grid>
