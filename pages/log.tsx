@@ -52,9 +52,6 @@ function Log() {
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
-    for (var key in logList) {
-      console.log(key);
-    }
   };
 
     const handlePerson = () => {
@@ -70,6 +67,7 @@ function Log() {
         setText("");
       } else {
         setLogList(temp);
+        console.log(temp);
       }
       console.log("Log list " + logList);
       console.log("TEMP Log list " + tempLogList)
@@ -85,10 +83,11 @@ function Log() {
       if (selection == "Person") {
         // TODO Sorting Logic for my commits
         setPersonBool(true);
+        setTempLogList(logList);
         //setTempLogList(logList);
       } else if (selection == "Newest Commits") {
         if (personPressed) {
-          setLogList(masterList);
+          setLogList(tempLogList);
           setPersonPressed(false);
         }
         // TODO Sort to have newest commits first\
@@ -102,8 +101,7 @@ function Log() {
           }
           temp.reverse();
           setLogList(temp);
-          setTempLogList(temp);
-          setMasterList(temp);
+          setTempLogList(logList);
           setNewToOld("NewToOld");
           
         }
@@ -111,7 +109,10 @@ function Log() {
       } else if (selection == "Oldest Commits") {
         // TODO Sort by the oldest commits first
         if (personPressed) {
-          setLogList(masterList);
+          console.log("Person Pressed");
+          console.log(" Temp log " + tempLogList);
+          setLogList(tempLogList);
+          console.log("log list " + logList);
           setPersonPressed(false);
         }
         setPersonBool(false);
@@ -123,8 +124,7 @@ function Log() {
           }
           temp.reverse();
           setLogList(temp);
-          setTempLogList(temp);
-          setMasterList(temp);
+          setTempLogList(logList);
           setNewToOld("OldToNew");
         }
       }
@@ -217,6 +217,7 @@ function Log() {
               variant="contained"
               style={{ float: "right" }}
               onClick={() => {
+                setTempLogList(logList);
                 handlePerson();
               }}
             >
