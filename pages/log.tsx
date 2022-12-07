@@ -62,7 +62,11 @@ function Log() {
         }
         temp.reverse();
         setLogList(temp);
+        console.log(temp);
         setNewToOld(true);
+      }
+      for (var key in temp) {
+        console.log(key);
       }
       //setLogList(logList.reverse());
     } else if (selection == "Oldest Commits"){
@@ -77,6 +81,7 @@ function Log() {
         }
         temp.reverse();
         setLogList(temp);
+        console.log(temp);
         setNewToOld(false);
       }
     }
@@ -108,12 +113,14 @@ function Log() {
               userid: log.user_id,
               message: log.message,
               hash: log.hash.slice(0, 7),
-              timestamp: new Date(+log.timestamp).toDateString(),
+              timestamp: new Date(+log.timestamp),//.toDateString(),
               timeAgo: timeAgo.format(+log.timestamp),
             };
             return newLog;
           });
           setLogList(groupArrayOfObjects(logs, "timestamp"));
+          console.log(groupArrayOfObjects(logs, "timestamp"));
+          //setLogList(logs);
         }
       }
     }
@@ -173,13 +180,16 @@ function Log() {
                     <Grid key={log.hash} container spacing={2}>
                       <Grid item xs={12} sm container>
                         <Grid item xs>
-                          <h3>{log.message}</h3>
+                          <h3>{log.userid}</h3>
                         </Grid>
                         <Grid item xs>
-                          <h4>{log.hash}</h4>
+                          <h4>{log.message}</h4>
+                        </Grid>
+                        <Grid item xs>
+                          <h5>{log.hash}</h5>
                         </Grid>
                         <Grid item>
-                          <h4>{log.timeAgo}</h4>
+                          <h6>{log.timeAgo}</h6>
                         </Grid>
                       </Grid>
                     </Grid>
