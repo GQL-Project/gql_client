@@ -33,9 +33,46 @@ function ViewTable(props: { close: () => void }) {
     const [empty, setEmpty] = useState(false);
     const [confirmationOpen, setConfirmationOpen] = useState(false);
     const [type, setType] = useState("");
+    const [colName, setColName] = useState("");
 
     const handleConfirmationOpen = () => setConfirmationOpen(true);
     const handleConfirmationClose = () => setConfirmationOpen(false);
+
+    const onColNameChange = (e) => {
+        setColName(e.target.value);
+    }
+    const onColNameKeyDown = async (e, i : number, schemaName: string, schemaType : string, tableName : string) => {
+        let option = '';
+        if (schemaType.includes('Nullable')) {
+            option = 'null';
+            var regExp = /\(([^)]+)\)/;
+            var matches = regExp.exec(schemaType);
+            schemaType = matches[1];
+        }
+
+        if (schemaType == 'I32') schemaType = 'smallint';
+        if (schemaType == 'I64') schemaType = 'int';
+        if (schemaType.includes('String')) schemaType = schemaType.replace('String', 'varchar');
+        if (schemaType.includes('Bool')) schemaType = schemaType.replace('Bool', 'Boolean');
+        
+        if (e.key === "Enter" || e.key === "Escape") {
+            e.target.blur();
+            setColName(e.target.value);
+            const response = await fetch("/api/update", {
+                method: "POST",
+                body: JSON.stringify({
+                    query: "ALTER TABLE " + tableName + " CHANGE " + schemaName + " " + e.target.value + " " + schemaType + " " + option,
+                    id: authContext.loggedIn,
+                }),
+            });
+            console.log(tableName);
+            console.log(schemaName);
+            console.log(e.target.value);
+            console.log(schemaType);
+            console.log('this was e.target ' + i);
+            if (response.ok) refreshPage();
+        }
+    }
 
     const onTypeChange = (e) => {
         setType(e.target.value);
@@ -44,13 +81,27 @@ function ViewTable(props: { close: () => void }) {
     };
 
     const onTypeKeyDown = async (e, i : number, schemaName: string, tableName : string) => {
+        var schemaType = e.target.value;
+        let option = '';
+        if (schemaType.includes('Nullable')) {
+            option = 'null';
+            var regExp = /\(([^)]+)\)/;
+            var matches = regExp.exec(schemaType);
+            schemaType = matches[1];
+        }
+
+        if (schemaType == 'I32') schemaType = 'smallint';
+        if (schemaType == 'I64') schemaType = 'int';
+        if (schemaType.includes('String')) schemaType = schemaType.replace('String', 'varchar');
+        if (schemaType.includes('Bool')) schemaType = schemaType.replace('Bool', 'Boolean');
+        
         if (e.key === "Enter" || e.key === "Escape") {
             e.target.blur();
             setType(e.target.value);
             const response = await fetch("/api/update", {
                 method: "POST",
                 body: JSON.stringify({
-                    query: "ALTER TABLE " + tableName + " CHANGE " + schemaName + " " + schemaName + " " + e.target.value,
+                    query: "ALTER TABLE " + tableName + " CHANGE " + schemaName + " " + schemaName + " " + schemaType + " " + option,
                     id: authContext.loggedIn,
                 }),
             });
@@ -58,7 +109,13 @@ function ViewTable(props: { close: () => void }) {
             console.log(tableName);
             console.log(e.target);
             console.log('this was e.target ' + i);
-            if (response.ok) refreshPage();
+            if (response.ok) {
+                refreshPage();
+                console.log('here');
+            }
+            else {
+                console.log(response);
+            }
         }
     }
 
@@ -226,7 +283,7 @@ function ViewTable(props: { close: () => void }) {
                                                             <Table stickyHeader>
                                                                 <TableHead>
                                                                     <TableRow>
-                                                                        {table.table_schema.map((name: string) => (
+                                                                        {table.table_schema.map((name: string, i: number) => (
                                                                             // <TableCell key={0} align="center">
                                                                             //     <b>{name}</b>
                                                                             // </TableCell>
@@ -234,10 +291,12 @@ function ViewTable(props: { close: () => void }) {
                                                                                 <InlineEditable text={name} type="input" placeholder={name}>
                                                                                     <input
                                                                                     type="text"
-                                                                                    value={name}
+                                                                                    defaultValue={name}
                                                                                     style={{ width: "8vw", fontSize: "0.9em" }}
                                                                                     className={styles.createTableNameInput}
-                                                                                    onChange={(e) => console.log(e)}
+                                                                                    onChange={onColNameChange}
+                                                                                    onKeyDown={e => onColNameKeyDown(e, i,
+                                                                                                table.table_schema[i], table.schema_type[i], key)}
                                                                                     />
                                                                                 </InlineEditable>
                                                                             </TableCell>
