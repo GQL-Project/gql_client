@@ -7,6 +7,7 @@ import { connection } from "./connect";
 export interface QueryString {
     column_names: string[];
     values: string[][];
+    time_taken: number;
 }
 
 
@@ -59,7 +60,8 @@ export default function handler(
                     } else {
                         return "";
                     }
-                }))
+                })),
+                time_taken: response.time_taken.toFixed(4)
             }
             console.log("RunQuery: QueryString: ", queryString);
             res.status(200).json(queryString);

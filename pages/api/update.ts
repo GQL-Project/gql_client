@@ -19,6 +19,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         res.status(500).send(err.details);
         return;
       }
+      response.time_taken = response.time_taken.toFixed(4);
       console.log("RunUpdate: Update Returned!: ", response);
       res.status(200).json(response);
     }

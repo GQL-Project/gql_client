@@ -4,6 +4,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AuthContext } from "./context";
 import { useState } from "react";
 
+import '../styles/reactFlowStyle.css';
+
 const theme = createTheme({
   typography: {
     fontFamily: ["Segoe UI", "Arial"].join(","),
