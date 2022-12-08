@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import { TextareaAutosize, Button, Box, Grid } from "@mui/material";
+import { TextareaAutosize, Button, Box, Grid, Select, SelectChangeEvent, Input, MenuItem, Checkbox } from "@mui/material";
 import { useState } from "react";
 import logo from "../public/logo.png";
 import Image from "next/image";
@@ -14,8 +14,23 @@ function History() {
   const authContext = useContext(AuthContext);
   const [commitListText, setCommitListText] = useState<string[]>([]);
   const [error, setError] = useState("No Commits");
+  const [filterSelection, setFilterSelection] = useState("My Commits")
   const handleErrorChange = () => {
     setError("Error Retrieving Log!");
+  };
+
+  const handleFilterChange = (event: SelectChangeEvent) => {
+    setFilterSelection(event.target.value);
+    if (filterSelection == "My Commits") {
+      // TODO Sorting Logic for my commits
+      
+    } else if (filterSelection == "Newest Commits"){
+      // TODO Sort to have newest commits first
+      
+    } else if (filterSelection == "Oldest Commits"){
+      // TODO Sort by the oldest commits first
+      
+    }
   };
 
   useEffect(() => {

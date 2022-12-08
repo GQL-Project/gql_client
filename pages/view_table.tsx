@@ -176,7 +176,7 @@ function ViewTable(props: { close: () => void }) {
         if (!response.ok) {
         } else {
             //const data: UpdateResult = await response.json();
-           refreshPage();
+            refreshPage();
         }
     };
 
@@ -251,23 +251,21 @@ function ViewTable(props: { close: () => void }) {
                                             m: 1,
                                         }}
                                     >
-                                        
-                                       
                                         <h2>{key}
-                                        <Button
-                                            color="error"
-                                            variant="contained"
-                                            style={{ float: "right" }}
-                                            onClick={() => {
-                                                // Drop the table
-                                                console.log(key);
-                                                //handleConfirmationOpen();
-                                                handleDropTable(key);
+                                            <Button
+                                                color="error"
+                                                variant="contained"
+                                                style={{ float: "right" }}
+                                                onClick={() => {
+                                                    // Drop the table
+                                                    console.log(key);
+                                                    //handleConfirmationOpen();
+                                                    handleDropTable(key);
 
-                                            }}
-                                        >
-                                            Drop Table
-                                        </Button></h2>
+                                                }}
+                                            >
+                                                Drop Table
+                                            </Button></h2>
                                         {tableList[key].map((table) => {
                                             return (
                                                 <Grid key={table.hash} container spacing={2}>
