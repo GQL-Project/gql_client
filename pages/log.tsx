@@ -69,8 +69,10 @@ function Log() {
         setLogList(temp);
         console.log(temp);
       }
-      console.log("Log list " + logList);
-      console.log("TEMP Log list " + tempLogList)
+      console.log("Log list");
+      console.log(logList);
+      console.log("TEMP Log list");
+      console.log(tempLogList);
       setPersonPressed(true);
     }
 
@@ -95,38 +97,31 @@ function Log() {
         setText("");
         setDefaultText("Enter a username");
 
-        if (newToOld == "OldToNew") {
-          for (var key in logList) {
-            temp.push(logList[key]);
-          }
-          temp.reverse();
-          setLogList(temp);
-          setTempLogList(logList);
-          setNewToOld("NewToOld");
-          
+        for (var key in masterList) {
+          temp.push(masterList[key]);
         }
-        
-      } else if (selection == "Oldest Commits") {
+        setLogList(temp);
+        setTempLogList(masterList);
+      } 
+      else if (selection == "Oldest Commits") {
         // TODO Sort by the oldest commits first
         if (personPressed) {
           console.log("Person Pressed");
-          console.log(" Temp log " + tempLogList);
+          console.log(" Temp log ");
+          console.log(tempLogList);
           setLogList(tempLogList);
-          console.log("log list " + logList);
           setPersonPressed(false);
         }
         setPersonBool(false);
         setText("");
         setDefaultText("Enter a username");
-        if (newToOld == "NewToOld") {
-          for (var key in logList) {
-            temp.push(logList[key]);
-          }
-          temp.reverse();
-          setLogList(temp);
-          setTempLogList(logList);
-          setNewToOld("OldToNew");
+
+        for (var key in masterList) {
+          temp.push(masterList[key]);
         }
+        temp.reverse();
+        setLogList(temp);
+        setTempLogList(masterList);
       }
     };
 
@@ -163,7 +158,8 @@ function Log() {
               return newLog;
             });
             setLogList(groupArrayOfObjects(logs, "timestamp"));
-            setTempLogList(logList);
+            setTempLogList(groupArrayOfObjects(logs, "timestamp"));
+            setMasterList(groupArrayOfObjects(logs, "timestamp"));
           }
         }
       }
