@@ -151,7 +151,7 @@ function BranchView() {
           onClick={handleBack}
         >{`← Back`}</Button>
         <p>{info}</p>
-        <div style={{height: "60vh", width: "100%", borderStyle: "solid", borderColor: "black", borderWidth: "1px"}}>
+        <div style={{height: "60vh", width: "100%", borderStyle: "solid", borderColor: "black", borderWidth: "1px", backgroundColor: "black"}}>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}

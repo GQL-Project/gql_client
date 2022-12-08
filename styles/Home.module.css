@@ -300,6 +300,7 @@
   list-style: none;
   text-align: center;
   padding: 0;
+  white-space: pre-line;
 }
 
 .createTable {

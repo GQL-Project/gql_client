@@ -51,9 +51,7 @@ function History() {
         if (data.message.toLowerCase() === "no commits!") {
           setCommitListText([]);
         } else {
-          setCommitListText(
-            data.message.split("-----------------------").slice(0, 10)
-          );
+          setCommitListText(data.message.split("\n\n").slice(0, 10));
         }
       }
     }
@@ -63,7 +61,7 @@ function History() {
   return authContext.loggedIn ? (
     <Box className={styles.modal}>
       <h1>Commit History</h1>
-      {commitListText.length > 0 ? <h2>Commits</h2> : <h2>{error}</h2>}
+      {commitListText.length > 0 ? <></> : <h2>{error}</h2>}
       <Box className={styles.branchForm}>
         <ul className={styles.commitList}>
           {commitListText.map((commit) => (
@@ -73,7 +71,19 @@ function History() {
           ))}
         </ul>
       </Box>
-      <Link href="/log">View all logs</Link>
+      <Button
+        className={styles.button}
+        sx={{
+          color: "white",
+          height: "10vh",
+          width: "20vw",
+          margin: "2vw",
+          fontSize: "larger",
+          backgroundColor: "rgba(34, 34, 34, 0.438)",
+        }}
+      >
+        <Link href="/log">View all logs</Link>
+      </Button>
       <Image src={logo} alt="GQL Logo" height={80} objectFit="contain" />
     </Box>
   ) : (
