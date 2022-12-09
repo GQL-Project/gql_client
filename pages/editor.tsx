@@ -324,6 +324,29 @@ function QueryEditor() {
     }
   };
 
+  //Pull Button functionality
+  const handlePullClick = async () => {
+    const response = await fetch("/api/vcs", {
+      method: "POST",
+      body: JSON.stringify({
+      
+        query: "gql pull",
+        id: authContext.loggedIn,
+      }),
+    });
+    if (!response.ok) {
+      setTextStatus("Failed to Pull!", true, true);
+    }
+    else {
+      const data: UpdateResult = await response.json();
+    }
+    if (response.statusText === "OK") {
+      setText("");
+    } else {
+      setTextStatus("Failed to Pull!", true, true);    
+    }
+  };
+
   //Save Queries Functionality
   const handleSaveQueries = () => {
     //Checking if there have been any queries
@@ -495,6 +518,11 @@ function QueryEditor() {
                   >
                     Discard
                   </MenuItem>
+                  <MenuItem 
+                    title="Retrieve any new changes made to the database made by other users" 
+                    onClick={handlePullClick}>
+                      Pull
+                      </MenuItem>
                   <MenuItem onClick={handleBranchViewClick}>Branch View</MenuItem>
                 </Menu>
               </div>
