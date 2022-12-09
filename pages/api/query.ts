@@ -1,13 +1,22 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { StatusObject } from "@grpc/grpc-js";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { CellValue, fromTimestamp, QueryResult, RowValue } from "../proto/connection";
+import { CellValue, QueryResult, RowValue } from "../proto/connection";
 import { connection } from "./connect";
 
 export interface QueryString {
     column_names: string[];
     values: string[][];
+    time_taken: number;
 }
+
+
+function fromTimestamp(t: Timestamp): Date {
+    let millis = t.seconds * 1_000;
+    millis += t.nanos / 1_000_000;
+    return new Date(millis);
+  }
+  
 
 export default function handler(
     req: NextApiRequest,
@@ -51,7 +60,8 @@ export default function handler(
                     } else {
                         return "";
                     }
-                }))
+                })),
+                time_taken: response.time_taken.toFixed(4)
             }
             console.log("RunQuery: QueryString: ", queryString);
             res.status(200).json(queryString);

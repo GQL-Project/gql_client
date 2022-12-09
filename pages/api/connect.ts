@@ -35,17 +35,28 @@ export function connection(): DatabaseConnectionClient {
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const _address: string = JSON.parse(req.body)["address"] as unknown as string;
   const _port: string = JSON.parse(req.body)["port"] as unknown as string;
+  const username: string = JSON.parse(req.body)[
+    "username"
+  ] as unknown as string;
+  const password: string = JSON.parse(req.body)[
+    "password"
+  ] as unknown as string;
+  const create: boolean = JSON.parse(req.body)["create"] as unknown as boolean;
 
   address = _address;
   port = _port;
 
   console.log("Connection Request Received.");
   connection().ConnectDB(
-    {},
+    {
+      username: username,
+      password: password,
+      create: create,
+    },
     function (err: StatusObject | null, response: ConnectResult) {
       if (err) {
         console.log("Connect Error: " + err.details);
-        res.status(500).send(err.details);
+        res.status(500).json({ error: err.details });
         return;
       }
       console.log("ConnectDB: Connected to Database!: ", response.id);
