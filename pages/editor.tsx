@@ -313,14 +313,37 @@ function QueryEditor() {
       }),
     });
     if (!response.ok) {
-      setTextStatus("Failed to revert!", true, true);
+      setTextStatus("Failed to Discard!", true, true);
     } else {
       const data: UpdateResult = await response.json();
     }
     if (response.statusText === "OK") {
       setText("");
     } else {
-      setTextStatus("Failed to revert!", true, true);
+      setTextStatus("Failed to Discard!", true, true);
+    }
+  };
+
+  //Pull Button functionality
+  const handlePullClick = async () => {
+    const response = await fetch("/api/vcs", {
+      method: "POST",
+      body: JSON.stringify({
+
+        query: "gql pull",
+        id: authContext.loggedIn,
+      }),
+    });
+    if (!response.ok) {
+      setTextStatus("Failed to Pull!", true, true);
+    }
+    else {
+      const data: UpdateResult = await response.json();
+    }
+    if (response.statusText === "OK") {
+      setText("");
+    } else {
+      setTextStatus("Failed to Pull!", true, true);    
     }
   };
 
@@ -412,7 +435,7 @@ function QueryEditor() {
     } else {
       const data: UpdateResult = await response.json();
 
-      setQueryDuration("Query Duration: " + data.time_taken + "s");
+      setQueryDuration("Query Duration: " + data.timeTaken + "s");
 
       setTextStatus(data.message, true);
       setText("");
@@ -495,6 +518,11 @@ function QueryEditor() {
                   >
                     Discard
                   </MenuItem>
+                  <MenuItem 
+                    title="Retrieve any new changes made to the database made by other users" 
+                    onClick={handlePullClick}>
+                      Pull
+                      </MenuItem>
                   <MenuItem onClick={handleBranchViewClick}>Branch View</MenuItem>
                 </Menu>
               </div>
