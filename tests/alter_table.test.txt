@@ -1,0 +1,43 @@
+UI Test in Editor Page
+
+BEFORE YOU BEGIN
+    1. Press "Continue"
+    2. Type "123" in Username
+    3. Type "123" in Password
+    4. Press "Login"
+    5. Have the back end running with "cargo run -- -d"
+    6. You should be in the editor page now
+
+Testing view tables with no tables in the branch
+    1. Press "VCS COMMANDS"
+    2. Press "View Tables"
+    3. You should see two tables
+
+Testing name change
+    1. Double click "id" on either table
+    2. Type a random name
+    3. Press "Enter"
+    4. The name should've changed to the given name
+
+Testing type change
+    1. Double click "I32" under "id" on either table
+    2. Type "int"
+    3. Press "Enter"
+    4. The type should've changed to the given type
+
+Testng type change with invalid change
+    1. Double click "I32" under "id" on either table
+    2. Type "varchar(50)"
+    3. Press "Enter"
+    4. It should not have changed anything
+
+Testing adding a new column
+    1. On the right side of the table, click on the input box
+    2. Type "name"
+    3. Type "int" in the lower box
+    4. Press "Add Column"
+    5. The table should've updated with the new column
+
+Testing dropping a table
+    1. Press "Drop" above a column
+    2. The table should've updated with the column dropped
