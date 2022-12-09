@@ -313,14 +313,14 @@ function QueryEditor() {
       }),
     });
     if (!response.ok) {
-      setTextStatus("Failed to revert!", true, true);
+      setTextStatus("Failed to Discard!", true, true);
     } else {
       const data: UpdateResult = await response.json();
     }
     if (response.statusText === "OK") {
       setText("");
     } else {
-      setTextStatus("Failed to revert!", true, true);
+      setTextStatus("Failed to Discard!", true, true);
     }
   };
 
