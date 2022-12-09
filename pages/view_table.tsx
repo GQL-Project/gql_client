@@ -34,9 +34,18 @@ function ViewTable(props: { close: () => void }) {
     const [confirmationOpen, setConfirmationOpen] = useState(false);
     const [type, setType] = useState("");
     const [colName, setColName] = useState("");
+    const [newColName, setNewColName] = useState("");
+    const [newColType, setNewColType] = useState("");
 
     const handleConfirmationOpen = () => setConfirmationOpen(true);
     const handleConfirmationClose = () => setConfirmationOpen(false);
+
+    const handleColName = (e) => {
+        setNewColName(e.target.value);
+    }
+    const handleColType = (e) => {
+        setNewColType(e.target.value);
+    }
 
     const onColNameChange = (e) => {
         setColName(e.target.value);
@@ -45,9 +54,14 @@ function ViewTable(props: { close: () => void }) {
         let option = '';
         if (schemaType.includes('Nullable')) {
             option = 'null';
+            
+            let pChar = '';
+            if (schemaType.includes('String')) pChar = ")";
+
             var regExp = /\(([^)]+)\)/;
             var matches = regExp.exec(schemaType);
             schemaType = matches[1];
+            schemaType += pChar;
         }
 
         if (schemaType == 'I32') schemaType = 'smallint';
@@ -65,19 +79,12 @@ function ViewTable(props: { close: () => void }) {
                     id: authContext.loggedIn,
                 }),
             });
-            console.log(tableName);
-            console.log(schemaName);
-            console.log(e.target.value);
-            console.log(schemaType);
-            console.log('this was e.target ' + i);
             if (response.ok) refreshPage();
         }
     }
 
     const onTypeChange = (e) => {
         setType(e.target.value);
-        console.log(e);
-        console.log('this was e');
     };
 
     const onTypeKeyDown = async (e, i : number, schemaName: string, tableName : string) => {
@@ -105,10 +112,6 @@ function ViewTable(props: { close: () => void }) {
                     id: authContext.loggedIn,
                 }),
             });
-            console.log(schemaName);
-            console.log(tableName);
-            console.log(e.target);
-            console.log('this was e.target ' + i);
             if (response.ok) {
                 refreshPage();
                 console.log('here');
@@ -173,12 +176,44 @@ function ViewTable(props: { close: () => void }) {
                 id: authContext.loggedIn,
             }),
         });
-        if (!response.ok) {
-        } else {
-            //const data: UpdateResult = await response.json();
+        if (response.ok) refreshPage();
+    };
+
+    const handleAddColumn = async (key) => {
+        const response = await fetch("/api/update", {
+            method: "POST",
+            body: JSON.stringify({
+                query: "ALTER TABLE " + key + " ADD " + newColName + " " + newColType,
+                id: authContext.loggedIn,
+            }),
+        });
+
+        
+        if (response.ok) {
+            setNewColName('');
+            setNewColType('');
+
+            var name = document.querySelectorAll("[id='newNameCol']");
+            for(var i = 0; i < name.length; i++) 
+                name[i].value='';
+
+            var type = document.querySelectorAll("[id='newTypeCol']");
+            for(var i = 0; i < type.length; i++) 
+                type[i].value='';
             refreshPage();
         }
-    };
+    }
+
+    const handleDropColumn = async (key, column) => {
+        const response = await fetch("/api/update", {
+            method: "POST",
+            body: JSON.stringify({
+                query: "ALTER TABLE " + key + " DROP " + column,
+                id: authContext.loggedIn,
+            }),
+        });
+        if (response.ok) refreshPage();
+    }
 
     useEffect(() => {
         if (window.localStorage.getItem("loggedIn") !== null) {
@@ -282,10 +317,19 @@ function ViewTable(props: { close: () => void }) {
                                                                 <TableHead>
                                                                     <TableRow>
                                                                         {table.table_schema.map((name: string, i: number) => (
-                                                                            // <TableCell key={0} align="center">
-                                                                            //     <b>{name}</b>
-                                                                            // </TableCell>
                                                                             <TableCell key={0} align="center">
+                                                                                <Button
+                                                                                    color="error"
+                                                                                    variant="outlined"
+                                                                                    // style={{ float: "right" }}
+                                                                                    size="small"
+                                                                                    onClick={() => {
+                                                                                        //handleConfirmationOpen();
+                                                                                        handleDropColumn(key, name);
+                                                                                    }}
+                                                                                >
+                                                                                    Drop
+                                                                                </Button>
                                                                                 <InlineEditable text={name} type="input" placeholder={name}>
                                                                                     <input
                                                                                     type="text"
@@ -299,6 +343,28 @@ function ViewTable(props: { close: () => void }) {
                                                                                 </InlineEditable>
                                                                             </TableCell>
                                                                         ))}
+                                                                        <TableCell
+                                                                            align="center"
+                                                                            style = {{width: "8vw"}}
+                                                                        >
+                                                                            <Button
+                                                                                color="info"
+                                                                                variant="outlined"
+                                                                                size="small"
+                                                                                style={{marginBottom: 10}}
+                                                                                onClick={() => {
+                                                                                    handleAddColumn(key);
+                                                                                }}
+                                                                            >
+                                                                                Add
+                                                                            </Button>
+
+                                                                            <input
+                                                                                id = "newNameCol"
+                                                                                style={{width: "100%"}}
+                                                                                onChange={handleColName}
+                                                                            />
+                                                                        </TableCell>
                                                                     </TableRow>
                                                                 </TableHead>
                                                                 <TableBody>
@@ -317,6 +383,16 @@ function ViewTable(props: { close: () => void }) {
                                                                                 </InlineEditable>
                                                                             </TableCell>
                                                                         ))}
+                                                                        <TableCell
+                                                                            style = {{width: "8vw"}}
+                                                                            align="center"
+                                                                        >
+                                                                            <input
+                                                                                id = "newTypeCol"
+                                                                                style={{width: "100%"}}
+                                                                                onChange={handleColType}
+                                                                            />
+                                                                        </TableCell>
                                                                     </TableRow>
                                                                 </TableBody>
                                                             </Table>
