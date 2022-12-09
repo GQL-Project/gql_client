@@ -316,7 +316,25 @@ function QueryEditor() {
 
   //Pull Button functionality
   const handlePullClick = async () => {
-    //TODO: Add pull functionality
+    const response = await fetch("/api/vcs", {
+      method: "POST",
+      body: JSON.stringify({
+      
+        query: "gql pull",
+        id: authContext.loggedIn,
+      }),
+    });
+    if (!response.ok) {
+      setTextStatus("Failed to Pull!", true, true);
+    }
+    else {
+      const data: UpdateResult = await response.json();
+    }
+    if (response.statusText === "OK") {
+      setText("");
+    } else {
+      setTextStatus("Failed to Pull!", true, true);    
+    }
   };
 
   //Save Queries Functionality
